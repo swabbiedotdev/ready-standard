@@ -105,6 +105,9 @@ artifact_types:
       - format
       - proof_role
       - authority_level
+      - proof_of
+      - satisfies
+      - git_commit
       - lifecycle_state
       - coverage
       - dataset_contract

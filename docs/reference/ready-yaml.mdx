@@ -343,10 +343,14 @@ fields:
   format: yaml
   proof_role: regression
   authority_level: deterministic_fixture
+  proof_of: I-001
+  satisfies:
+    - unit-replay-shape
+  git_commit: abc1234
   lifecycle_state: frozen
   coverage:
     proves:
-      - deterministic replay shape
+      - deterministic replay shape covered by AP-010
     does_not_prove:
       - live user quality
     forbidden_uses:

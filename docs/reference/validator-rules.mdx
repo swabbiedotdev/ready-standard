@@ -131,9 +131,13 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Artifact descriptors only keep artifact-to-artifact refs; product and workflow
   records point to artifacts through `artifacts`.
 - Proof corpus descriptors use `type: proof_corpus` and carry
-  `fields.proof_role`, `fields.authority_level`, `fields.lifecycle_state`,
+  `fields.proof_role`, `fields.authority_level`, `fields.proof_of`,
+  `fields.satisfies`, `fields.git_commit`, `fields.lifecycle_state`,
   `fields.coverage`, `fields.dataset_contract`, `fields.oracle_policy`,
   `fields.replay`, `fields.acceptance_contract`, and `fields.limitations`.
+  `fields.satisfies` lists explicit completion-proof clause keys for
+  `fields.proof_of`; `coverage.proves` is descriptive coverage and does not
+  satisfy clauses by itself.
 - Ready proof corpus descriptors do not use `fields.lifecycle_state: draft`;
   draft proof corpora use top-level `status: draft`.
 - Governance documents and vendored Ready Standard bundle resources are not
