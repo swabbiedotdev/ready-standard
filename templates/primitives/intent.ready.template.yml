@@ -25,8 +25,11 @@ fields:
   output_samples: "{{OUTPUT_SAMPLE_ARTIFACT_IDS_OR_NONE}}"
   required_surfaces: "{{USER_OPERATOR_OR_INTERNAL_SURFACES_REQUIRED}}"
   operating_envelope: "{{QUALITY_OR_LIVE_VARIABLE_OPERATING_LIMITS_OR_NONE}}"
+# Every clause requires key + kind + statement (bare strings are invalid as of 0.4.0). Keys are stable slugs; evidence references them, so treat keys as append-mostly. Satisfaction is derived from linked evidence, never stored here.
 completion_proof:
-  - "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
+  - key: "{{stable-slug-a-z0-9-hyphens}}"
+    kind: "{{unit|integration|manual|monitored}}"
+    statement: "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
 refs: []
 artifacts: []
 owner_notes: []

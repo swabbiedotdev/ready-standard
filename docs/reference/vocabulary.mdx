@@ -29,6 +29,7 @@ and `blocked`.
 - proof corpus lifecycle states;
 - compiler roles;
 - claim levels;
+- completion-proof clause kinds;
 - structural relationship roles;
 - semantic relationship display phrases in both directions.
 
@@ -57,6 +58,15 @@ draft`.
 `compiler_role` is a source-record hint for compilers and orchestrators. It does
 not replace `kind`, `class`, or `type`; it clarifies how the record should be
 used in compiled product, proof, governance, handoff, or workflow views.
+
+Completion-proof clause kinds are:
+
+| Kind | Meaning |
+| --- | --- |
+| `unit` | Runnable isolated tests over fixtures or pure logic. |
+| `integration` | Runnable tests that exercise live services, persistence, or cross-system flows. |
+| `manual` | Human-attached evidence such as reviewed screenshots, walkthroughs, or sign-off artifacts. |
+| `monitored` | Production or environment observation evidence measured over time. |
 
 ## Relationship Display
 

@@ -15,8 +15,8 @@ flag_directories:
   readiness: "ready/flags/readiness"
   proof: "ready/flags/proof"
 ready_standard:
-  version: "0.3.41"
+  version: "0.4.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.41/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.4.0/docs"

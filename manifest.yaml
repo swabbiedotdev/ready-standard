@@ -1,7 +1,7 @@
 schema: "ready/standard-resources/v1"
 kind: "manifest"
 class: "bundle"
-version: "0.3.41"
+version: "0.4.0"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:

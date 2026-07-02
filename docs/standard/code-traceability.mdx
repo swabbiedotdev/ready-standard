@@ -44,6 +44,27 @@ mapping.
 Ready id references in code do not prove completion. Completion still depends
 on the Ready record's Completion Proof and the project's verification process.
 
+## Clause Citations
+
+Test files may cite the exact completion-proof clauses they prove:
+
+```text
+clause_citation := ready_id "#" clause_key
+ready_id        := \b(P|I|ST|SV|A)-\d{3}
+clause_key      := [a-z0-9][a-z0-9-]{0,63}
+```
+
+Example:
+
+```ts
+// gather parse cases (I-001#unit-parse-sources)
+```
+
+A clause citation also counts as a plain id citation for that record. Clause
+citations let consuming apps map runnable evidence to specific clauses; the
+mapping is evidence, not truth. If the text after `#` is not a valid clause key,
+the base id citation still counts and the suffix is ignored.
+
 ## Maintenance Agents
 
 Product or maintenance agents may add trace-only Ready id references to code as

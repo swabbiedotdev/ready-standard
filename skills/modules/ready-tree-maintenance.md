@@ -45,6 +45,9 @@ Review and update the Ready tree when any of these happen:
   attention;
 - a broad intent becomes hard to review or implement because it contains multiple
   independently useful promises.
+- an intent still carries pre-0.4.0 bare-string completion-proof clauses that
+  need keyed `key`/`kind`/`statement` maps so evidence can satisfy explicit
+  clauses.
 
 If nothing changes product truth, evidence, proof, services, standards,
 artifacts, or readiness, do not create records just to summarize activity.
@@ -171,6 +174,13 @@ They should:
 Coding agents should not close product decisions, mark product completion, or
 promote draft product truth to ready based only on their own implementation.
 Ready id references in code are traceability evidence, not Completion Proof.
+
+Migrating an intent's bare-string completion-proof clauses to keyed maps is a
+safe, reversible best-judgment maintenance edit when the statement text is
+unchanged and the new key/kind are conservative. Changing clause content,
+proof meaning, or acceptance strength is product truth work and follows the
+normal approval rules. Flag `completion_proof` remains a plain closure-criteria
+string list and is not migrated to keyed clauses.
 
 ## Maintenance Loop
 

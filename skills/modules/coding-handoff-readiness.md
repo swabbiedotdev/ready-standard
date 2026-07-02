@@ -51,6 +51,9 @@ A coding agent should receive:
 - how to report blockers and attach evidence;
 - where low-noise Ready id traceability should be preserved in code, tests,
   fixtures, or proof harnesses when there are obvious durable seams.
+- for intents with keyed completion-proof clauses, which clause keys the coding
+  work must satisfy, which clause keys are out of scope, and where test files
+  should carry clause citations such as `I-001#unit-parse-sources`.
 
 ## What Not To Do
 

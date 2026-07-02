@@ -67,9 +67,12 @@ to the explicitly requested standard bundle or docs work.
      structured `fields.proposals`, and `fields.decision_needed`; remove
      legacy answer and owner-decision fields.
    - Intent `completion_proof` is the durable Definition of Done. It must
-     contain concrete observable proof, not a one-word status.
+     contain concrete observable proof, not a one-word status. As of Ready
+     Standard 0.4.0, intent clauses must be keyed maps with `key`, `kind`, and
+     `statement`; convert every bare-string intent clause during migration.
    - Flag `completion_proof` is closure criteria for a temporary bundle-work
-     record, not the canonical product DoD.
+     record, not the canonical product DoD. Flag clauses stay plain string
+     lists and are not keyed in 0.4.0.
    - Draft records make a bundle incomplete. Orchestrators warn
      before implementation and do not imply a complete product from the build.
    - Blocked records stop implementation unless explicit override instructions

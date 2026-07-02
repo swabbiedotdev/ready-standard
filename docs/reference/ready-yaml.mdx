@@ -84,7 +84,9 @@ fields:
   required_surfaces: User, operator, or internal surfaces required.
   operating_envelope: Quality/runtime limits when behavior can vary.
 completion_proof:
-  - Observable evidence that proves the intent exists.
+  - key: unit-parse-sources
+    kind: unit
+    statement: Observable evidence that proves the intent exists.
 refs:
   - role: parent
     id: P-001
@@ -106,9 +108,15 @@ Required primitive fields:
 - `fields`: class-specific structured content.
 - `refs`: directed structural relationships.
 
-Committed intents should carry `completion_proof`. Other primitives should add
-Completion Proof when the record needs explicit proof to rebuild, validate, or
-operate the product.
+Committed intents should carry `completion_proof`. On intent records,
+`completion_proof` is a list of keyed maps with `key`, `kind`, and `statement`;
+bare strings are invalid as of Ready Standard 0.4.0. Flag `completion_proof` is
+a different field: a plain string list of closure criteria for temporary
+bundle-work records.
+
+Intent clause keys match `^[a-z0-9][a-z0-9-]{0,63}$`; kinds are `unit`,
+`integration`, `manual`, and `monitored`. Clause satisfaction is derived from
+linked evidence. Do not store status on an intent clause.
 
 `owner_notes` is an optional product-owner annotation area. It exists for human
 notes that should travel with the record but are not product truth,
@@ -166,11 +174,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.41"
+  version: "0.4.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.41/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.4.0/docs"
 ```
 
 `settings_directory` is optional but recommended when an app manages the Ready

@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.41
+version: 0.4.0
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.41"
+  version: "0.4.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.41/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.4.0/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -656,6 +656,34 @@ dataset contract, oracle policy, replay commands, acceptance contract, and
 limitations under `fields`. Do not use proof corpus success as a stronger claim
 than its authority level supports.
 
+Completion proof clauses:
+
+- Intent `completion_proof` is the durable Definition of Done. As of Ready
+  Standard 0.4.0, every intent clause must be a map with `key`, `kind`, and
+  `statement`; bare-string clauses on intents are invalid and should be
+  migrated when updating a tree.
+- Flag `completion_proof` is exempt. It remains a plain string list of closure
+  criteria for a temporary bundle-work record, not a durable Definition of
+  Done. Do not key flag clauses.
+- Clause keys must match `^[a-z0-9][a-z0-9-]{0,63}$` and be unique within one
+  intent. Treat keys as append-mostly because evidence references them; renaming
+  a key orphans existing evidence links.
+- Clause `kind` must be one of `unit`, `integration`, `manual`, or `monitored`.
+  `unit` means isolated runnable tests over fixtures or pure logic;
+  `integration` means runnable tests over services, persistence, or cross-system
+  flows; `manual` means human-attached evidence such as reviewed screenshots,
+  walkthroughs, or sign-off artifacts; `monitored` means production or
+  environment observation over time.
+- Clause satisfaction is derived from linked evidence at read time. Never store
+  met/unmet, percentages, or status on the intent or clause.
+- Proof evidence must name explicit clause keys. A `proof_corpus` artifact that
+  proves an intent carries `fields.proof_of`, `fields.satisfies`, and
+  `fields.git_commit`; `satisfies` must list at least one explicit clause key.
+  There is no catch-all or bundle-level evidence.
+- Consuming apps derive per-clause status by joining `proof_of` and `satisfies`
+  to the intent clauses. Apps must show evidence from an older `git_commit` than
+  the current code as stale, not as proven.
+
 Product and workflow records reference supporting artifacts through their own
 `artifacts` lists. Artifact descriptors must not keep reverse product/workflow links
 such as `linked_primitives`; artifact descriptors may relate to other artifacts
@@ -787,6 +815,12 @@ Code traceability rules:
   as a reversible maintenance action when the mapping is evident from existing
   code, tests, artifacts, comments, or Ready records. Do not change runtime
   behavior under the guise of traceability.
+- Clause citations bind test files to the specific completion-proof clauses they
+  prove. Use `READY_ID#clause-key`, for example
+  `// gather parse cases (I-001#unit-parse-sources)`.
+- Put clause citations in test files that prove the clause. One file may cite
+  multiple clauses. A clause citation also counts as a plain Ready id citation,
+  but the citation is evidence mapping, not product truth or completion.
 
 Credential rules:
 

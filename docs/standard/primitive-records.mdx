@@ -107,7 +107,9 @@ fields:
   required_surfaces: Surfaces that must exist for the promise to be inspectable.
   operating_envelope: Runtime or quality limits when behavior can vary.
 completion_proof:
-  - Observable evidence that proves the intent exists.
+  - key: unit-parse-sources
+    kind: unit
+    statement: Observable evidence that proves the intent exists.
 refs:
   - role: parent
     id: P-001
@@ -129,6 +131,30 @@ with the record without becoming product truth. They are not requirements,
 evidence, Completion Proof, or agent instructions. Agents and compilers must
 ignore them for satisfaction and enforcement; promote anything authoritative
 into typed `fields`, `refs`, `artifacts`, or flags.
+
+## Completion Proof Clauses
+
+Intent `completion_proof` is a list of keyed clauses:
+
+```yaml
+completion_proof:
+  - key: unit-parse-sources
+    kind: unit
+    statement: Each source type in the proof corpus parses into the expected schema shape.
+```
+
+This keyed form applies to intent records only. Bare-string clauses on intents
+are invalid as of Ready Standard 0.4.0. Flag `completion_proof` is a separate
+plain string list of closure criteria for temporary bundle-work records.
+
+Clause keys match `^[a-z0-9][a-z0-9-]{0,63}$` and are unique within one intent.
+Treat keys as append-mostly because proof evidence names them. Clause kinds are
+`unit`, `integration`, `manual`, and `monitored`.
+
+Clause satisfaction is derived from linked evidence, never stored on the intent
+or clause. Proof evidence artifacts use `fields.proof_of`,
+`fields.satisfies`, and `fields.git_commit`; `satisfies` must list at least one
+explicit clause key. There is no bundle-level catch-all evidence.
 
 ## File Rules
 

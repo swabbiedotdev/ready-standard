@@ -1,5 +1,5 @@
 schema: "ready/standard-vocabulary/v1"
-version: "0.3.41"
+version: "0.4.0"
 record_kinds:
   - id: "primitive"
     default_schema: "ready/primitive/v1"
@@ -334,6 +334,15 @@ claim_levels:
     description: "Human-labeled validation supports the claim."
   - id: "production_monitored"
     description: "Production monitoring supports the claim."
+completion_proof_clause_kinds:
+  - id: "unit"
+    description: "Proven by runnable isolated tests over fixtures or pure logic."
+  - id: "integration"
+    description: "Proven by runnable tests that exercise live services, persistence, or cross-system flows."
+  - id: "manual"
+    description: "Proven by human-attached evidence such as reviewed screenshots, walkthroughs, or sign-off artifacts."
+  - id: "monitored"
+    description: "Proven by production or environment observation evidence measured over time."
 relationship_roles:
   - id: "peer"
     optional_code: 0
