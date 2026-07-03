@@ -55,7 +55,7 @@ type: seed # or change
 compiler_role: workflow_state
 blocked_by: []
 claimable: true
-completion_proof:
+closure_criteria:
   - "User can complete the target workflow in a clean local run."
   - "The relevant verification command passes and the evidence artifact is linked."
 fields:
@@ -76,7 +76,7 @@ governance and authority rules.
 
 Claiming a flag does not mean applying a stored delta. The coding handoff should
 give the coding agent the resolved intended product state from `ready/product/`,
-plus standards, services, artifacts, intent Completion Proof, and any relevant
+plus standards, services, artifacts, intent proof cases, and any relevant
 flag closure criteria. The coding agent may choose the clean implementation
 strategy, including replacement or refactor, inside those product and proof
 constraints.
@@ -87,7 +87,7 @@ Decision flags use `class: decision`. They hold product-shaping ambiguity as
 work that must be resolved, not as loose questions. Keep the unresolved prompt
 in `fields.question`, the conservative interim behavior in
 `fields.safe_default`, candidate answers in structured `fields.proposals`, and
-the decision closure criteria in top-level `completion_proof`.
+the decision closure criteria in top-level `closure_criteria`.
 
 When resolved, record the accepted proposal or explicit deferral, update the
 resulting product records, and remove the unresolved decision flag from the
@@ -103,7 +103,7 @@ responsibility, not coding workflow, until they become claimable.
 
 ## Blocked Flags
 
-A seed or change flag may have enough bundle truth and Completion Proof to be
+A seed or change flag may have enough bundle truth and closure criteria to be
 well specified, but still be blocked by a service, authority decision,
 environment, or upstream flag. Use `status: blocked` and keep it non-claimable:
 
@@ -116,26 +116,25 @@ status: blocked
 claimable: false
 blocked_by:
   - SV-003
-completion_proof:
+closure_criteria:
   - "The target workflow is implemented and verified with the linked service stub."
 ```
 
 This separates the intended product state from the workflow condition that
 prevents implementation.
 
-## Completion Proof
+## Proof Cases And Closure Criteria
 
-Intents carry the durable Completion Proof needed to rebuild the product from
-the Ready tree. Readiness and proof flags may also carry top-level
-`completion_proof` as closure criteria for the temporary flag: the observable
-outcomes and evidence that remove the flag. It must be real proof content, not a
-one-word status such as `ready`, `done`, or `complete`, and it does not prescribe
-file edits.
+Intents carry the durable `proof_cases` needed to rebuild the product from the
+Ready tree. Readiness and proof flags carry top-level `closure_criteria` for the
+temporary flag: the observable outcomes and evidence that remove the flag. It
+must be real closure content, not a one-word status such as `ready`, `done`, or
+`complete`, and it does not prescribe file edits.
 
 ## Derived Discrepancies
 
 Apps may derive unstored discrepancies by comparing the current Ready tree to
 the codebase, proof artifacts, generated views, assessment snapshots, or prior
 Ready commits. Store a flag only when the discrepancy needs durable human
-attention, explicit Completion Proof, blocker tracking, claim coordination, or
+attention, explicit proof cases or closure criteria, blocker tracking, claim coordination, or
 review history. Otherwise the discrepancy can remain an interpreted app view.

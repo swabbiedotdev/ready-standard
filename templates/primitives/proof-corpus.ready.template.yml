@@ -18,7 +18,9 @@ fields:
   proof_role: "{{regression|acceptance|simulation|diagnostic|negative_case}}"
   authority_level: "{{deterministic_fixture|human_labeled_fixture|simulation_baseline|production_sample|owner_supplied_stub}}"
   proof_of: "{{INTENT_ID_THIS_RUN_PROVES_OR_OMIT}}"
-  satisfies: ["{{CLAUSE_KEYS_REQUIRED_WHEN_PROOF_OF_SET}}"]   # >=1 explicit clause keys; there is no catch-all evidence
+  proof_targets:
+    - case: "{{CASE_KEY_REQUIRED_WHEN_PROOF_OF_SET}}"
+      pair: "{{PAIR_KEY_REQUIRED_WHEN_PROOF_OF_SET}}"
   git_commit: "{{WORKSPACE_HEAD_SHORT_HASH_OR_OMIT}}"
   lifecycle_state: "{{frozen|replaceable|retired}}"
   coverage:

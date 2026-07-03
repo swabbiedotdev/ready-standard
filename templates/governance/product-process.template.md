@@ -79,11 +79,11 @@ product-owned paths or storage. The running product must not depend on
 
 Seed and change flags become claimable only when the resolved target-state
 handoff, scope, non-scope, required standards, services, artifacts, setup,
-samples, expected outputs, intent Completion Proof, and blocker policy are
+samples, expected outputs, intent proof cases, and blocker policy are
 clear. A handoff gives coding agents the intended end state plus proof gates,
-not a delta or edit instructions. Intent Completion Proof is the durable
-Definition of Done; flag Completion Proof is only closure criteria for the
-temporary flag.
+not a delta or edit instructions. Intent proof cases are the durable Definition
+of Done; flag `closure_criteria` is only closure criteria for the temporary
+flag.
 
 ## Code Traceability
 

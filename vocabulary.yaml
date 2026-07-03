@@ -1,5 +1,5 @@
 schema: "ready/standard-vocabulary/v1"
-version: "0.4.0"
+version: "0.5.0"
 record_kinds:
   - id: "primitive"
     default_schema: "ready/primitive/v1"
@@ -334,7 +334,7 @@ claim_levels:
     description: "Human-labeled validation supports the claim."
   - id: "production_monitored"
     description: "Production monitoring supports the claim."
-completion_proof_clause_kinds:
+proof_case_kinds:
   - id: "unit"
     description: "Proven by runnable isolated tests over fixtures or pure logic."
   - id: "integration"

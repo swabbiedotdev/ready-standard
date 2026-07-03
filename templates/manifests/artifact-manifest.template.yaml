@@ -106,7 +106,7 @@ artifact_types:
       - proof_role
       - authority_level
       - proof_of
-      - satisfies
+      - proof_targets
       - git_commit
       - lifecycle_state
       - coverage

@@ -7,7 +7,7 @@ compiler_role: decision_needed
 title: "{{DECISION_TITLE}}"
 claimable: false
 blocked_by: []
-completion_proof:
+closure_criteria:
   - "{{ACCEPTED_PROPOSAL_OR_EXPLICIT_DEFERRAL_IS_RECORDED}}"
   - "{{RATIONALE_CITES_EVIDENCE_AND_CONTRADICTIONS}}"
   - "{{AFFECTED_PRODUCT_RECORDS_ARE_UPDATED_OR_THE_DECISION_IS_EXPLICITLY_DEFERRED}}"

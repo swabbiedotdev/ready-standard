@@ -39,15 +39,15 @@ Review and update the Ready tree when any of these happen:
   customer statement becomes relevant to implementation or proof;
 - a required service, account, credential, environment, dependency, or setup step
   appears or changes;
-- proof fails, proof is missing, or the current Completion Proof is too vague to
+- proof fails, proof is missing, or the current proof cases are too vague to
   rebuild the product from scratch;
 - a decision, blocker, discrepancy, readiness gate, or proof gap needs durable
   attention;
 - a broad intent becomes hard to review or implement because it contains multiple
   independently useful promises.
-- an intent still carries pre-0.4.0 bare-string completion-proof clauses that
-  need keyed `key`/`kind`/`statement` maps so evidence can satisfy explicit
-  clauses.
+- an intent still carries legacy `completion_proof`, intent IO fields, or
+  `validation_boundary` that need migration into `proof_cases` or non-proof
+  intent fields.
 
 If nothing changes product truth, evidence, proof, services, standards,
 artifacts, or readiness, do not create records just to summarize activity.
@@ -62,7 +62,7 @@ Create a new intent when the product now has a distinct implementation bundle:
 - it has a separable user/system promise or behavior;
 - it can be built, proven, accepted, or deferred independently;
 - it has its own actor, trigger, end state, surface, operating envelope, or
-  Completion Proof;
+  proof cases;
 - it changes which premises, standards, services, artifacts, or proof corpora
   apply;
 - it is a subordinate promise inside a parent intent and should be authored from
@@ -73,9 +73,9 @@ opportunity is distinct enough that changing it would change intent priority,
 scope, proof, or design.
 
 Create a new standard when the new rule is reusable, externally binding,
-security/privacy/accessibility/compliance relevant, or needed to validate more
-than one implementation detail. Do not create a standard for a one-off
-preference that belongs in an intent's operating envelope or Completion Proof.
+  security/privacy/accessibility/compliance relevant, or needed to validate more
+  than one implementation detail. Do not create a standard for a one-off
+  preference that belongs in an intent's operating envelope or proof cases.
 
 Create a new service when an external or separately maintained dependency has
 its own readiness, access, proof, setup, credentials, permissions, failure
@@ -173,14 +173,14 @@ They should:
 
 Coding agents should not close product decisions, mark product completion, or
 promote draft product truth to ready based only on their own implementation.
-Ready id references in code are traceability evidence, not Completion Proof.
+Ready id references in code are traceability evidence, not proof.
 
-Migrating an intent's bare-string completion-proof clauses to keyed maps is a
-safe, reversible best-judgment maintenance edit when the statement text is
-unchanged and the new key/kind are conservative. Changing clause content,
-proof meaning, or acceptance strength is product truth work and follows the
-normal approval rules. Flag `completion_proof` remains a plain closure-criteria
-string list and is not migrated to keyed clauses.
+Migrating legacy intent `completion_proof` and IO fields to `proof_cases` is
+best-judgment maintenance only when the proof meaning is preserved. Changing
+proof meaning, output logic, or acceptance strength is product truth work and
+follows the normal approval rules. Flag `completion_proof` is renamed to
+`closure_criteria`; it remains a plain closure-criteria string list, not proof
+targets.
 
 ## Maintenance Loop
 
@@ -200,8 +200,8 @@ string list and is not migrated to keyed clauses.
    gaps.
 7. Ask the fewest user questions that materially change product truth or unblock
    private/user-only inputs.
-8. Validate ids, vocabulary, refs, statuses, manifest-declared directories, and
-   Completion Proof.
+8. Validate ids, vocabulary, refs, statuses, manifest-declared directories,
+   proof cases, and closure criteria.
 9. Report what changed, what remains draft or blocked, what was inferred, and
    what user input would improve the bundle.
 

@@ -16,7 +16,7 @@ compiler_role: workflow_state
 title: "{{FLAG_TITLE}}"
 claimable: false
 blocked_by: []
-completion_proof:
+closure_criteria:
   - "{{RECORDED_FLAG_CLOSURE_CRITERION_NOT_PRODUCT_DOD}}"
 fields:
   objective: "{{WHAT_NEEDS_TO_BE_RESOLVED_OR_PROVEN}}"

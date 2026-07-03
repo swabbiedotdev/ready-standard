@@ -42,28 +42,30 @@ discrepancy, proof, or readiness flag that explains the missing or uncertain
 mapping.
 
 Ready id references in code do not prove completion. Completion still depends
-on the Ready record's Completion Proof and the project's verification process.
+on the Ready intent's proof cases and the project's verification process.
 
-## Clause Citations
+## Proof-Target Citations
 
-Test files may cite the exact completion-proof clauses they prove:
+Test files may cite the exact proof pairs they cover:
 
 ```text
-clause_citation := ready_id "#" clause_key
-ready_id        := \b(P|I|ST|SV|A)-\d{3}
-clause_key      := [a-z0-9][a-z0-9-]{0,63}
+proof_target_citation := intent_id "#" case_key "/" pair_key
+intent_id              := \bI-\d{3}
+case_key               := [a-z0-9][a-z0-9-]{0,63}
+pair_key               := [a-z0-9][a-z0-9-]{0,63}
 ```
 
 Example:
 
 ```ts
-// gather parse cases (I-001#unit-parse-sources)
+// gather parse cases (I-001#parse-sources/shopify-feed)
 ```
 
-A clause citation also counts as a plain id citation for that record. Clause
-citations let consuming apps map runnable evidence to specific clauses; the
-mapping is evidence, not truth. If the text after `#` is not a valid clause key,
-the base id citation still counts and the suffix is ignored.
+A proof-target citation also counts as a plain id citation for that intent.
+Proof-target citations let consuming apps discover runnable proof pairs and
+detect typos; the mapping is evidence, not truth. If the suffix after `#` is not
+a valid `case/pair`, the base id citation still counts and the suffix is
+ignored.
 
 ## Maintenance Agents
 

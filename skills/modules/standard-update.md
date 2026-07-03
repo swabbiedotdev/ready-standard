@@ -56,7 +56,7 @@ to the explicitly requested standard bundle or docs work.
      `fields.intent_type`.
    - Flag and Decision records use `kind: flag`, flag `class`, class-specific
      top-level `type`, `compiler_role`, `claimable`, `blocked_by`, and
-     `completion_proof`.
+     `closure_criteria`.
    - Claimable readiness flags with `type: seed` or `type: change` carry
      `fields.scope`, `fields.non_scope`, `fields.dependencies`,
      `fields.required_standards`, `fields.required_services`,
@@ -66,13 +66,15 @@ to the explicitly requested standard bundle or docs work.
      `type: product_choice`, stable `XD-*` ids, `fields.safe_default`,
      structured `fields.proposals`, and `fields.decision_needed`; remove
      legacy answer and owner-decision fields.
-   - Intent `completion_proof` is the durable Definition of Done. It must
-     contain concrete observable proof, not a one-word status. As of Ready
-     Standard 0.4.0, intent clauses must be keyed maps with `key`, `kind`, and
-     `statement`; convert every bare-string intent clause during migration.
-   - Flag `completion_proof` is closure criteria for a temporary bundle-work
-     record, not the canonical product DoD. Flag clauses stay plain string
-     lists and are not keyed in 0.4.0.
+   - Intent `completion_proof`, `fields.input_types`, `fields.input_samples`,
+     `fields.output_types`, `fields.output_samples`, and
+     `fields.validation_boundary` are legacy intent fields. Migrate durable IO
+     and proof expectations into `proof_cases`; move non-proof interface shape
+     into `fields.scope`, `fields.statement`, operating fields, or a governing
+     standard.
+   - Flag `completion_proof` is a legacy closure field. Rename it to
+     `closure_criteria`; flag closure criteria stay plain string lists and are
+     not keyed proof targets.
    - Draft records make a bundle incomplete. Orchestrators warn
      before implementation and do not imply a complete product from the build.
    - Blocked records stop implementation unless explicit override instructions
@@ -105,7 +107,7 @@ to the explicitly requested standard bundle or docs work.
    - no duplicate structural edges;
    - no inverse duplicate edges and no semantic roles left in `refs`;
    - every flag has top-level `class`, `type`, `compiler_role`, `claimable`,
-     and non-empty concrete `completion_proof`;
+     and non-empty concrete `closure_criteria`;
    - every claimable seed or change flag has the required handoff fields;
    - the vendored bundle differs from the source bundle only by intentionally
      excluded source-repo files.

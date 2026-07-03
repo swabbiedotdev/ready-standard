@@ -1,7 +1,7 @@
 schema: "ready/standard-resources/v1"
 kind: "manifest"
 class: "bundle"
-version: "0.4.0"
+version: "0.5.0"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -63,7 +63,7 @@ rules:
   - "A complete Ready bundle has no flags and no status-bearing records in draft or blocked."
   - "Orchestrators warn before implementing draft bundles and do not implement blocked bundles without explicit override instructions."
   - "A Ready branch represents one coherent intended product state; Git branches and history carry alternatives and evolution."
-  - "Intent Completion Proof lives on intents; flags may carry closure criteria for temporary bundle-work records but are not implementation instructions."
+  - "Intent proof cases live on intents and define the durable proof contract; flags carry closure_criteria for temporary bundle-work records and are not implementation instructions."
   - "Code, comments, tests, filenames, commits, and implementation evidence are supporting evidence, not product truth; preserve Ready id traceability at durable implementation seams when it is natural and low-noise."
   - "Project-agnostic Ready resources and templates live in the Ready Standard bundle."
   - "Project governance travels with the Ready bundle so contributors share authority and process versions; it is bundle-management context, not product runtime implementation truth."

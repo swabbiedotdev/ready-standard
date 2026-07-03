@@ -18,18 +18,19 @@ fields:
   non_scope: "{{WHAT_IS_EXCLUDED}}"
   failure_behavior: "{{WHAT_HAPPENS_WHEN_IT_CANNOT_WORK}}"
   process_decision: "{{CURRENT_PROCESS_OR_NONE}}"
-  validation_boundary: "{{VALIDATION_LIMITS_OR_NONE}}"
-  input_types: "{{INPUT_TYPES_OR_REQUIRED_CONTEXT}}"
-  input_samples: "{{INPUT_SAMPLE_ARTIFACT_IDS_OR_NONE}}"
-  output_types: "{{OUTPUT_TYPES_OR_STATE_CHANGES}}"
-  output_samples: "{{OUTPUT_SAMPLE_ARTIFACT_IDS_OR_NONE}}"
   required_surfaces: "{{USER_OPERATOR_OR_INTERNAL_SURFACES_REQUIRED}}"
   operating_envelope: "{{QUALITY_OR_LIVE_VARIABLE_OPERATING_LIMITS_OR_NONE}}"
-# Every clause requires key + kind + statement (bare strings are invalid as of 0.4.0). Keys are stable slugs; evidence references them, so treat keys as append-mostly. Satisfaction is derived from linked evidence, never stored here.
-completion_proof:
-  - key: "{{stable-slug-a-z0-9-hyphens}}"
+# Proof cases own the durable IO and proof contract. Cases group one or more proof pairs; pairs are the counted unit.
+proof_cases:
+  - key: "{{case-stable-slug}}"
     kind: "{{unit|integration|manual|monitored}}"
-    statement: "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
+    title: "{{HUMAN_READABLE_CASE_TITLE}}"
+    pairs:
+      - key: "{{pair-stable-slug}}"
+        inputs: ["{{ARTIFACT_OR_SERVICE_IDS_USED_AS_INPUTS}}"]
+        output:
+          artifacts: ["{{ARTIFACT_IDS_EXPECTED_OR_PRODUCED}}"]
+          logic: "{{WHAT_MUST_BE_TRUE_ABOUT_THE_OUTPUT_FOR_THIS_PAIR_TO_PASS}}"
 refs: []
 artifacts: []
 owner_notes: []

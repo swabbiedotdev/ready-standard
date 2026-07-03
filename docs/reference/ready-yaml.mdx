@@ -76,17 +76,18 @@ fields:
   non_scope: What is excluded.
   failure_behavior: What happens when the intent cannot work.
   process_decision: Current process choice or proof baseline.
-  validation_boundary: What this intent does and does not validate.
-  input_types: What the intent reads.
-  input_samples: Sample artifact ids for representative inputs.
-  output_types: What the intent produces.
-  output_samples: Sample artifact ids for representative outputs.
   required_surfaces: User, operator, or internal surfaces required.
   operating_envelope: Quality/runtime limits when behavior can vary.
-completion_proof:
-  - key: unit-parse-sources
+proof_cases:
+  - key: parse-sources
     kind: unit
-    statement: Observable evidence that proves the intent exists.
+    title: Source parsing
+    pairs:
+      - key: shopify-feed
+        inputs: [A-001]
+        output:
+          artifacts: [A-002]
+          logic: The parsed record matches the store schema contract.
 refs:
   - role: parent
     id: P-001
@@ -108,19 +109,15 @@ Required primitive fields:
 - `fields`: class-specific structured content.
 - `refs`: directed structural relationships.
 
-Committed intents should carry `completion_proof`. On intent records,
-`completion_proof` is a list of keyed maps with `key`, `kind`, and `statement`;
-bare strings are invalid as of Ready Standard 0.4.0. Flag `completion_proof` is
-a different field: a plain string list of closure criteria for temporary
-bundle-work records.
-
-Intent clause keys match `^[a-z0-9][a-z0-9-]{0,63}$`; kinds are `unit`,
-`integration`, `manual`, and `monitored`. Clause satisfaction is derived from
-linked evidence. Do not store status on an intent clause.
+Committed intents should carry `proof_cases`. A proof case groups one or more
+proof pairs; pairs are the counted unit. Case and pair keys match
+`^[a-z0-9][a-z0-9-]{0,63}$`; kinds are `unit`, `integration`, `manual`, and
+`monitored`. Pair satisfaction is derived from linked evidence. Do not store
+status on an intent, case, or pair.
 
 `owner_notes` is an optional product-owner annotation area. It exists for human
 notes that should travel with the record but are not product truth,
-requirements, evidence, Completion Proof, or agent instructions. Agents and
+requirements, evidence, proof cases, closure criteria, or agent instructions. Agents and
 compilers must not satisfy, enforce, or cite `owner_notes` as source authority;
 promote anything authoritative into typed `fields`, `refs`, `artifacts`, or
 flags.
@@ -174,11 +171,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.4.0"
+  version: "0.5.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.4.0/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.0/docs"
 ```
 
 `settings_directory` is optional but recommended when an app manages the Ready
@@ -273,7 +270,7 @@ compiler_role: workflow_state
 title: Build the first usable onboarding path
 claimable: true
 blocked_by: []
-completion_proof:
+closure_criteria:
   - User can complete onboarding in a clean local run.
   - The documented verification command passes and the evidence artifact is linked.
 fields:
@@ -292,7 +289,7 @@ artifacts: []
 owner_notes: []
 ```
 
-`completion_proof` is closure criteria for the flag. It must be concrete proof
+`closure_criteria` is closure criteria for the flag. It must be concrete proof
 content, not a one-word status such as `ready` or `done`. Coding handoffs
 compile the resolved intended product state from primitives, standards,
 services, artifacts, and relevant flag closure criteria before a coding agent
@@ -302,7 +299,7 @@ Decision flags use `class: decision` and a decision subtype such as
 `type: product_choice`. Keep the unresolved prompt in `fields.question`, the
 conservative interim behavior in `fields.safe_default`, candidate answers in
 structured `fields.proposals`, and the decision closure criteria in top-level
-`completion_proof`. Nested proposal entries should use
+`closure_criteria`. Nested proposal entries should use
 `recommendation_state`, not `status`; top-level `status` is reserved for Ready
 record state.
 
@@ -344,8 +341,9 @@ fields:
   proof_role: regression
   authority_level: deterministic_fixture
   proof_of: I-001
-  satisfies:
-    - unit-replay-shape
+  proof_targets:
+    - case: replay-shape
+      pair: deterministic-fixture
   git_commit: abc1234
   lifecycle_state: frozen
   coverage:

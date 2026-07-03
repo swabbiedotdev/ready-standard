@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.4.0
+version: 0.5.0
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.4.0"
+  version: "0.5.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.4.0/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.0/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -437,12 +437,12 @@ Intents:
   `ready/standard/vocabulary.yaml`.
 - Keep `statement` concise, then decompose the promise into actor, trigger,
   action, expected end state, value, scope, non-scope, failure behavior,
-  claim level, process decision, validation boundary, input/output types,
-  input/output sample refs, required surfaces, and operating envelope.
+  claim level, process decision, required surfaces, operating envelope, and
+  proof cases.
 - Use `claim_level` to name the strongest supported evidence posture, such as
   `concept`, `process_proof`, `simulation_baseline`, `fixture_validated`,
-  `human_labeled_validated`, or `production_monitored`. Do not use it as
-  Completion Proof.
+  `human_labeled_validated`, or `production_monitored`. Do not use it as proof
+  status.
 - Put required services, governing standards, and intent dependencies in `refs`,
   not in duplicate `fields`.
 - Author subordinate intent-to-intent decomposition from the parent intent with a
@@ -505,15 +505,15 @@ Flags:
 - Flags use `kind: flag`; they are temporary Ready-bundle records, not
   canonical product truth, tickets, or coding deltas.
 - Seed and change flags become claimable only after blockers are absent,
-  top-level `claimable: true`, top-level Completion Proof, and workspace policy
-  allow it. Flags omit `status` unless they are blocked.
-- Intent Completion Proof is the durable Definition of Done for rebuilding the
-  product. A flag's `completion_proof` is only the closure criterion for that
+  top-level `claimable: true`, top-level `closure_criteria`, and workspace
+  policy allow it. Flags omit `status` unless they are blocked.
+- Intent `proof_cases` are the durable Definition of Done for rebuilding the
+  product. A flag's `closure_criteria` is only the closure criterion for that
   temporary bundle-work record.
 - Apps may derive unstored discrepancies by comparing Ready truth to code,
   evidence, generated views, assessments, or prior Ready commits. Store a flag
   when the discrepancy needs durable attention, blocker tracking, claim
-  coordination, explicit Completion Proof, or review history.
+  coordination, explicit closure criteria, or review history.
 
 ### Artifact Primitives
 
@@ -620,9 +620,9 @@ it belongs under `fields.summary`; otherwise use the type's primary field.
 
 Use `owner_notes` only for human product-owner annotations that should travel
 with the record without becoming product truth. They are not requirements,
-evidence, Completion Proof, or agent instructions. Ignore them for satisfaction
-and enforcement; promote anything authoritative into typed `fields`, `refs`,
-`artifacts`, or flags.
+evidence, proof cases, closure criteria, or agent instructions. Ignore them for
+satisfaction and enforcement; promote anything authoritative into typed
+`fields`, `refs`, `artifacts`, or flags.
 
 Premise evidence confidence is derived from linked evidence artifacts, not
 stored on the premise. Do not write `fields.evidence_confidence` on premise
@@ -656,33 +656,30 @@ dataset contract, oracle policy, replay commands, acceptance contract, and
 limitations under `fields`. Do not use proof corpus success as a stronger claim
 than its authority level supports.
 
-Completion proof clauses:
+Proof cases:
 
-- Intent `completion_proof` is the durable Definition of Done. As of Ready
-  Standard 0.4.0, every intent clause must be a map with `key`, `kind`, and
-  `statement`; bare-string clauses on intents are invalid and should be
-  migrated when updating a tree.
-- Flag `completion_proof` is exempt. It remains a plain string list of closure
-  criteria for a temporary bundle-work record, not a durable Definition of
-  Done. Do not key flag clauses.
-- Clause keys must match `^[a-z0-9][a-z0-9-]{0,63}$` and be unique within one
-  intent. Treat keys as append-mostly because evidence references them; renaming
-  a key orphans existing evidence links.
-- Clause `kind` must be one of `unit`, `integration`, `manual`, or `monitored`.
+- Intent `proof_cases` are the durable Definition of Done. Each proof case has a
+  stable `key`, a `kind`, a human-readable `title`, and one or more proof
+  `pairs`.
+- Proof case and pair keys must match `^[a-z0-9][a-z0-9-]{0,63}$` and be unique
+  within their parent scope. Treat keys as append-mostly because evidence
+  references them; renaming a key orphans existing evidence links.
+- Case `kind` must be one of `unit`, `integration`, `manual`, or `monitored`.
   `unit` means isolated runnable tests over fixtures or pure logic;
   `integration` means runnable tests over services, persistence, or cross-system
   flows; `manual` means human-attached evidence such as reviewed screenshots,
   walkthroughs, or sign-off artifacts; `monitored` means production or
   environment observation over time.
-- Clause satisfaction is derived from linked evidence at read time. Never store
-  met/unmet, percentages, or status on the intent or clause.
-- Proof evidence must name explicit clause keys. A `proof_corpus` artifact that
-  proves an intent carries `fields.proof_of`, `fields.satisfies`, and
-  `fields.git_commit`; `satisfies` must list at least one explicit clause key.
-  There is no catch-all or bundle-level evidence.
-- Consuming apps derive per-clause status by joining `proof_of` and `satisfies`
-  to the intent clauses. Apps must show evidence from an older `git_commit` than
-  the current code as stale, not as proven.
+- Each pair names input artifact or service ids and an output contract with
+  artifact ids plus `logic`: the rule that determines whether the output proves
+  that pair. Do not duplicate artifact labels in the pair; artifact descriptors
+  own their labels and content.
+- Pair satisfaction is derived from linked evidence at read time. Never store
+  met/unmet, percentages, or status on the intent, case, or pair.
+- Proof evidence must name explicit targets. A `proof_corpus` artifact that
+  proves an intent carries `fields.proof_of`, `fields.proof_targets`, and,
+  when code-coupled, `fields.git_commit`; `proof_targets` must list at least one
+  `{case, pair}` target. There is no catch-all or bundle-level evidence.
 
 Product and workflow records reference supporting artifacts through their own
 `artifacts` lists. Artifact descriptors must not keep reverse product/workflow links
@@ -757,7 +754,7 @@ Lifecycle rules:
   clarification or research gates.
 - Seed and change flags are not claimable by default.
 - A coding agent should only claim work when the relevant flag is unblocked,
-  claimable, and has top-level Completion Proof.
+  claimable, and has top-level `closure_criteria`.
 - Claimable seed and change flags must carry scope, non-scope, dependencies,
   required standards, required services, required artifacts, setup, acceptance,
   and blocker policy.
@@ -810,17 +807,18 @@ Code traceability rules:
   untagged and, when useful, create or update a discrepancy, proof, or readiness
   flag.
 - Ready id references in code do not prove completion. Completion still depends
-  on the Ready record's Completion Proof and the project's verification process.
+  on the Ready intent's proof cases and the project's verification process.
 - Product or maintenance agents may add trace-only Ready id references to code
   as a reversible maintenance action when the mapping is evident from existing
   code, tests, artifacts, comments, or Ready records. Do not change runtime
   behavior under the guise of traceability.
-- Clause citations bind test files to the specific completion-proof clauses they
-  prove. Use `READY_ID#clause-key`, for example
-  `// gather parse cases (I-001#unit-parse-sources)`.
-- Put clause citations in test files that prove the clause. One file may cite
-  multiple clauses. A clause citation also counts as a plain Ready id citation,
-  but the citation is evidence mapping, not product truth or completion.
+- Proof-target citations bind test files to the specific proof pairs they cover.
+  Use `INTENT_ID#case-key/pair-key`, for example
+  `// gather parse cases (I-001#parse-sources/shopify-feed)`.
+- Put proof-target citations in test files that cover the pair. One file may
+  cite multiple pairs. A proof-target citation also counts as a plain Ready id
+  citation, but the citation is evidence mapping, not product truth or
+  completion.
 
 Credential rules:
 

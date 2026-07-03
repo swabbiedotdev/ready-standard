@@ -21,7 +21,8 @@ Use this module before any seed or change flag is made claimable.
   intentionally starts implementation.
 - Use `status: blocked` for well-specified flags when `blocked_by` prevents
   coding claims, and for records with non-empty blocker lists.
-- Require concrete top-level Completion Proof before review and closure.
+- Require concrete intent `proof_cases` and flag `closure_criteria` before
+  review and closure.
 - Warn before implementation when any status-bearing bundle record is still
   `draft`.
 - Do not hand off implementation for a bundle with blockers unless explicit
@@ -47,13 +48,13 @@ A coding agent should receive:
 - failure modes and edge cases;
 - relevant standards;
 - privacy, security, and authority limits;
-- Completion Proof;
+- proof cases and proof targets;
 - how to report blockers and attach evidence;
 - where low-noise Ready id traceability should be preserved in code, tests,
   fixtures, or proof harnesses when there are obvious durable seams.
-- for intents with keyed completion-proof clauses, which clause keys the coding
-  work must satisfy, which clause keys are out of scope, and where test files
-  should carry clause citations such as `I-001#unit-parse-sources`.
+- for intents with proof cases, which case/pair targets the coding work must
+  satisfy, which targets are out of scope, and where test files should carry
+  proof-target citations such as `I-001#parse-sources/shopify-feed`.
 
 ## What Not To Do
 
@@ -70,7 +71,7 @@ A coding agent should receive:
   explicit override instructions, and the handoff must preserve unresolved
   blockers and evidence limits.
 - Do not treat one-word statuses such as `ready`, `done`, or `complete` as
-  Completion Proof.
+  proof cases or closure criteria.
 - Do not close flags based on coding-agent self-report.
 - Do not tag every function or add noisy inline comments. Ready id references in
   code support auditability; they do not prove completion.

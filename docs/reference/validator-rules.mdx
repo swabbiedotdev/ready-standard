@@ -78,13 +78,13 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Records with non-empty blocker lists, such as `blocked_by` or
   `fields.blockers`, use `status: blocked` and require explicit override before
   implementation.
-- Committed intents carry concrete `completion_proof` that functions as intent
+- Committed intents carry concrete `proof_cases` that function as intent
   Definition of Done, not a one-word status.
 - Flag records keep `class`, `type`, `compiler_role`, `claimable`, and
-  `completion_proof` at the top level.
+  `closure_criteria` at the top level.
 - Decision flags use `class: decision`, stable `XD-*` ids, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and concrete top-level
-  `completion_proof`.
+  `closure_criteria`.
 - Decision proposal entries use `recommendation_state`; nested proposal
   `status` is not used because top-level `status` is reserved for Ready record
   state.
@@ -92,9 +92,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   `discovery`.
 - Decision-specific content lives under `fields`; top-level keys are reserved
   for shared flag metadata, claimability, blockers, refs, artifacts, owner
-  notes, and Completion Proof.
+  notes, and closure criteria.
 - Seed and change flags are non-claimable unless they pass the claim gate.
-- Claimable flags carry concrete Completion Proof that functions as temporary
+- Claimable flags carry concrete closure criteria that function as temporary
   flag closure criteria, not a one-word status or product Definition of Done.
 - Claimable coding handoffs resolve to the intended product state; a flag that
   only describes a delta or implementation edit instruction is not enough.
@@ -132,12 +132,12 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   records point to artifacts through `artifacts`.
 - Proof corpus descriptors use `type: proof_corpus` and carry
   `fields.proof_role`, `fields.authority_level`, `fields.proof_of`,
-  `fields.satisfies`, `fields.git_commit`, `fields.lifecycle_state`,
+  `fields.proof_targets`, `fields.git_commit`, `fields.lifecycle_state`,
   `fields.coverage`, `fields.dataset_contract`, `fields.oracle_policy`,
   `fields.replay`, `fields.acceptance_contract`, and `fields.limitations`.
-  `fields.satisfies` lists explicit completion-proof clause keys for
+  `fields.proof_targets` lists explicit proof case/pair targets for
   `fields.proof_of`; `coverage.proves` is descriptive coverage and does not
-  satisfy clauses by itself.
+  satisfy proof pairs by itself.
 - Ready proof corpus descriptors do not use `fields.lifecycle_state: draft`;
   draft proof corpora use top-level `status: draft`.
 - Governance documents and vendored Ready Standard bundle resources are not
@@ -173,7 +173,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - A local semantic relationship display extension defines a source-to-target
   phrase without the matching target-to-source phrase.
 - A generated or displayed target-state handoff is not traceable to primitives,
-  intent Completion Proof, relevant flags, standards, services, and artifacts.
+  intent proof cases, relevant flags, standards, services, and artifacts.
 
 ## Importer Behavior
 
