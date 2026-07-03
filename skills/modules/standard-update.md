@@ -75,6 +75,17 @@ to the explicitly requested standard bundle or docs work.
    - Flag `completion_proof` is a legacy closure field. Rename it to
      `closure_criteria`; flag closure criteria stay plain string lists and are
      not keyed proof targets.
+   - Proof evidence artifacts with legacy clause-key `fields.satisfies` migrate
+     to `fields.proof_targets`: a non-empty list of `{case, pair}` entries that
+     resolve to the owning intent's `proof_cases` keys. Keep `fields.proof_of`;
+     remove `satisfies`. Evidence whose old clause keys no longer map to a real
+     case/pair needs owner review, not a guessed target.
+   - After migrating, verify no stale legacy fields remain: search the product
+     tree (excluding the vendored `ready/standard/` bundle, whose migration
+     guidance legitimately names old fields) for `completion_proof`,
+     `satisfies`, `input_types`, `input_samples`, `output_types`,
+     `output_samples`, and `validation_boundary`. Every hit must be resolved or
+     explicitly justified before the tree claims the new standard version.
    - Draft records make a bundle incomplete. Orchestrators warn
      before implementation and do not imply a complete product from the build.
    - Blocked records stop implementation unless explicit override instructions

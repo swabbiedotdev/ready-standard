@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.5.0
+version: 0.5.1
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.5.0"
+  version: "0.5.1"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.0/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.1/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -674,6 +674,18 @@ Proof cases:
   artifact ids plus `logic`: the rule that determines whether the output proves
   that pair. Do not duplicate artifact labels in the pair; artifact descriptors
   own their labels and content.
+- Choose granularity by visible expectations, not fixture rows. Keep one pair
+  when a single proof corpus owns the per-row oracle contract; split into
+  multiple pairs only when the bundle needs separately visible expectations.
+  Create separate cases when the proof `kind` differs or a promise area is
+  independently provable; group related pairs under one case for readability.
+- Runnable tests bind live results to pairs through runtime test metadata:
+  attach `caseKey` and `pairKey` (the intent's case and pair keys, exactly as
+  written) to the test framework's assertion metadata — in Vitest,
+  `task.meta.readyRoom = { caseKey, pairKey, ... }`. Consuming apps read that
+  metadata from the run report to mark pairs passing or failing. Runtime
+  metadata and results are display evidence only, never durable product truth,
+  and comment citations never drive status.
 - Pair satisfaction is derived from linked evidence at read time. Never store
   met/unmet, percentages, or status on the intent, case, or pair.
 - Proof evidence must name explicit targets. A `proof_corpus` artifact that
