@@ -1,3 +1,6 @@
+# Proof-input corpora carry per-case body_sha256 plus body_excerpt (or an
+# inline body) in the artifact payload; file paths alone are provenance, not
+# reviewable content (one-hop rule).
 schema: ready/artifact/v1
 kind: primitive
 id: AP-001

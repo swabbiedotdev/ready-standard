@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.5.1
+version: 0.5.2
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.5.1"
+  version: "0.5.2"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.1/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.2/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -700,6 +700,16 @@ Proof cases:
   exact fixture slice, expected result, and test contract visible without agent
   interpretation. A shared raw corpus may still exist, but proof-specific wrapper
   artifacts should identify which cases and fields belong to each proof.
+- A pair's input artifact payload holds the reviewable input itself: inline
+  body for small fixtures, or a labeled excerpt plus a `body_sha256` of the raw
+  source when bulky; `body_file` pointers are provenance, not content — a
+  payload of names/paths alone does not satisfy the proof contract.
+- Tests load the raw source, verify its sha256 equals the payload's declared
+  `body_sha256`, and echo `fixtureCase`, `fixtureSha256`, and `expected` in
+  runtime metadata so consuming apps can join declared-vs-consumed identity
+  mechanically.
+- Tests load their oracle from the output artifact payload, not a copy in the
+  test file, so the oracle comparison is exact.
 - Pair satisfaction is derived from linked evidence at read time. Never store
   met/unmet, percentages, or status on the intent, case, or pair.
 - Proof evidence must name explicit targets. A `proof_corpus` artifact that

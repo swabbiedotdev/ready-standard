@@ -169,6 +169,47 @@ case, or pair. Proof evidence artifacts use `fields.proof_of`,
 `proof_targets` must list at least one explicit `{case, pair}` target. There is
 no bundle-level catch-all evidence.
 
+### Pair-Artifact Payloads
+
+A pair's input artifact payload holds the reviewable input itself, one hop from
+the intent: an inline body for small fixtures, or a labeled `body_excerpt` plus
+a `body_sha256` of the raw source when bulky. `body_file` pointers are
+provenance, not content. Payloads declare cases in a `cases` map:
+
+```yaml
+# Input artifact payload
+cases:
+  shopify_feed:
+    source_type: product_feed                       # descriptive fields allowed
+    body_file: crawl-inputs/shopify-products.json   # provenance pointer
+    body_sha256: "4f2a…"                            # identity of the raw source tests must parse
+    body_excerpt: |                                 # reviewable content (or full inline body)
+      {"products":[{"title":"Sunrise Thank You Card", …
+```
+
+```yaml
+# Output artifact payload
+cases:
+  shopify_feed:
+    expected:            # or the case value itself is the expected subset
+      name: Example
+      products: []
+```
+
+Tests verify that the sha256 of the raw source they consumed equals the
+declared `body_sha256`, take their oracle from the output payload's `expected`
+value, and echo `fixtureCase`, `fixtureSha256`, and `expected` in runtime
+metadata. Consuming apps join declared against consumed per case and render a
+fixture tick (declared hash equals the echoed hash), an oracle tick (declared
+expected structurally equals the asserted expected), and case coverage (every
+declared case ran, no extras). Pairs without the convention render without
+ticks and without penalty; declared-but-mismatched identity or coverage is
+drift and blocks a fully proven bundle reading.
+
+The anti-pattern is a pointer-only payload: a `cases` map where no entry
+carries `body_excerpt` or an inline `body`. It names fixtures by path alone,
+leaving the input unreviewable from the bundle, and consuming apps warn on it.
+
 ## File Rules
 
 - Use one primitive record per source file.
