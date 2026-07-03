@@ -686,6 +686,20 @@ Proof cases:
   metadata from the run report to mark pairs passing or failing. Runtime
   metadata and results are display evidence only, never durable product truth,
   and comment citations never drive status.
+- A runtime result maps to exactly one proof pair. Do not use default helper
+  metadata in a test file that covers multiple pairs; require each tagged test
+  or assertion to pass the exact `caseKey` and `pairKey` it proves. If one
+  fixture corpus supports several proof pairs, split the checks so each pair
+  gets its own result row.
+- A tagged test must prove the pair's `logic` using the pair's input and output
+  artifacts when those artifacts are the oracle. If the referenced artifacts are
+  draft placeholders or only non-runnable contracts, leave the pair unproven
+  until a real fixture, hand-reviewed oracle, or integration harness exists.
+- When one broad corpus is split into multiple proof cases, split the artifacts
+  too. Each proof pair should name input and output artifacts that make the
+  exact fixture slice, expected result, and test contract visible without agent
+  interpretation. A shared raw corpus may still exist, but proof-specific wrapper
+  artifacts should identify which cases and fields belong to each proof.
 - Pair satisfaction is derived from linked evidence at read time. Never store
   met/unmet, percentages, or status on the intent, case, or pair.
 - Proof evidence must name explicit targets. A `proof_corpus` artifact that
@@ -830,7 +844,9 @@ Code traceability rules:
 - Put proof-target citations in test files that cover the pair. One file may
   cite multiple pairs. A proof-target citation also counts as a plain Ready id
   citation, but the citation is evidence mapping, not product truth or
-  completion.
+  completion. Runtime status still requires exact per-result metadata such as
+  `caseKey` and `pairKey`; citations alone never group result rows or prove a
+  pair.
 
 Credential rules:
 

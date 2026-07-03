@@ -67,6 +67,13 @@ detect typos; the mapping is evidence, not truth. If the suffix after `#` is not
 a valid `case/pair`, the base id citation still counts and the suffix is
 ignored.
 
+Runtime test status is separate from citations. A consuming app may show a test
+file as linked from a proof-target citation, but individual test result rows
+belong under a proof pair only when the test runner emits exact per-result
+metadata for that pair, such as `caseKey` and `pairKey`. Do not use broad
+defaults in files that cover multiple pairs; split checks so each result proves
+one pair's `logic`.
+
 ## Maintenance Agents
 
 Product or maintenance agents may add trace-only Ready id references to code as
