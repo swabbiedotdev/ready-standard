@@ -1,5 +1,5 @@
 schema: "ready/standard-vocabulary/v1"
-version: "0.5.2"
+version: "0.5.3"
 record_kinds:
   - id: "primitive"
     default_schema: "ready/primitive/v1"

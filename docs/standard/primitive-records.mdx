@@ -187,24 +187,21 @@ cases:
       {"products":[{"title":"Sunrise Thank You Card", …
 ```
 
-```yaml
-# Output artifact payload
-cases:
-  shopify_feed:
-    expected:            # or the case value itself is the expected subset
-      name: Example
-      products: []
-```
+Output oracle files are test-owned and free-form: the `cases` convention
+applies only to INPUT payloads. Tests read their expected directly from the
+output artifact's file and assert against it — the expected is static, never
+derived.
 
 Tests verify that the sha256 of the raw source they consumed equals the
-declared `body_sha256`, take their oracle from the output payload's `expected`
-value, and echo `fixtureCase`, `fixtureSha256`, and `expected` in runtime
-metadata. Consuming apps join declared against consumed per case and render a
-fixture tick (declared hash equals the echoed hash), an oracle tick (declared
-expected structurally equals the asserted expected), and case coverage (every
-declared case ran, no extras). Pairs without the convention render without
-ticks and without penalty; declared-but-mismatched identity or coverage is
-drift and blocks a fully proven bundle reading.
+declared `body_sha256`, and echo `fixtureCase`, `fixtureSha256`, and the
+oracle-only `expected` they read in runtime metadata. Consuming apps join
+declared against consumed per case and render a fixture tick (declared hash
+equals the echoed hash) and case coverage (every declared case ran, no
+extras); the Expected view shows the echoed oracle, with the raw output
+artifact one hop away for review — apps never parse or compare oracle files
+themselves. Pairs without the convention render without ticks and without
+penalty; declared-but-mismatched identity or coverage is drift and blocks a
+fully proven bundle reading.
 
 The anti-pattern is a pointer-only payload: a `cases` map where no entry
 carries `body_excerpt` or an inline `body`. It names fixtures by path alone,
