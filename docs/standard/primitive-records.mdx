@@ -110,7 +110,6 @@ proof_cases:
         inputs: [A-001]
         output:
           artifacts: [A-002]
-          logic: The parsed record matches the store schema contract.
 refs:
   - role: parent
     id: P-001
@@ -147,7 +146,6 @@ proof_cases:
         inputs: [A-001]
         output:
           artifacts: [A-002]
-          logic: Each source type in the proof corpus parses into the expected schema shape.
 ```
 
 Case and pair keys match `^[a-z0-9][a-z0-9-]{0,63}$` and are unique within
@@ -159,15 +157,49 @@ own their titles, nicknames, and content; consuming apps resolve display labels
 from the referenced records. Do not duplicate artifact labels or content inside
 a proof case — a duplicated label drifts from the descriptor it copies.
 
-`output.logic` is required on every pair: a plain-language rule specific enough
-that a coding agent or reviewer can judge whether the output material proves
-the pair against its inputs.
+The output artifacts are the judgment: executable material typed by the case
+kind. `unit` names an exact oracle corpus, `integration` an envelope corpus of
+machine-checkable bounds, `manual` a review protocol, `monitored` a monitoring
+contract. Prose pass-rules are banned — a rule the test does not execute is
+documentation pretending to be contract. The judging explanation lives on the
+output artifact descriptor's `oracle_policy` and `acceptance_contract` fields.
 
 Pair satisfaction is derived from linked evidence, never stored on the intent,
 case, or pair. Proof evidence artifacts use `fields.proof_of`,
 `fields.proof_targets`, and, when code-coupled, `fields.git_commit`;
 `proof_targets` must list at least one explicit `{case, pair}` target. There is
 no bundle-level catch-all evidence.
+
+### Envelopes
+
+Live integration results vary, so an integration pair's judgment artifact is an
+envelope: machine-checkable bounds the test executes.
+
+```yaml
+checks:
+  min_sites_attempted: 3
+  min_sites_parsed: 2
+  allowed_outcomes: [parsed, partial, unreachable]
+  max_unreachable_ratio: 0.5
+  store:
+    required: [name, website, source_url]
+    fields:
+      name:       { min_chars: 2 }
+      website:    { format: url }
+  product:
+    min_per_store: 1
+    required: [title, product_url]
+    fields:
+      title: { min_chars: 3 }
+      price: { format: positive_number, optional: true }
+```
+
+The constraint vocabulary is closed: `required`, `optional`, `min_chars`,
+`min_items`, `min_per_store`, `format: url | positive_number`, and the four
+batch bounds shown. Anything needing more power belongs in the product's real
+schema code, not the envelope. Envelopes never restate the product's type
+schema — that is owned by the product's schema code or record; they add only
+quality floors and batch bounds.
 
 ### Pair-Artifact Payloads
 

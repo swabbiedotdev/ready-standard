@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.5.3
+version: 0.6.0
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.5.3"
+  version: "0.6.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.3/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.6.0/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -670,15 +670,51 @@ Proof cases:
   flows; `manual` means human-attached evidence such as reviewed screenshots,
   walkthroughs, or sign-off artifacts; `monitored` means production or
   environment observation over time.
-- Each pair names input artifact or service ids and an output contract with
-  artifact ids plus `logic`: the rule that determines whether the output proves
-  that pair. Do not duplicate artifact labels in the pair; artifact descriptors
-  own their labels and content.
-- Choose granularity by visible expectations, not fixture rows. Keep one pair
-  when a single proof corpus owns the per-row oracle contract; split into
-  multiple pairs only when the bundle needs separately visible expectations.
-  Create separate cases when the proof `kind` differs or a promise area is
-  independently provable; group related pairs under one case for readability.
+- A pair is `{key, inputs, output: {artifacts}}`: input artifact or service ids
+  and output artifact ids. The output artifacts are the judgment — executable
+  material typed by the case kind: `unit` names an exact oracle corpus,
+  `integration` an envelope corpus of machine-checkable bounds, `manual` a
+  review protocol, `monitored` a monitoring contract. Prose
+  pass-rules are banned: a rule the test does not execute is documentation
+  pretending to be contract. The judging explanation lives on the output
+  artifact descriptor's `oracle_policy` and `acceptance_contract` fields. Do
+  not duplicate artifact labels in the pair; artifact descriptors own their
+  labels and content.
+- An envelope is a `checks` map using a closed constraint vocabulary:
+  `required`, `optional`, `min_chars`, `min_items`, `min_per_store`,
+  `format: url | positive_number`, and the batch bounds shown below. Anything
+  needing more power belongs in the product's real schema code, not the
+  envelope. Envelopes never restate the product's type schema — that is owned
+  by the product's schema code/record; they add only quality floors and batch
+  bounds.
+
+  ```yaml
+  checks:
+    min_sites_attempted: 3
+    min_sites_parsed: 2
+    allowed_outcomes: [parsed, partial, unreachable]
+    max_unreachable_ratio: 0.5
+    store:
+      required: [name, website, source_url]
+      fields:
+        name:       { min_chars: 2 }
+        website:    { format: url }
+    product:
+      min_per_store: 1
+      required: [title, product_url]
+      fields:
+        title: { min_chars: 3 }
+        price: { format: positive_number, optional: true }
+  ```
+
+- One case per process boundary: unit `raw source -> parsed data`, integration
+  `URL -> persisted data`. Do not create a case per assertion dimension —
+  assertion facets such as field citations or failure handling are test
+  assertions inside one case over the same corpus, and they rise and fall
+  together. Do not create proof-specific wrapper artifacts that slice an
+  existing corpus; enrich the source corpus payload instead. Split cases only
+  where proof can independently succeed or fail: unit vs integration is real;
+  parse-vs-citation is not.
 - Runnable tests bind live results to pairs through runtime test metadata:
   attach `caseKey` and `pairKey` (the intent's case and pair keys, exactly as
   written) to the test framework's assertion metadata — in Vitest,
@@ -691,15 +727,10 @@ Proof cases:
   or assertion to pass the exact `caseKey` and `pairKey` it proves. If one
   fixture corpus supports several proof pairs, split the checks so each pair
   gets its own result row.
-- A tagged test must prove the pair's `logic` using the pair's input and output
-  artifacts when those artifacts are the oracle. If the referenced artifacts are
-  draft placeholders or only non-runnable contracts, leave the pair unproven
-  until a real fixture, hand-reviewed oracle, or integration harness exists.
-- When one broad corpus is split into multiple proof cases, split the artifacts
-  too. Each proof pair should name input and output artifacts that make the
-  exact fixture slice, expected result, and test contract visible without agent
-  interpretation. A shared raw corpus may still exist, but proof-specific wrapper
-  artifacts should identify which cases and fields belong to each proof.
+- A tagged test must execute the pair's output judgment artifact against the
+  pair's inputs. If the referenced artifacts are draft placeholders or only
+  non-runnable contracts, leave the pair unproven until a real fixture,
+  hand-reviewed oracle, or integration harness exists.
 - A pair's input artifact payload holds the reviewable input itself: inline
   body for small fixtures, or a labeled excerpt plus a `body_sha256` of the raw
   source when bulky; `body_file` pointers are provenance, not content — a
@@ -708,12 +739,12 @@ Proof cases:
   `body_sha256`, and echo `fixtureCase`, `fixtureSha256`, and `expected` in
   runtime metadata so consuming apps can join declared-vs-consumed identity
   mechanically.
-- Tests read their expected directly from the output artifact's file, not a
-  copy in the test file, and echo it as oracle-only `expected` runtime
-  metadata. Output oracle files are test-owned and free-form: consuming apps
-  display the echoed expected and the raw artifact one hop away, and never
-  parse or compare oracle files themselves — the expected is static, not
-  re-derived.
+- Tests read their judgment directly from the output artifact's file, not a
+  copy in the test file, and echo it as `expected` runtime metadata: the
+  oracle values for unit pairs, the loaded envelope for integration pairs.
+  Judgment files are test-owned: consuming apps display the echoed expected
+  and the raw artifact one hop away, and never parse or compare judgment files
+  themselves — the expected is static, not re-derived.
 - Pair satisfaction is derived from linked evidence at read time. Never store
   met/unmet, percentages, or status on the intent, case, or pair.
 - Proof evidence must name explicit targets. A `proof_corpus` artifact that

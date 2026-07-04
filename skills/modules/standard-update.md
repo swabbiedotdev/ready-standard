@@ -86,17 +86,24 @@ to the explicitly requested standard bundle or docs work.
      citations only link the file; they do not group test results or prove the
      pair. Avoid helper defaults in multi-proof files, and split checks when one
      fixture corpus supports several proof pairs.
-   - When splitting a broad proof into multiple proof cases, split the artifacts
-     at the same boundary. Each proof pair should name input and output artifacts
-     that define the exact case slice and expected result for that pair; a broad
-     shared corpus may remain as a parent artifact but should not be the only
-     contract visible to implementers.
+   - Pair `output.logic` is removed in 0.6.0. Delete `logic` from every proof
+     pair; the output artifacts are the judgment. Move any judging explanation
+     worth keeping onto the output artifact descriptor's `oracle_policy` or
+     `acceptance_contract` fields.
+   - Collapse assertion-dimension cases into their process-boundary case; the
+     collapsed dimensions become test assertions inside that case.
+   - Merge proof-specific wrapper-artifact payloads back into their source
+     corpora and delete the wrappers; pairs reference the enriched source
+     corpus directly.
+   - Give every integration pair an envelope judgment artifact: machine-checkable
+     bounds using the closed envelope vocabulary in the skill.
    - After migrating, verify no stale legacy fields remain: search the product
      tree (excluding the vendored `ready/standard/` bundle, whose migration
-     guidance legitimately names old fields) for `completion_proof`,
-     `satisfies`, `input_types`, `input_samples`, `output_types`,
-     `output_samples`, and `validation_boundary`. Every hit must be resolved or
-     explicitly justified before the tree claims the new standard version.
+     guidance legitimately names old fields) for pair `logic`,
+     `completion_proof`, `satisfies`, `input_types`, `input_samples`,
+     `output_types`, `output_samples`, and `validation_boundary`. Every hit
+     must be resolved or explicitly justified before the tree claims the new
+     standard version.
    - Draft records make a bundle incomplete. Orchestrators warn
      before implementation and do not imply a complete product from the build.
    - Blocked records stop implementation unless explicit override instructions

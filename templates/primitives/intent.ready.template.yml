@@ -29,8 +29,7 @@ proof_cases:
       - key: "{{pair-stable-slug}}"
         inputs: ["{{ARTIFACT_OR_SERVICE_IDS_USED_AS_INPUTS}}"]
         output:
-          artifacts: ["{{ARTIFACT_IDS_EXPECTED_OR_PRODUCED}}"]
-          logic: "{{WHAT_MUST_BE_TRUE_ABOUT_THE_OUTPUT_FOR_THIS_PAIR_TO_PASS}}"
+          artifacts: ["{{JUDGMENT_ARTIFACT_IDS_ORACLE_ENVELOPE_PROTOCOL_OR_CONTRACT}}"]
 refs: []
 artifacts: []
 owner_notes: []

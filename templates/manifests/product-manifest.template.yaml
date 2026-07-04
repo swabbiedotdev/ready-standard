@@ -12,7 +12,7 @@ governance_docs:
   product_process: "ready/governance/product-process.md"
   workspace_authority_and_access: "ready/governance/workspace-authority-and-access.md"
 ready_standard:
-  version: "0.5.3"
+  version: "0.6.0"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"

@@ -177,7 +177,7 @@ Ready id references in code are traceability evidence, not proof.
 
 Migrating legacy intent `completion_proof` and IO fields to `proof_cases` is
 best-judgment maintenance only when the proof meaning is preserved. Changing
-proof meaning, output logic, or acceptance strength is product truth work and
+proof meaning, output judgment, or acceptance strength is product truth work and
 follows the normal approval rules. Flag `completion_proof` is renamed to
 `closure_criteria`; it remains a plain closure-criteria string list, not proof
 targets.
