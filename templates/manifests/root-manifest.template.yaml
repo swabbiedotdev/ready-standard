@@ -19,4 +19,4 @@ ready_standard:
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.5.0/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.6.0/docs"
