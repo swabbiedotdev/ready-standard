@@ -1,6 +1,6 @@
 # Template: constant.
 # Required: ready, kind, id, module, name.
-# Optional: value (text; omit when the PIP only names it), unit,
+# Optional: value (text; omit when the RIP only names it), unit,
 #   source (config path#key when code owns the value), description,
 #   table {columns, rows} for value tables such as tiers.
 ready: 1

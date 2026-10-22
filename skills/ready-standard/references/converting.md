@@ -1,8 +1,10 @@
-# Converting a Markdown + Mermaid PIP to `.ready`
+# Converting a Markdown + Mermaid PIP to a RIP
 
-A conversion changes representation, not meaning. Every fact in the Markdown
-PIP lands in a typed field, a prose field, a tag, or a supplementary file, and a
-fidelity audit proves it. If something truly has no home, stop and ask the
+A Product Intent Package (PIP) is the older Markdown + Mermaid format; a Ready
+Intent Package (RIP) is the same intent as `.ready` records. A conversion
+changes representation, not meaning. Every fact in the Markdown PIP lands in
+a typed field, a prose field, a tag, or a supplementary file, and a fidelity
+audit proves it. If something truly has no home, stop and ask the
 owner for a schema field instead of inventing one or dropping it.
 
 Ready Room converted its own PIP (23 Markdown and YAML files to 419 records),
@@ -143,7 +145,7 @@ rather than by eye.
 
 ## After the conversion
 
-- The repository's `AGENTS.md` names `product/` as the canonical PIP, the record
+- The repository's `AGENTS.md` names `product/` as the canonical RIP, the record
   layout, the validator command, and that ids stay stable.
 - Code comments cite records by display id or id.
 - Tickets link records, not Markdown anchors.

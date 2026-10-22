@@ -1,11 +1,11 @@
 ---
 name: ready-standard
-description: Read, author, change, validate, convert, or audit a Product Intent Package (PIP) written as `.ready` records, the typed YAML files under a repository's `product/` directory that Ready Room loads. Use when the user asks to work on a `.ready` PIP or its records (journeys, steps, sequences, rules, entities, and the other kinds), to convert a Markdown + Mermaid PIP to `.ready`, or to check code against `.ready` records. Do not use for ordinary planning, coding, or documentation in a repository with no `.ready` PIP.
+description: Read, author, change, validate, convert, or audit a Ready Intent Package (RIP), the bundle of `.ready` records (typed YAML files) under a repository's `product/` directory that Ready Room loads. Use when the user asks to work on a RIP, ready package, or `.ready` files (journeys, steps, sequences, rules, entities, and the other kinds), to convert a Markdown + Mermaid PIP (the older Product Intent Package format) to a RIP, or to check code against `.ready` records. Do not use for ordinary planning, coding, or documentation in a repository with no ready package.
 ---
 
 # Ready standard
 
-A `.ready` PIP is the product's current intended end state, written as a graph
+A Ready Intent Package (RIP) is the product's current intended end state, written as a graph
 of typed records: one YAML file per product, module, actor, capability, system,
 journey, step, surface, operation, sequence, rule, constant, entity, entity
 group, state machine, quality constraint, term, and acceptance exception.
@@ -20,7 +20,7 @@ supplementary file, or the owner adds a field to the schema.
 
 ## Principles
 
-These carry over from Markdown PIPs, restated for records. Read
+These carry over from the older Markdown PIP format, restated for records. Read
 [references/principles.md](references/principles.md) before changing intent.
 
 - **One owner.** Each behavior belongs to one module's records. Consumers link
@@ -40,9 +40,10 @@ These carry over from Markdown PIPs, restated for records. Read
 ## Workflow
 
 1. **Find the package and the validator.** The package is `<repo>/product/`.
-   Validation needs a Ready Room checkout: `npm run pip -- validate <repo>` from
-   its root, or `node <ready-room>/app/scripts/pip.ts validate <repo>` from
-   anywhere. Follow the repository's own `AGENTS.md` if it names a command.
+   Validation needs a Ready Room checkout: `npm run rip -- validate <repo>` from
+   its root, or `npm --prefix <ready-room> run rip -- validate "$PWD"` from
+   anywhere (`npm run pip` is an alias). Follow the repository's own
+   `AGENTS.md` if it names a command.
 2. **Read before changing.** Start from `product/product.ready`, then the
    module's `module.ready` and its journeys, sequences, rules, and data. For a
    readable view, export it and read the export; never edit an export. See
@@ -60,7 +61,7 @@ These carry over from Markdown PIPs, restated for records. Read
 
 ## Other tasks
 
-- Converting a Markdown + Mermaid PIP: [references/converting.md](references/converting.md),
+- Converting a Markdown + Mermaid PIP to a RIP: [references/converting.md](references/converting.md),
   including the fidelity audit that proves nothing was lost.
 - Auditing code against records, or writing tickets that link them:
   [references/auditing.md](references/auditing.md).

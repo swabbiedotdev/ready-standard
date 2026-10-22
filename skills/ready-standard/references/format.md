@@ -6,15 +6,15 @@ repository. It follows Ready Room's schema, `app/src/shared/intent/types.ts`
 the loader and its checks are `app/src/shared/intent/model.ts`. The generated
 JSON Schema ships with this skill at
 [`assets/ready.schema.json`](../assets/ready.schema.json) for editor
-completion; `npm run pip -- schema` in a Ready Room checkout prints the current
+completion; `npm run rip -- schema` in a Ready Room checkout prints the current
 one.
 
-A PIP is a graph of typed records. Each record is one YAML file ending in
+A Ready Intent Package (RIP) is a graph of typed records. Each record is one YAML file ending in
 `.ready` under `product/`. Records refer to each other by `id`. Every diagram,
 outline, export, and diff is derived from the records; nothing visual is
 stored.
 
-**Goal: no loss.** Everything a PIP expresses has a home: a typed field, a prose
+**Goal: no loss.** Everything a RIP expresses has a home: a typed field, a prose
 field (`notes`, `rationale`), an open `tags` entry, or a supplementary file the
 record references. If something has no home, the format needs a field, not a
 workaround.
@@ -197,7 +197,7 @@ quotes.
     `precedence`, `constraints [{text, hard?}]`, `inputs`, `params [{name, value,
     unit?, source?}]`, `constants`, `sets [{name, members}]`, `calculations
     [{name, expr, notes?}]`, `parts?, part_of?`.
-- **constant**: `module, name, value?` (text; omit when the PIP only names it),
+- **constant**: `module, name, value?` (text; omit when the RIP only names it),
   `unit?, source?` (config `path#key` when code owns the value), `description?,
   table? {columns, rows}`. Use it for named values (`INVITATION_TTL = 7 days`)
   and value tables (tiers).
@@ -262,14 +262,14 @@ path (`product/<module>/files/…`) in `files`, `surface.mockup.file`, and
 long reference prose that is not one record's rationale, and SVG mockups. Never
 put logic in them: logic stays in records, where it is typed and checked.
 
-Code is never copied into the PIP. Refer to it with `owner` and `code` paths
+Code is never copied into the RIP. Refer to it with `owner` and `code` paths
 (`apps/web/app/api/claim/code/route.ts`, `60_app_core.sql::app.claim_code_send`)
 and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
 
 ## Validation
 
-`npm run pip -- validate <dir>` (where `<dir>` contains `product/`) and Ready
-Room's viewer run the same loader. It never stops at the first problem: valid
+`npm run rip -- validate <dir>` (where `<dir>` contains `product/`; `npm run
+pip` is an alias) and Ready Room's viewer run the same loader. It never stops at the first problem: valid
 records still load, and each problem is reported as an error (E) or a warning
 (W). The command exits non-zero when there is any error. How to work through
 the output is in [validation.md](validation.md).

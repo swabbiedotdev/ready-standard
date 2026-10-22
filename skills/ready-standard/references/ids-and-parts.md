@@ -55,8 +55,8 @@ A package may use another scheme, but keep one scheme throughout.
 
 ## `aliases`: names that still resolve
 
-- Retired ids, retired display ids, and old heading anchors from a Markdown PIP
-  (GitHub-style slugs: lowercase, punctuation removed, spaces to hyphens, so
+- Retired ids, retired display ids, and old heading anchors from a Markdown
+  PIP, the older format (GitHub-style slugs: lowercase, punctuation removed, spaces to hyphens, so
   `## RULE-ACCESS · access.authorize` becomes `rule-access--accessauthorize`).
 - An alias must not equal any other record's id, display id, or alias.
 - Never remove an alias that something outside the package may still link to.

@@ -7,18 +7,21 @@ set -eu
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 ready_room=${1:-${READY_ROOM:-}}
-if [ -z "$ready_room" ] || [ ! -f "$ready_room/app/scripts/pip.ts" ]; then
+if [ -z "$ready_room" ] || [ ! -d "$ready_room/app/scripts" ]; then
   echo "usage: scripts/check.sh <ready-room-checkout>" >&2
   exit 2
 fi
 ready_room=$(cd "$ready_room" && pwd)
-pip="$ready_room/app/scripts/pip.ts"
+# The RIP CLI (npm run rip; npm run pip is an alias).
+cli="$ready_room/app/scripts/rip.ts"
+[ -f "$cli" ] || cli="$ready_room/app/scripts/pip.ts"
+[ -f "$cli" ] || { echo "No RIP CLI script in $ready_room/app/scripts" >&2; exit 2; }
 skill="$root/skills/ready-standard"
 
 echo "Ready Room: $ready_room ($(git -C "$ready_room" rev-parse --short HEAD 2>/dev/null || echo unknown))"
 
 echo "== Validating the template package"
-out=$(node "$pip" validate "$skill/assets/template-package")
+out=$(node "$cli" validate "$skill/assets/template-package")
 echo "$out"
 echo "$out" | tail -1 | grep -qx '0 errors, 0 warnings' || {
   echo "Template package must report 0 errors, 0 warnings" >&2
@@ -28,10 +31,10 @@ echo "$out" | tail -1 | grep -qx '0 errors, 0 warnings' || {
 echo "== Comparing the JSON Schema"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
-(cd "$tmp" && node "$pip" schema "$tmp/ready.schema.json" >/dev/null)
+(cd "$tmp" && node "$cli" schema "$tmp/ready.schema.json" >/dev/null)
 if ! cmp -s "$tmp/ready.schema.json" "$skill/assets/ready.schema.json"; then
   echo "assets/ready.schema.json differs from Ready Room's schema." >&2
-  echo "Regenerate it: node $pip schema $skill/assets/ready.schema.json" >&2
+  echo "Regenerate it: node $cli schema $skill/assets/ready.schema.json" >&2
   echo "then review references/format.md and the templates for the change." >&2
   exit 1
 fi

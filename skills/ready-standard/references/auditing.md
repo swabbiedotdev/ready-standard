@@ -6,8 +6,10 @@ The records are the expected behavior. Code, schemas, tests, tickets, logs, and
 runtime behavior are evidence of what exists. An audit reports the difference;
 it does not edit records to match the code.
 
-1. **Fix the baseline.** Record the canonical PIP revision (commit) and
-   `product.release` in the audit notes, not in the PIP. Validate it: an audit
+An audit compares code with a Ready Intent Package (RIP).
+
+1. **Fix the baseline.** Record the canonical RIP revision (commit) and
+   `product.release` in the audit notes, not in the RIP. Validate it: an audit
    against a package with errors is unreliable.
 2. **Scope by module.** Use a ticket, if any, only to find the scope and code
    area. Take the expected behavior from the owning records: the module's

@@ -2,19 +2,18 @@
 
 ## Run it
 
-The validator is Ready Room's loader behind its `pip` CLI. `<repo>` is the
+The validator for a Ready Intent Package (RIP) is Ready Room's loader behind
+its `rip` CLI (`npm run rip`; `npm run pip` is an alias). `<repo>` is the
 directory that contains `product/`.
 
 ```sh
 # from a Ready Room checkout's root
-npm run pip -- validate <repo>
-# or from anywhere
-node <ready-room>/app/scripts/pip.ts validate <repo>
-# or without changing directory
-npm --prefix <ready-room> run pip -- validate "$PWD"
+npm run rip -- validate <repo>
+# or from anywhere, without changing directory
+npm --prefix <ready-room> run rip -- validate "$PWD"
 ```
 
-Ready Room validates its own package with `npm run pip -- validate .`. The CLI
+Ready Room validates its own package with `npm run rip -- validate .`. The CLI
 needs Node 24 or later and the checkout's dependencies installed (`npm install`).
 
 Output is one line per issue, then a summary:
@@ -74,14 +73,15 @@ right. It does not check:
 - that `entries[].to` names a real step;
 - that logic lives in typed fields rather than `notes`;
 - that copy is verbatim, or that a consumer does not restate its owner;
-- that the PIP matches the code.
+- that the RIP matches the code.
 
 Those are the reviewer's job; see [principles.md](principles.md) and
 [mistakes.md](mistakes.md).
 
 ## In CI
 
-A repository whose PIP is `.ready` should run the validator in CI (Ready Room
+A repository with a ready package should run the validator in CI (Ready Room
 runs it, and `app/test/intent-readyroom.test.ts` checks the same). A product
 repository without Ready Room's code can check out Ready Room (or a pinned
-release of it) in the job and run `node <ready-room>/app/scripts/pip.ts validate .`.
+release of it) in the job and run
+`npm --prefix <ready-room> run rip -- validate "$PWD"`.

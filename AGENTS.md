@@ -1,7 +1,8 @@
 # Working in ready-standard
 
 This repository documents the `.ready` standard as Ready Room implements it and
-ships the `ready-standard` agent skill. Ready Room's code is the source of
+ships the `ready-standard` agent skill (the ready skill) for authoring a Ready
+Intent Package (RIP): the bundle of `.ready` files that describes a product. Ready Room's code is the source of
 truth; this repository follows it.
 
 ## Sources of truth, in order
@@ -11,7 +12,8 @@ truth; this repository follows it.
 2. Ready Room `app/src/shared/intent/model.ts`: the loader. Reference kinds,
    structural checks, validator codes and severities, size limits, and
    reachability.
-3. Ready Room `app/scripts/pip.ts`: the CLI (`validate`, `export`, `schema`).
+3. Ready Room's CLI script, `npm run rip` (`app/scripts/pip.ts`; `npm run pip`
+   is an alias): `validate`, `export`, `schema`.
 4. Ready Room `research/intent-model/ready-standard.md`: Ready Room's own
    explanation of the format and the Markdown mapping.
 5. Ready Room `AGENTS.md` and `product/`: how the standard is used in practice.
@@ -37,12 +39,12 @@ Ready Room commit `301d09f` (schema 1).
 
 ## Keeping in sync with Ready Room
 
-Do this whenever `types.ts`, `model.ts`, `pip.ts`, or `ready-standard.md`
+Do this whenever `types.ts`, `model.ts`, the CLI script, or `ready-standard.md`
 changes in Ready Room:
 
 1. In the Ready Room checkout, `git log -p <last synced commit>.. -- app/src/shared/intent/types.ts app/src/shared/intent/model.ts app/scripts/pip.ts research/intent-model/ready-standard.md`.
 2. Regenerate the schema:
-   `node <ready-room>/app/scripts/pip.ts schema "$PWD/skills/ready-standard/assets/ready.schema.json"`.
+   `npm --prefix <ready-room> run rip -- schema "$PWD/skills/ready-standard/assets/ready.schema.json"`.
 3. Update `references/format.md` for each added, removed, or changed field,
    enum value, reference kind, validator code, severity, or size limit. Then
    update the affected per-kind checklist entries in `authoring.md`, the field
@@ -62,6 +64,12 @@ Ready Room's schema first.
 
 ## Writing in this repository
 
+- Call the bundle of `.ready` files a Ready Intent Package (spelled out with
+  "(RIP)" on first use in each document), then RIP, ready package, or `.ready`
+  package. "PIP" names only the older Markdown + Mermaid format, and existing
+  Ready Room contract names that keep it (the MCP tool `read_pip`, the message
+  kind `pip_change`, `rr pip`, the `cloud_pip` table), cited as names.
+
 - Every YAML example that is a whole record (`ready: 1` …) must validate: put new
   ones in the template package or check them in a scratch package with the
   validator.
@@ -69,7 +77,7 @@ Ready Room's schema first.
   changelog or history in the docs; Git holds it.
 - Keep `SKILL.md` short; detail goes in `references/`, loaded on demand.
 - Restate principles in `.ready` terms (records, fields, ids, aliases, parts,
-  supplementary files), never in Markdown-PIP terms (files, headings, Mermaid),
+  supplementary files), never in Markdown PIP terms (files, headings, Mermaid),
   except in `converting.md`, which maps one to the other.
 
 ## Commits

@@ -1,7 +1,7 @@
 # Ready standard
 
-The `.ready` standard writes a product's intent as a **Product Intent Package
-(PIP)**: a `product/` directory of typed YAML records, one per product, module,
+The `.ready` standard writes a product's intent as a **Ready Intent Package
+(RIP)**, or ready package: a `product/` directory of typed YAML records, one per product, module,
 actor, capability, system, journey, step, surface, operation, sequence, rule,
 constant, entity, entity group, state machine, quality constraint, term, and
 acceptance exception. Records link to each other by id, so the package is a
@@ -34,12 +34,12 @@ skills/ready-standard/              the agent skill (install this folder)
   SKILL.md                          when to use it and the workflow
   references/
     format.md                       THE SPECIFICATION: layout, record kinds, fields, validator codes
-    principles.md                   what belongs in a PIP and who decides it
+    principles.md                   what belongs in a RIP and who decides it
     authoring.md                    change workflow and per-kind checklist
     ids-and-parts.md                ids, display ids, aliases, lettered parts
     reading.md                      reading and exporting a package
     validation.md                   running the validator and fixing its output
-    converting.md                   Markdown + Mermaid PIP to .ready, with a fidelity audit
+    converting.md                   Markdown + Mermaid PIP to a RIP, with a fidelity audit
     auditing.md                     checking code against records; tickets
     mistakes.md                     common mistakes
   assets/
@@ -57,22 +57,23 @@ repository is out of date.
 
 ## Using a package
 
-A repository with a `.ready` PIP keeps it at `product/`, starting with
+A repository with a ready package keeps it at `product/`, starting with
 `product/product.ready`. To validate or export it you need a checkout of Ready
 Room (Node 24+, `npm install` run once):
 
 ```sh
 # from the Ready Room checkout
-npm run pip -- validate <repo>              # must report 0 errors
-npm run pip -- export <repo> <out>          # readable Markdown book with diagrams
-npm run pip -- export <repo> <out>.json --format json
-npm run pip -- schema                       # the JSON Schema for one record
+npm run rip -- validate <repo>              # must report 0 errors
+npm run rip -- export <repo> <out>          # readable Markdown book with diagrams
+npm run rip -- export <repo> <out>.json --format json
+npm run rip -- schema                       # the JSON Schema for one record
 
 # or from anywhere
-node <ready-room>/app/scripts/pip.ts validate <repo>
+npm --prefix <ready-room> run rip -- validate "$PWD"
 ```
 
-`<repo>` is the directory that contains `product/`.
+`<repo>` is the directory that contains `product/`. `npm run pip` still works
+as an alias of `npm run rip`.
 
 To start a package, copy
 [skills/ready-standard/assets/template-package/product/](skills/ready-standard/assets/template-package/product/)
@@ -86,9 +87,10 @@ For editor completion, point your YAML language server at
 The skill is a standard Claude Code skill folder. Copy or link
 `skills/ready-standard/` to `~/.claude/skills/ready-standard/` (personal) or
 `<repo>/.claude/skills/ready-standard/` (one project). It replaces the
-`product-intent-manager` skill for `.ready` packages: that skill's principles
-carry over, restated for records in `references/principles.md`, and its Markdown
-and Mermaid file conventions do not.
+`product-intent-manager` skill (written for Markdown Product Intent Packages,
+PIPs) for ready packages: that skill's principles carry over, restated for
+records in `references/principles.md`, and its Markdown and Mermaid file
+conventions do not.
 
 ## Checking this repository
 

@@ -2,6 +2,8 @@
 
 ## Change workflow
 
+Changes to a Ready Intent Package (RIP) follow one workflow.
+
 1. **Confirm the intent.** The request comes from the owner, or the change is a
    faithful restatement of intent they already gave. If code, a ticket, or your
    own judgment suggests a different outcome, ask instead of editing.
@@ -20,8 +22,8 @@
    so it explains the current design, and delete reasons that no longer apply.
 6. **Validate** (see [validation.md](validation.md)) until there are 0 errors,
    and check every new warning.
-7. **Release.** If the repository versions its PIP, set `product.release` to the
-   version the PIP now describes, as its `AGENTS.md` directs.
+7. **Release.** If the repository versions its RIP, set `product.release` to the
+   version the RIP now describes, as its `AGENTS.md` directs.
 
 Start a new record by copying the kind's template from
 [`assets/template-package/product/`](../assets/template-package/product/) and
@@ -36,7 +38,7 @@ no empty strings, present tense, no history or task words.
 **product** (one, at `product/product.ready`)
 - [ ] `name`, `outcome` (the user or product result), `boundary` (what this
       release includes), `exclusions`, `measures`.
-- [ ] `release` matches the version the PIP describes, if the repository uses one.
+- [ ] `release` matches the version the RIP describes, if the repository uses one.
 - [ ] `dcl` holds the product default with a `basis`.
 - [ ] No rules, gates, algorithms, queues, or database mechanics; product-wide
       rationale and topology notes only.
@@ -119,7 +121,7 @@ no empty strings, present tense, no history or task words.
 
 **constant**
 - [ ] `name` in code style (`INVITATION_TTL`); `value` quoted as text with `unit`.
-- [ ] `source` (`path#key`) when code owns the value; omit `value` when the PIP
+- [ ] `source` (`path#key`) when code owns the value; omit `value` when the RIP
       only names it.
 - [ ] Records that use it link it (`constants` on messages, rules, columns).
 
