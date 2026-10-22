@@ -1,0 +1,23 @@
+# Template: product. Exactly one per package, at product/product.ready.
+# Required: ready, kind, id, name, outcome.
+# Optional: display_id, aliases, summary, release, format_version,
+#   boundary (text, or {text, includes, excludes}), exclusions, measures,
+#   dcl {level 0-9, basis}, rationale, notes, files, tags.
+# Keep it outward-facing: no rules, gates, or algorithms here.
+ready: 1
+kind: product
+id: product
+name: Example Notes
+release: v00.01.00
+outcome: People keep short notes they can find again on any device.
+boundary: A web app where signed-in people write, list, and delete their own notes.
+exclusions:
+  - Sharing notes with other people.
+measures:
+  - Share of people who open a saved note in a later week.
+dcl:
+  level: 3
+  basis: >-
+    A controlled pilot with a few people; failures are visible and the person
+    retries, and current load needs no recovery machinery. Authorization and
+    privacy apply in full.

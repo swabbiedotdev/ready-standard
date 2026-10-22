@@ -1,0 +1,27 @@
+# Template: state_machine. Add one only when the sequences do not already
+# show the lifecycle clearly.
+# Required: ready, kind, id, module, title,
+#   states [{name, description, initial, terminal}] (at least one),
+#   transitions [{from, to, trigger, via (sequences or rules)}].
+# Optional: entity, field. Use [*] for the start or end of a transition.
+ready: 1
+kind: state_machine
+id: notes.state.note
+module: notes
+title: Note lifecycle
+entity: notes.data.note
+field: deleted_at
+states:
+  - name: Saved
+    initial: true
+  - name: Deleted
+    terminal: true
+transitions:
+  - from: "[*]"
+    to: Saved
+    trigger: The person saves a new note
+    via:
+      - notes.seq.save
+  - from: Saved
+    to: Deleted
+    trigger: The person deletes the note

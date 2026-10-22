@@ -1,0 +1,21 @@
+# Template: journey.
+# Required: ready, kind, id, module, actors (at least one), title, summary,
+#   steps (ordered; may be empty only on an overview with parts).
+# Optional: audience, trigger, entries [{label, from (step, journey, or
+#   surface), to (the step it opens), edge}], sequences,
+#   related [{to (journey), label, relation (leads_to | shares | alternative)}],
+#   parts / part_of.
+# Split a journey over 12 steps into lettered parts.
+ready: 1
+kind: journey
+id: notes.write
+display_id: FLOW-NOTES-WRITE
+module: notes
+actors:
+  - actor.person
+title: Write a note
+summary: A person writes a note in the editor and saves it.
+steps:
+  - notes.write.compose
+sequences:
+  - notes.seq.save

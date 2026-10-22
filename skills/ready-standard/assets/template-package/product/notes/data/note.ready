@@ -1,0 +1,55 @@
+# Template: entity.
+# Required: ready, kind, id, module, table, name, summary, columns.
+# Optional: entity_kind (table | view | object | projection | external),
+#   schema, column_groups, derivations, primary_key, indexes, checks,
+#   coordination, triggers, access {rls, grants, readers, writers},
+#   lifecycle, invariants, volume, view {source, security_invoker},
+#   projection_of, relationships [{to, on, from_card, to_card,
+#   link (fk | logical), on_delete, label, reason}].
+# Column fields: name, type, keys (PK | FK | UK), fk {entity, column,
+#   on_delete, on_update}, nullable, default, check, values, generated,
+#   visibility, rule, indexes (badges such as I1·1, P1·where), constants.
+# Quote cardinalities: to_card: "1".
+ready: 1
+kind: entity
+id: notes.data.note
+display_id: DATA-NOTE
+module: notes
+entity_kind: table
+table: note
+name: note
+summary: One saved note, owned by one person.
+columns:
+  - name: note_id
+    type: TEXT
+    keys:
+      - PK
+  - name: owner_id
+    type: TEXT
+    nullable: false
+    rule: The account that wrote the note; every read and write filters on it
+    indexes:
+      - I1·1
+  - name: text
+    type: TEXT
+    nullable: false
+    rule: At most NOTE_MAX_LENGTH characters
+    constants:
+      - notes.const.max-length
+  - name: created_at
+    type: TEXT
+    nullable: false
+    indexes:
+      - I1·2
+  - name: deleted_at
+    type: TEXT
+    nullable: true
+    rule: Set when the person deletes the note; deleted notes are never listed
+indexes:
+  - id: I1
+    name: note_owner_created_idx
+    method: BTREE
+    columns:
+      - owner_id ASC
+      - created_at DESC
+    purpose: Lists a person's notes newest first

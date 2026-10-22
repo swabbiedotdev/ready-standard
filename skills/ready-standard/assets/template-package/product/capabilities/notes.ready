@@ -1,0 +1,12 @@
+# Template: capability.
+# Required: ready, kind, id, name, outcome.
+# Optional: actors, owners (modules, journeys, or sequences that deliver it).
+ready: 1
+kind: capability
+id: cap.notes
+name: Notes
+outcome: A person writes a note and finds it again later.
+actors:
+  - actor.person
+owners:
+  - notes

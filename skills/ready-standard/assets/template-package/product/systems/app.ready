@@ -1,0 +1,17 @@
+# Template: system.
+# Required: ready, kind, id, name, role.
+# Optional: system_kind (platform | app | service | worker | database |
+#   storage | queue | external), hosting, within (hosting system), code,
+#   responsibilities, connections [{to, label, direction}],
+#   environments [{name, notes}],
+#   units [{name, unit_kind (function | job | schedule | service | queue),
+#   schedule, resources, notes}], secrets (names only, never values).
+ready: 1
+kind: system
+id: sys.app
+name: Web app
+role: Serves the notes pages and API, and stores notes in its database
+system_kind: app
+code: apps/web
+secrets:
+  - SESSION_SECRET

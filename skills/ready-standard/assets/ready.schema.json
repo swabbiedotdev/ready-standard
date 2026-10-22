@@ -1,0 +1,5108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://readyroom.dev/schemas/ready-1.schema.json",
+  "title": "Ready Room intent record",
+  "description": "One .ready file under product/: a single typed record of a Product Intent Package (schema 1). Generated from app/src/shared/intent/types.ts by `pip schema`; do not edit. Graph checks (references, parts, journeys and steps, orphan rules) need the whole PIP and are reported by `pip validate`.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "product"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "boundary": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "includes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "excludes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "measures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "dcl": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9
+            },
+            "basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "level",
+            "basis"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "name",
+        "outcome"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "module"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "runs_in": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "name",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "actor"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "side": {
+          "type": "string",
+          "enum": [
+            "user",
+            "product",
+            "operator",
+            "third_party"
+          ]
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "to",
+                  "both"
+                ]
+              }
+            },
+            "required": [
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "capability"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "name",
+        "outcome"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "system"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "system_kind": {
+          "type": "string",
+          "enum": [
+            "platform",
+            "app",
+            "service",
+            "worker",
+            "database",
+            "storage",
+            "queue",
+            "external"
+          ]
+        },
+        "hosting": {
+          "type": "string",
+          "minLength": 1
+        },
+        "within": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "responsibilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "to",
+                  "both"
+                ]
+              }
+            },
+            "required": [
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "environments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "unit_kind": {
+                "type": "string",
+                "enum": [
+                  "function",
+                  "job",
+                  "schedule",
+                  "service",
+                  "queue"
+                ]
+              },
+              "schedule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "resources": {
+                "type": "string",
+                "minLength": 1
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "secrets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "name",
+        "role"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "part_of": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "journey"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "actors": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "audience": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "from": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "to": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "edge": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "sequences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "leads_to",
+                  "shares",
+                  "alternative"
+                ]
+              }
+            },
+            "required": [
+              "to",
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "actors",
+        "title",
+        "summary",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "step"
+        },
+        "journey": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "step_kind": {
+          "type": "string",
+          "enum": [
+            "screen",
+            "action",
+            "system",
+            "decision",
+            "outcome",
+            "error"
+          ]
+        },
+        "surface": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "presentation": {
+          "type": "string",
+          "enum": [
+            "screen",
+            "inline",
+            "sheet",
+            "dialog",
+            "toast",
+            "email",
+            "notification",
+            "external"
+          ]
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ios",
+              "android",
+              "web",
+              "mobile",
+              "desktop"
+            ]
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "copy": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "body": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "hints": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "sees": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "does": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "next": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                  },
+                  {
+                    "type": "string",
+                    "const": "$return"
+                  }
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "when": {
+                "type": "string",
+                "minLength": 1
+              },
+              "next_kind": {
+                "type": "string",
+                "enum": [
+                  "action",
+                  "result",
+                  "auto"
+                ]
+              },
+              "channel": {
+                "type": "string",
+                "enum": [
+                  "email",
+                  "push",
+                  "async",
+                  "link"
+                ]
+              },
+              "both_ways": {
+                "type": "boolean"
+              },
+              "platforms": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ios",
+                    "android",
+                    "web",
+                    "mobile",
+                    "desktop"
+                  ]
+                }
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "target_label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "sequences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "write",
+                  "read-write"
+                ]
+              }
+            },
+            "required": [
+              "entity"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "journey",
+        "title",
+        "step_kind"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "surface"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "surface_kind": {
+          "type": "string",
+          "enum": [
+            "app",
+            "page",
+            "screen",
+            "section",
+            "sheet",
+            "dialog",
+            "email",
+            "notification",
+            "provider",
+            "user_side"
+          ]
+        },
+        "parent": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "system": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "route": {
+          "type": "string",
+          "minLength": 1
+        },
+        "audience": {
+          "type": "string",
+          "minLength": 1
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ios",
+              "android",
+              "web",
+              "mobile",
+              "desktop"
+            ]
+          }
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "states": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "copy": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "body": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "hints": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "mockup": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1
+            },
+            "file": {
+              "type": "string",
+              "pattern": "^product\\/.+"
+            },
+            "frame": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "operation"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_kind": {
+                "type": "string",
+                "enum": [
+                  "surface",
+                  "parameter",
+                  "return",
+                  "stored",
+                  "payload",
+                  "session",
+                  "constant",
+                  "config",
+                  "derived"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "returns": {
+          "type": "string",
+          "minLength": 1
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "when": {
+                "type": "string",
+                "minLength": 1
+              },
+              "copy": {
+                "type": "string",
+                "minLength": 1
+              },
+              "maps_to": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "code"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "http": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string",
+              "minLength": 1
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "method",
+            "path"
+          ],
+          "additionalProperties": false
+        },
+        "auth": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sequence": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "name",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "part_of": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "sequence"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trigger": {
+          "type": "object",
+          "properties": {
+            "trigger_kind": {
+              "type": "string",
+              "enum": [
+                "user",
+                "event",
+                "schedule",
+                "call",
+                "operator"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "trigger_kind",
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        "operation": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "is": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                    }
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "component": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "owner": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "dcl": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9
+            },
+            "basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "level",
+            "basis"
+          ],
+          "additionalProperties": false
+        },
+        "items": {
+          "$ref": "#/$defs/sequence_items"
+        },
+        "diagram": {
+          "type": "object",
+          "properties": {
+            "nodes": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "node_kind": {
+                    "type": "string",
+                    "enum": [
+                      "input",
+                      "decision",
+                      "calc",
+                      "judge",
+                      "action",
+                      "outcome",
+                      "data",
+                      "note"
+                    ]
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "ops": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "op": {
+                          "type": "string",
+                          "enum": [
+                            "read",
+                            "insert",
+                            "update",
+                            "upsert",
+                            "delete",
+                            "lock",
+                            "audit",
+                            "enqueue",
+                            "write",
+                            "append"
+                          ]
+                        },
+                        "entity": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                        },
+                        "by": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "index": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "where": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "join": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "entity": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                              },
+                              "on": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "entity",
+                              "on"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "set": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "conflict": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "order": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "limit": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "mode": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "path": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "returns": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "triggers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "shared_with": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                          }
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "op"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "refs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "node_kind",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "undirected": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "nodes",
+            "edges"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "title",
+        "participants",
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "part_of": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "rule"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "when": {
+          "type": "string",
+          "minLength": 1
+        },
+        "then": {
+          "type": "string",
+          "minLength": 1
+        },
+        "otherwise": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision": {
+          "type": "object",
+          "properties": {
+            "nodes": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "node_kind": {
+                    "type": "string",
+                    "enum": [
+                      "input",
+                      "decision",
+                      "calc",
+                      "judge",
+                      "action",
+                      "outcome",
+                      "data",
+                      "note"
+                    ]
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "ops": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "op": {
+                          "type": "string",
+                          "enum": [
+                            "read",
+                            "insert",
+                            "update",
+                            "upsert",
+                            "delete",
+                            "lock",
+                            "audit",
+                            "enqueue",
+                            "write",
+                            "append"
+                          ]
+                        },
+                        "entity": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                        },
+                        "by": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "index": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "where": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "join": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "entity": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                              },
+                              "on": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "entity",
+                              "on"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "set": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "conflict": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "order": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "limit": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "mode": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "path": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "returns": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "triggers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "shared_with": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                          }
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "op"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "refs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "node_kind",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "undirected": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "nodes",
+            "edges"
+          ],
+          "additionalProperties": false
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "table": {
+          "type": "object",
+          "properties": {
+            "columns": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "required": [
+            "columns",
+            "rows"
+          ],
+          "additionalProperties": false
+        },
+        "default": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "number"
+        },
+        "precedence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "hard": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_kind": {
+                "type": "string",
+                "enum": [
+                  "surface",
+                  "parameter",
+                  "return",
+                  "stored",
+                  "payload",
+                  "session",
+                  "constant",
+                  "config",
+                  "derived"
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "constants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "sets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "members": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "name",
+              "members"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "calculations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expr": {
+                "type": "string",
+                "minLength": 1
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "expr"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "judge": {
+          "type": "object",
+          "properties": {
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "output": {
+              "type": "string",
+              "minLength": 1
+            },
+            "gate": {
+              "type": "string",
+              "minLength": 1
+            },
+            "prompt": {
+              "type": "string",
+              "pattern": "^product\\/.+"
+            }
+          },
+          "required": [
+            "evidence",
+            "output"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "constant"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "table": {
+          "type": "object",
+          "properties": {
+            "columns": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "required": [
+            "columns",
+            "rows"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "entity"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "entity_kind": {
+          "type": "string",
+          "enum": [
+            "table",
+            "view",
+            "object",
+            "projection",
+            "external"
+          ]
+        },
+        "schema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "table": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "keys": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "PK",
+                    "FK",
+                    "UK"
+                  ]
+                }
+              },
+              "fk": {
+                "type": "object",
+                "properties": {
+                  "entity": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                  },
+                  "column": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "on_delete": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "on_update": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "entity",
+                  "column"
+                ],
+                "additionalProperties": false
+              },
+              "nullable": {
+                "type": "boolean"
+              },
+              "default": {
+                "type": "string",
+                "minLength": 1
+              },
+              "check": {
+                "type": "string",
+                "minLength": 1
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "generated": {
+                "type": "string",
+                "minLength": 1
+              },
+              "visibility": {
+                "type": "string",
+                "minLength": 1
+              },
+              "rule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "indexes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "constants": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "column_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "display_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "columns": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "columns"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "derivations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "by": {
+                "type": "string",
+                "minLength": 1
+              },
+              "columns": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "by",
+              "columns",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "primary_key": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "indexes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "display_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "requested_by": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "unique": {
+                "type": "boolean"
+              },
+              "method": {
+                "type": "string",
+                "minLength": 1
+              },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "include": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "where": {
+                "type": "string",
+                "minLength": 1
+              },
+              "params": {
+                "type": "string",
+                "minLength": 1
+              },
+              "definition": {
+                "type": "string",
+                "minLength": 1
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1
+              },
+              "serves": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "purpose"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expr": {
+                "type": "string",
+                "minLength": 1
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "expr"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coordination": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "coordination_kind": {
+                "type": "string",
+                "enum": [
+                  "lease",
+                  "lock",
+                  "admit",
+                  "fence",
+                  "other"
+                ]
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expires": {
+                "type": "string",
+                "minLength": 1
+              },
+              "limit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "protects": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "triggers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "timing": {
+                "type": "string",
+                "minLength": 1
+              },
+              "event": {
+                "type": "string",
+                "minLength": 1
+              },
+              "does": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "does"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "access": {
+          "type": "object",
+          "properties": {
+            "rls": {
+              "type": "string",
+              "minLength": 1
+            },
+            "grants": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "readers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "writers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "lifecycle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "volume": {
+          "type": "string",
+          "minLength": 1
+        },
+        "view": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "security_invoker": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "projection_of": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "on": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "from_card": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\.(\\d+|many))?$"
+              },
+              "to_card": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\.(\\d+|many))?$"
+              },
+              "link": {
+                "type": "string",
+                "enum": [
+                  "fk",
+                  "logical"
+                ]
+              },
+              "on_delete": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "to",
+              "link",
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "table",
+        "name",
+        "summary",
+        "columns"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "part_of": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "entity_group"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "diagram": {
+          "type": "object",
+          "properties": {
+            "nodes": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "node_kind": {
+                    "type": "string",
+                    "enum": [
+                      "input",
+                      "decision",
+                      "calc",
+                      "judge",
+                      "action",
+                      "outcome",
+                      "data",
+                      "note"
+                    ]
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "ops": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "op": {
+                          "type": "string",
+                          "enum": [
+                            "read",
+                            "insert",
+                            "update",
+                            "upsert",
+                            "delete",
+                            "lock",
+                            "audit",
+                            "enqueue",
+                            "write",
+                            "append"
+                          ]
+                        },
+                        "entity": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                        },
+                        "by": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "index": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "where": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "join": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "entity": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                              },
+                              "on": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "entity",
+                              "on"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "set": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "conflict": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "order": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "limit": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "mode": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "path": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "returns": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "triggers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "shared_with": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                          }
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "op"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "refs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "node_kind",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "undirected": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "nodes",
+            "edges"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "title",
+        "entities"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "state_machine"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "states": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "initial": {
+                "type": "boolean"
+              },
+              "terminal": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1
+              },
+              "trigger": {
+                "type": "string",
+                "minLength": 1
+              },
+              "via": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                }
+              }
+            },
+            "required": [
+              "from",
+              "to",
+              "trigger"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "title",
+        "states",
+        "transitions"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "quality"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applies_to": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "measure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "title",
+        "applies_to",
+        "measure",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "term"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "synonyms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "copy_word": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "name",
+        "definition"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "number",
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "display_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^product\\/.+"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "contract",
+                  "prompt",
+                  "mockup",
+                  "config",
+                  "schema",
+                  "doc",
+                  "example"
+                ]
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "tag",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "kind": {
+          "type": "string",
+          "const": "acceptance"
+        },
+        "module": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "why_not_diagram": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verifies": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
+        "given": {
+          "type": "string",
+          "minLength": 1
+        },
+        "when": {
+          "type": "string",
+          "minLength": 1
+        },
+        "then": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "ready",
+        "id",
+        "kind",
+        "module",
+        "title",
+        "why_not_diagram",
+        "verifies",
+        "given",
+        "when",
+        "then"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "sequence_item": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "msg": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "to": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reply": {
+                  "type": "boolean"
+                },
+                "http": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "body": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "path"
+                  ],
+                  "additionalProperties": false
+                },
+                "call": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "auth": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "invokes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                  }
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "source": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "source_kind": {
+                        "type": "string",
+                        "enum": [
+                          "surface",
+                          "parameter",
+                          "return",
+                          "stored",
+                          "payload",
+                          "session",
+                          "constant",
+                          "config",
+                          "derived"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "source"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "guards": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "ops": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "enum": [
+                          "read",
+                          "insert",
+                          "update",
+                          "upsert",
+                          "delete",
+                          "lock",
+                          "audit",
+                          "enqueue",
+                          "write",
+                          "append"
+                        ]
+                      },
+                      "entity": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                      },
+                      "by": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "index": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "where": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "join": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "entity": {
+                              "type": "string",
+                              "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                            },
+                            "on": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "entity",
+                            "on"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "set": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "conflict": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "order": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "limit": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "mode": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "path": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "returns": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "triggers": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "shared_with": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                        }
+                      },
+                      "note": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "rules": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                  }
+                },
+                "constants": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                  }
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      "code": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "copy": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "when": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "owner": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "timeout": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "retry": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "idempotency": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "tag": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "tag",
+                      "text"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "msg"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "note": {
+              "type": "object",
+              "properties": {
+                "over": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ops": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "enum": [
+                          "read",
+                          "insert",
+                          "update",
+                          "upsert",
+                          "delete",
+                          "lock",
+                          "audit",
+                          "enqueue",
+                          "write",
+                          "append"
+                        ]
+                      },
+                      "entity": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                      },
+                      "by": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "index": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "where": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "join": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "entity": {
+                              "type": "string",
+                              "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                            },
+                            "on": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "entity",
+                            "on"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "set": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "conflict": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "order": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "limit": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "mode": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "path": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "returns": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "triggers": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "shared_with": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                        }
+                      },
+                      "note": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "rules": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                  }
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "tag": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "tag",
+                      "text"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "over",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "note"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "alt": {
+              "type": "object",
+              "properties": {
+                "branches": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "when": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "items": {
+                        "$ref": "#/$defs/sequence_items"
+                      }
+                    },
+                    "required": [
+                      "when",
+                      "items"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "branches"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "alt"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "opt": {
+              "type": "object",
+              "properties": {
+                "when": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "items": {
+                  "$ref": "#/$defs/sequence_items"
+                }
+              },
+              "required": [
+                "when",
+                "items"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "opt"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "loop": {
+              "type": "object",
+              "properties": {
+                "while": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "max": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "items": {
+                  "$ref": "#/$defs/sequence_items"
+                }
+              },
+              "required": [
+                "while",
+                "items"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "loop"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "par": {
+              "type": "object",
+              "properties": {
+                "branches": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "items": {
+                        "$ref": "#/$defs/sequence_items"
+                      }
+                    },
+                    "required": [
+                      "items"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "branches"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "par"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "break": {
+              "type": "object",
+              "properties": {
+                "when": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "items": {
+                  "$ref": "#/$defs/sequence_items"
+                }
+              },
+              "required": [
+                "when",
+                "items"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "break"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "transaction": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "items": {
+                  "$ref": "#/$defs/sequence_items"
+                }
+              },
+              "required": [
+                "items"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "transaction"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "continue": {
+              "type": "object",
+              "properties": {
+                "to": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "to"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "continue"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "sequence_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sequence_item"
+      }
+    }
+  }
+}

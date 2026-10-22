@@ -1,0 +1,18 @@
+# Template: rule. Something must apply it: a step's rules, a sequence
+# message's or note's rules, or another rule's rules.
+# Required: ready, kind, id, module, title, and at least one form of logic:
+#   when/then (otherwise), decision {nodes, edges}, table {columns, rows},
+#   judge {evidence, output, gate, prompt}, rules, or parts.
+# Optional: summary, owner, default, priority, precedence,
+#   constraints [{text, hard}], inputs, params [{name, value, unit, source}],
+#   constants, sets [{name, members}], calculations [{name, expr, notes}].
+ready: 1
+kind: rule
+id: notes.rule.length
+module: notes
+title: A note fits NOTE_MAX_LENGTH
+when: The note's text is longer than NOTE_MAX_LENGTH characters
+then: The save is refused with too_long and the editor keeps the text
+otherwise: The note is saved
+constants:
+  - notes.const.max-length

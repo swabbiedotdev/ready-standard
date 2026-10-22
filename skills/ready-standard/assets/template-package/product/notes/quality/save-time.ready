@@ -1,0 +1,14 @@
+# Template: quality (QC).
+# Required: ready, kind, id, module, title, applies_to (at least one record),
+#   measure, target.
+# Optional: scope.
+ready: 1
+kind: quality
+id: notes.quality.save-time
+display_id: QC-NOTES-SAVE
+module: notes
+title: Save response time
+applies_to:
+  - notes.seq.save
+measure: Time from Save to the Saved reply, measured at the server
+target: Under 300 milliseconds at the 95th percentile

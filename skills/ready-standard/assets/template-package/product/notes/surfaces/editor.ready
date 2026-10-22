@@ -1,0 +1,16 @@
+# Template: surface.
+# Required: ready, kind, id, module, name.
+# Optional: surface_kind (app | page | screen | section | sheet | dialog |
+#   email | notification | provider | user_side), parent (surface), system,
+#   route, audience, platforms, code, summary,
+#   elements [{name, description, states, copy}], states,
+#   mockup {url | file, frame, version} (the binding design target).
+ready: 1
+kind: surface
+id: notes.surface.editor
+module: notes
+name: Note editor
+surface_kind: page
+system: sys.app
+route: /notes/new
+summary: A text field and a Save button.
