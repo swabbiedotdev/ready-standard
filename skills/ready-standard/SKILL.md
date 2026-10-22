@@ -40,9 +40,9 @@ These carry over from the older Markdown PIP format, restated for records. Read
 ## Workflow
 
 1. **Find the package and the validator.** The package is `<repo>/product/`.
-   Validation needs a Ready Room checkout: `npm run rip -- validate <repo>` from
-   its root, or `npm --prefix <ready-room> run rip -- validate "$PWD"` from
-   anywhere (`npm run pip` is an alias). Follow the repository's own
+   Validation needs a Ready Room checkout: `npm run ready -- validate <repo>` from
+   its root, or `npm --prefix <ready-room> run ready -- validate "$PWD"` from
+   anywhere. Follow the repository's own
    `AGENTS.md` if it names a command.
 2. **Read before changing.** Start from `product/product.ready`, then the
    module's `module.ready` and its journeys, sequences, rules, and data. For a

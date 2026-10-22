@@ -12,10 +12,9 @@ if [ -z "$ready_room" ] || [ ! -d "$ready_room/app/scripts" ]; then
   exit 2
 fi
 ready_room=$(cd "$ready_room" && pwd)
-# The RIP CLI (npm run rip; npm run pip is an alias).
-cli="$ready_room/app/scripts/rip.ts"
-[ -f "$cli" ] || cli="$ready_room/app/scripts/pip.ts"
-[ -f "$cli" ] || { echo "No RIP CLI script in $ready_room/app/scripts" >&2; exit 2; }
+# Ready Room's CLI (npm run ready).
+cli="$ready_room/app/scripts/ready.ts"
+[ -f "$cli" ] || { echo "No $cli; is this a current Ready Room checkout?" >&2; exit 2; }
 skill="$root/skills/ready-standard"
 
 echo "Ready Room: $ready_room ($(git -C "$ready_room" rev-parse --short HEAD 2>/dev/null || echo unknown))"

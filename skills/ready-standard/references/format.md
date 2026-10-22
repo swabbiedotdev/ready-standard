@@ -6,7 +6,7 @@ repository. It follows Ready Room's schema, `app/src/shared/intent/types.ts`
 the loader and its checks are `app/src/shared/intent/model.ts`. The generated
 JSON Schema ships with this skill at
 [`assets/ready.schema.json`](../assets/ready.schema.json) for editor
-completion; `npm run rip -- schema` in a Ready Room checkout prints the current
+completion; `npm run ready -- schema` in a Ready Room checkout prints the current
 one.
 
 A Ready Intent Package (RIP) is a graph of typed records. Each record is one YAML file ending in
@@ -268,8 +268,8 @@ and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
 
 ## Validation
 
-`npm run rip -- validate <dir>` (where `<dir>` contains `product/`; `npm run
-pip` is an alias) and Ready Room's viewer run the same loader. It never stops at the first problem: valid
+`npm run ready -- validate <dir>` (where `<dir>` contains `product/`) and Ready
+Room's viewer run the same loader. It never stops at the first problem: valid
 records still load, and each problem is reported as an error (E) or a warning
 (W). The command exits non-zero when there is any error. How to work through
 the output is in [validation.md](validation.md).

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://readyroom.dev/schemas/ready-1.schema.json",
   "title": "Ready Room intent record",
-  "description": "One .ready file under product/: a single typed record of a Product Intent Package (schema 1). Generated from app/src/shared/intent/types.ts by `pip schema`; do not edit. Graph checks (references, parts, journeys and steps, orphan rules) need the whole PIP and are reported by `pip validate`.",
+  "description": "One .ready file under product/: a single typed record of a Ready Intent Package (schema 1). Generated from app/src/shared/intent/types.ts by `rip schema`; do not edit. Graph checks (references, parts, journeys and steps, orphan rules) need the whole RIP and are reported by `rip validate`.",
   "oneOf": [
     {
       "type": "object",

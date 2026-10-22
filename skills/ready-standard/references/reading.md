@@ -24,12 +24,12 @@ The records are optimized for checking and diffing; for reading a whole module,
 export the package. From a Ready Room checkout:
 
 ```sh
-npm run rip -- export <repo> <out>                 # Markdown book
-npm run rip -- export <repo> <out>.json --format json   # one JSON bundle
+npm run ready -- export <repo> <out>                 # Markdown book
+npm run ready -- export <repo> <out>.json --format json   # one JSON bundle
 ```
 
-or, from anywhere, `npm --prefix <ready-room> run rip -- export "$PWD" <out>`
-with an absolute `<out>`. `npm run pip` is an alias of `npm run rip`.
+or, from anywhere, `npm --prefix <ready-room> run ready -- export "$PWD" <out>`
+with an absolute `<out>`.
 `<repo>` is the directory that contains `product/`.
 
 - Markdown writes `<out>/product/README.md` (product, actors, systems,
@@ -49,7 +49,7 @@ and never edit an export: it is regenerated from the records.
 - A record by display id or alias: `grep -rln 'SEQ-014' product/`, then keep the
   file whose `display_id` or `aliases` holds it.
 - All records of a kind: `grep -rl '^kind: rule' product/`.
-- A package summary: `npm run rip -- validate <repo>` ends with counts per kind.
+- A package summary: `npm run ready -- validate <repo>` ends with counts per kind.
 
 ## Reading Ready Room's own package
 

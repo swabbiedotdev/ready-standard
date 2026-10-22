@@ -63,17 +63,18 @@ Room (Node 24+, `npm install` run once):
 
 ```sh
 # from the Ready Room checkout
-npm run rip -- validate <repo>              # must report 0 errors
-npm run rip -- export <repo> <out>          # readable Markdown book with diagrams
-npm run rip -- export <repo> <out>.json --format json
-npm run rip -- schema                       # the JSON Schema for one record
+npm run ready -- validate <repo>              # must report 0 errors
+npm run ready -- export <repo> <out>          # readable Markdown book with diagrams
+npm run ready -- export <repo> <out>.json --format json
+npm run ready -- schema                       # the JSON Schema for one record
 
 # or from anywhere
-npm --prefix <ready-room> run rip -- validate "$PWD"
+npm --prefix <ready-room> run ready -- validate "$PWD"
 ```
 
-`<repo>` is the directory that contains `product/`. `npm run pip` still works
-as an alias of `npm run rip`.
+`<repo>` is the directory that contains `product/`. A standalone CLI,
+`@ready-standard/cli` with a `ready` binary, is planned so a repository can
+validate without a Ready Room checkout; it is not built yet.
 
 To start a package, copy
 [skills/ready-standard/assets/template-package/product/](skills/ready-standard/assets/template-package/product/)

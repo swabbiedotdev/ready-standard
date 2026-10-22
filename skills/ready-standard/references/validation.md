@@ -3,17 +3,17 @@
 ## Run it
 
 The validator for a Ready Intent Package (RIP) is Ready Room's loader behind
-its `rip` CLI (`npm run rip`; `npm run pip` is an alias). `<repo>` is the
-directory that contains `product/`.
+its CLI, `npm run ready`. `<repo>` is the directory that contains
+`product/`.
 
 ```sh
 # from a Ready Room checkout's root
-npm run rip -- validate <repo>
+npm run ready -- validate <repo>
 # or from anywhere, without changing directory
-npm --prefix <ready-room> run rip -- validate "$PWD"
+npm --prefix <ready-room> run ready -- validate "$PWD"
 ```
 
-Ready Room validates its own package with `npm run rip -- validate .`. The CLI
+Ready Room validates its own package with `npm run ready -- validate .`. The CLI
 needs Node 24 or later and the checkout's dependencies installed (`npm install`).
 
 Output is one line per issue, then a summary:
@@ -81,7 +81,8 @@ Those are the reviewer's job; see [principles.md](principles.md) and
 ## In CI
 
 A repository with a ready package should run the validator in CI (Ready Room
-runs it, and `app/test/intent-readyroom.test.ts` checks the same). A product
+runs it, and `app/test/intent-readyroom.test.ts` checks the same). Until the
+planned standalone CLI (`@ready-standard/cli`, binary `ready`) exists, a product
 repository without Ready Room's code can check out Ready Room (or a pinned
 release of it) in the job and run
-`npm --prefix <ready-room> run rip -- validate "$PWD"`.
+`npm --prefix <ready-room> run ready -- validate "$PWD"`.
