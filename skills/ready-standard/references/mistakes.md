@@ -15,6 +15,9 @@
 - **Uppercase or spaced ids.** `id: FLOW-012` is a display id, not an id.
 - **Mermaid or HTML leftovers:** `<br/>`, `#59;`, `classDef`, colors, or a
   stored overview diagram.
+- **Ids in diagram text.** A decision or diagram node whose `text` says
+  "Apply RULE-ACCESS" or "notes.rule.length" while its `refs` already holds
+  that record (`text.ref-id`). Name it in words; `refs` carries the link.
 
 ## References
 

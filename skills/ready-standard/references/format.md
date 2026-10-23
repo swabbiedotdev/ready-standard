@@ -30,6 +30,10 @@ workaround.
    lists, reference boxes for another module's entities, Mermaid escapes.
 4. **Clean text.** No Mermaid or HTML escapes (`#59;`, `<br/>`); use lists
    instead of line breaks. Markdown is allowed only in `rationale` and `notes`.
+   Diagram text names things in words, not ids: a graph node's `refs` carry the
+   links, and the viewer shows them as footnotes. Ids written in prose fields
+   (`rationale`, `notes`, and other descriptive text such as a rule's text or an
+   index's `purpose`) link automatically.
 5. **Readable chunks.** Journeys over 12 steps and sequences over 16 messages
    are split into lettered parts; the overview is derived.
 
@@ -206,7 +210,9 @@ quotes.
 `nodes [{id, node_kind, text, ops?, refs?}]` (at least one) and `edges [{from,
 to, label?, undirected?}]`. `node_kind` is input, decision, calc, judge, action,
 outcome, data, or note. Node ids are free text local to the graph; `refs` names
-any records the node stands for or uses.
+any records the node stands for or uses. A node's `text` names those records in
+words; repeating an id, display id, or alias that is also in its `refs` is the
+`text.ref-id` warning.
 
 ### Data
 
@@ -303,6 +309,7 @@ the output is in [validation.md](validation.md).
 | `ops.index` | W | A data operation's `index` is not an index of its entity. |
 | `entity.index` | W | A column badge names no index on the entity. |
 | `table.shape` | W | A rule table row has the wrong number of cells. |
+| `text.ref-id` | W | A graph node's text repeats an id, display id, or alias that is also in its `refs`. |
 | `sequence.unreachable` | W | Nothing starts the sequence (see below). |
 | `size.journey` | W | A journey has more than 12 steps. |
 | `size.sequence` | W | A sequence has more than 16 messages, counted through nested blocks. |

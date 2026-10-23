@@ -35,8 +35,7 @@ does not change them.
 
 ## Current sync
 
-Matches Ready Room release v00.04.09 (`main` at `a469772`), with `types.ts`
-and `model.ts` as of commit `c83fc6e` (schema 1).
+Matches Ready Room release v00.04.13 (`main` at `339054d`, schema 1).
 
 ## Keeping in sync with Ready Room
 

@@ -54,7 +54,8 @@ references it then reports `ref.missing`. Work from the top:
    `journey.empty`, `sequence.participant`, `ops.target`, `rule.empty`,
    `rule.orphan`, `rule.decision`, `state.unknown`, `entity.column`.
 7. **Warnings:** `ops.index` and `entity.index` (a badge with no index, or
-   `I1.1` written with a period instead of `·`), `table.shape`,
+   `I1.1` written with a period instead of `·`), `text.ref-id` (an id in a
+   graph node's text that its `refs` already carry), `table.shape`,
    `sequence.unreachable`, and the `size.*` budgets.
 
 Fix the cause, not the symptom: do not satisfy `rule.orphan` by listing the rule

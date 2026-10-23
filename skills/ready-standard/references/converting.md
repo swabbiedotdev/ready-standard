@@ -90,9 +90,15 @@ diagrams into lettered parts, and validate with no errors.
 ## Judgment calls that recur
 
 - **Keep source words.** Titles, labels, `when` text, copy, and rationale are
-  verbatim. `<br/>` becomes a space or a list item; Mermaid escapes become the
+  verbatim, except ids inside flowchart node labels (below). `<br/>` becomes a space or a list item; Mermaid escapes become the
   character. Authored text (a `summary` the source lacked) is listed as authored
   in the audit.
+- **Ids inside flowchart labels.** A Mermaid node label such as
+  `"Apply RULE-ACCESS"` or `"READ · DATA-ORG"` becomes node `text` in words
+  ("Check access", "Read the organization") with the record in the node's
+  `refs` (and its data in `ops`). Keep the original label in the audit, not in
+  the text; leaving the id in the text raises `text.ref-id`. Ids in prose
+  (rationale, notes) stay as written, since they link automatically.
 - **Several facts on one line.** "READ / INSERT / UPDATE · DATA-ACCOUNT" becomes
   three ops. A data note covering two tables becomes two ops.
 - **Calls written inside a note.** Turn them into messages (often self-messages

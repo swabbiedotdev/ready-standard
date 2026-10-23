@@ -108,6 +108,8 @@ no empty strings, present tense, no history or task words.
 - [ ] `owner` names the intended code owner where it prevents duplication.
 - [ ] 16 messages or fewer, otherwise lettered parts joined by `continue`.
 - [ ] `dcl` only as a narrow override with its own `basis`.
+- [ ] A flowchart part (`diagram` with `items: []`) names records in node
+      `text` by words and links them in the node's `refs` (`text.ref-id`).
 
 **rule**
 - [ ] At least one form of logic: `when`/`then`/`otherwise`, `decision`,
@@ -116,6 +118,8 @@ no empty strings, present tense, no history or task words.
 - [ ] `inputs` with sources; `constants` linked, not restated; `default` for the
       no-match outcome; `precedence` when order matters.
 - [ ] `decision` edges name existing node ids; `table` rows match the columns.
+- [ ] Each `decision` node's records are in its `refs`, and its `text` names
+      them in words, not by id, display id, or alias (`text.ref-id`).
 - [ ] A `judge` names its evidence, output shape, gate, and prompt file.
 - [ ] Logic used by one message only stays in that message instead.
 
@@ -141,6 +145,8 @@ no empty strings, present tense, no history or task words.
 **entity_group**
 - [ ] `entities` lists the records shown together; `rationale` explains the data
       design for the group.
+- [ ] A `diagram` names records in node `text` by words and links them in the
+      node's `refs` (`text.ref-id`).
 
 **state_machine**
 - [ ] Only when sequences do not already show the lifecycle clearly.

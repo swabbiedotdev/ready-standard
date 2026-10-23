@@ -63,6 +63,11 @@ Ready Intent Package (RIP) at all and who decides it. They apply to every record
 - `rationale` is the current rationale: every active reason the design is shaped
   this way, in causal terms ("X, because otherwise Y"). No former designs, dates,
   or chronology. Remove a reason when it no longer explains the design.
+- Diagram text names things in words. In a `decision` or `diagram` graph, a
+  node says "Check the member's role", not "Apply RULE-ACCESS"; the node's
+  `refs` carry the link, and the viewer shows it as a footnote. In prose fields
+  (`rationale`, `notes`, a rule's text, an index's `purpose`), an id or display
+  id is fine and links automatically.
 - `notes` holds other context: scope, terminology, pointers. It never holds a
   requirement that a typed field could hold.
 - Acceptance records are exceptions: only a case no journey, sequence, or rule
