@@ -2,19 +2,16 @@
 
 ## Run it
 
-The validator for a Ready Intent Package (RIP) is Ready Room's loader behind
-its CLI, `npm run ready`. `<repo>` is the directory that contains
-`product/`.
+The validator for a Ready Intent Package (RIP) is Ready Room's loader,
+published as the `@readyroom/ready` package (Node 24 or later). `<repo>` is the
+directory that contains `product/`.
 
 ```sh
-# from a Ready Room checkout's root
-npm run ready -- validate <repo>
-# or from anywhere, without changing directory
-npm --prefix <ready-room> run ready -- validate "$PWD"
+npx @readyroom/ready validate <repo>
 ```
 
-Ready Room validates its own package with `npm run ready -- validate .`. The CLI
-needs Node 24 or later and the checkout's dependencies installed (`npm install`).
+Inside a Ready Room checkout, `npm run ready -- validate <repo>` runs the same
+code from source; Ready Room validates its own package that way.
 
 Output is one line per issue, then a summary:
 
@@ -82,8 +79,6 @@ Those are the reviewer's job; see [principles.md](principles.md) and
 ## In CI
 
 A repository with a ready package should run the validator in CI (Ready Room
-runs it, and `app/test/intent-readyroom.test.ts` checks the same). Until the
-planned standalone CLI (`@ready-standard/cli`, binary `ready`) exists, a product
-repository without Ready Room's code can check out Ready Room (or a pinned
-release of it) in the job and run
-`npm --prefix <ready-room> run ready -- validate "$PWD"`.
+runs it, and `app/test/intent-readyroom.test.ts` checks the same). Any other
+repository adds a job step `npx @readyroom/ready@<version> validate .`, pinning
+the version so a format change lands as a deliberate upgrade.

@@ -16,20 +16,27 @@ diagrams into lettered parts, and validate with no errors.
 
 1. **Freeze the source.** Note the source revision. Read `product.yaml`, the
    stack context, and every module file once end to end.
-2. **Choose ids.** Decide the id scheme ([ids-and-parts.md](ids-and-parts.md)).
+2. **Settle the modules.** If the source is not organized by module (it is
+   grouped by artifact, such as `flows/`, `sequences/`, `data/`, or by
+   screen), propose module boundaries to the owner before converting
+   anything: one module per responsibility that owns its state, named for what
+   it does, with each flow, sequence, rule, and table assigned to one owner
+   ([principles.md](principles.md), "One owner"). Record the assignment in the
+   audit. A source that is already modular keeps its modules.
+3. **Choose ids.** Decide the id scheme ([ids-and-parts.md](ids-and-parts.md)).
    Keep every existing display id (`FLOW-012`, `SEQ-014a`, `DATA-ACCOUNT`) and
    record each source heading's anchor as an alias, so old links still resolve.
-3. **Pilot one module.** Convert the smallest module that has a flow, a
+4. **Pilot one module.** Convert the smallest module that has a flow, a
    sequence, and data. Validate, audit it, and review it with the owner before
    converting the rest.
-4. **Fan out.** Convert the remaining modules with the reviewed pilot as the
+5. **Fan out.** Convert the remaining modules with the reviewed pilot as the
    example, one module per agent or pass, each with its own audit section.
    Generating records with a script per source file is fine; keep the scripts
    outside `product/`.
-5. **Integrate.** Validate the whole package to 0 errors, resolve every
+6. **Integrate.** Validate the whole package to 0 errors, resolve every
    cross-module reference, and point code comments, tests, `AGENTS.md`, and
    docs that cited Markdown anchors at the records (by display id).
-6. **Remove the Markdown PIP** in the same change, so there is one canonical
+7. **Remove the Markdown PIP** in the same change, so there is one canonical
    package.
 
 ## Mapping
@@ -85,6 +92,9 @@ diagrams into lettered parts, and validate with no errors.
 | `### Current rationale` | `rationale` on the record it explains (the module, or the product, for file-level rationale) |
 | Prose paragraphs after diagrams | `notes` |
 | Payload types, prompts, long reference prose | supplementary files in `product/<module>/files/`, listed in `files` |
+| Design target on a screen or surface (a Figma frame or node, branch or version) | `surface.mockup {url, frame, version}`; a link to a whole file or board stays in `notes` as context, not as the target |
+| Local mockup file (`screen-001-*.md`, SVG) | copied to `product/<module>/files/`, listed in `files` with `role: mockup`, and named by `surface.mockup.file`; a raster image (PNG, JPEG) is not a supplementary type, so keep it outside `product/` and link it by `url` |
+| Screen record (copy, actions, states, size-dependent behavior) | the surface's fields and the steps on it; layout prose that only describes placement is left to the mockup |
 | Theme, `classDef`, legends, link bars, overview maps, autonumbering | derived; not stored |
 
 ## Judgment calls that recur
@@ -116,6 +126,9 @@ diagrams into lettered parts, and validate with no errors.
   `source` to where the value lives.
 - **Rationale for a file with several journeys.** Put it on the module or on the
   first journey, and say which in the audit.
+- **Design targets.** Every surface that had a design target keeps it. When
+  the source names only a whole design file, convert it as context and list
+  the surface in the audit as having no exact target, for the owner to fill.
 - **Stale or contradictory source.** Do not resolve it silently. Convert what
   the source says, list the conflict outside the package, and ask the owner.
 
@@ -137,13 +150,15 @@ lost, organized so a reviewer can check it module by module.
 4. **Per source file, a checklist:** each heading, diagram, subgraph, note tag,
    table, and paragraph, and the record and field it became. Mark derived things
    (themes, link bars, legends) as derived.
-5. **Judgment calls:** each place you interpreted the source, with the reason.
-6. **Not representable:** anything without a typed home, and what you did
+5. **Module assignment** (when step 2 regrouped the source): each source file
+   or section and the module that now owns it.
+6. **Judgment calls:** each place you interpreted the source, with the reason.
+7. **Not representable:** anything without a typed home, and what you did
    instead. The goal is "none"; each item here is a schema request for the
    owner, not a permanent workaround. A tag kept by choice says so.
-7. **Rules applying rules:** each `rule.rules` link and the source sentence that
+8. **Rules applying rules:** each `rule.rules` link and the source sentence that
    justifies it.
-8. **Checks:** the validator command and its final `0 errors` line, and any
+9. **Checks:** the validator command and its final `0 errors` line, and any
    repository test that loads the package.
 
 Byte-compare long prose (rationale, notes) against the source with a script
