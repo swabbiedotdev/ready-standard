@@ -322,3 +322,32 @@ cases:
   - id: negative-ordinary-coding
     prompt: Refactor this utility module without changing behavior.
     should_activate: false
+
+  # Conversion
+
+  - id: convert-artifact-grouped-pip
+    prompt: >-
+      Convert this Markdown PIP to a RIP. It predates modules: it has
+      flows/, sequences/, data/, and screens/ folders, and several sequences
+      serve more than one flow.
+    should_activate: true
+    must:
+      - propose module boundaries to the owner before converting, each named for one responsibility that owns its state
+      - assign every flow, sequence, rule, and table to exactly one module and record the assignment in the fidelity audit
+      - avoid a catch-all module for the sequences shared by several flows; give each to the module that owns the behavior
+      - pilot one module and review it before fanning out
+      - validate with npx @readyroom/ready validate and report 0 errors
+
+  - id: convert-design-targets
+    prompt: >-
+      While converting a PIP, the claim screen links a Figma frame (file,
+      node 12:34, branch launch), the settings screen links only the whole
+      Figma file, and the onboarding screen points at a local SVG mockup and
+      a PNG export.
+    should_activate: true
+    must:
+      - put the exact frame, node, and branch in surface.mockup for the claim screen
+      - keep the whole-file link as context in notes, not as the target, and list the settings surface in the audit as having no exact target
+      - copy the SVG into product/<module>/files/, list it with role mockup, and name it in surface.mockup.file
+      - keep the PNG outside product/ and link it by url, since raster images are not supplementary files
+      - not drop any design reference silently

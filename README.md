@@ -60,23 +60,17 @@ repository is out of date.
 ## Using a package
 
 A repository with a ready package keeps it at `product/`, starting with
-`product/product.ready`. To validate or export it you need a checkout of Ready
-Room (Node 24+, `npm install` run once):
+`product/product.ready`. Validate and export it with the `@readyroom/ready`
+package (Node 24+):
 
 ```sh
-# from the Ready Room checkout
-npm run ready -- validate <repo>              # must report 0 errors
-npm run ready -- export <repo> <out>          # readable Markdown book with diagrams
-npm run ready -- export <repo> <out>.json --format json
-npm run ready -- schema                       # the JSON Schema for one record
-
-# or from anywhere
-npm --prefix <ready-room> run ready -- validate "$PWD"
+npx @readyroom/ready validate <repo>          # must report 0 errors
+npx @readyroom/ready export <repo> <out>      # readable Markdown book with diagrams
+npx @readyroom/ready export <repo> <out>.json --format json
+npx @readyroom/ready schema                   # the JSON Schema for one record
 ```
 
-`<repo>` is the directory that contains `product/`. A standalone CLI,
-`@ready-standard/cli` with a `ready` binary, is planned so a repository can
-validate without a Ready Room checkout; it is not built yet.
+`<repo>` is the directory that contains `product/`.
 
 To start a package, copy
 [skills/ready-standard/assets/template-package/product/](skills/ready-standard/assets/template-package/product/)
