@@ -107,7 +107,7 @@ point at are checked (`ref.kind`).
 
 - **product** (exactly one): `name, outcome, summary?, release?, format_version?,
   boundary?` (text, or `{text?, includes?, excludes?}`), `exclusions?, measures?,
-  dcl? {level (integer 0–9), basis}`.
+  dcl? {level (integer 1–10), basis}`.
 - **module**: `name, summary, owns?, invariants?, runs_in?` (systems).
 - **actor**: `name, description?, goal?, side?` (user, product, operator,
   third_party), `connections? [{to (system or actor), label?, direction? (to, both)}]`

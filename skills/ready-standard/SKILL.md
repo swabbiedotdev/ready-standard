@@ -63,6 +63,8 @@ These carry over from the older Markdown PIP format, restated for records. Read
 
 - Converting a Markdown + Mermaid PIP to a RIP: [references/converting.md](references/converting.md),
   including the fidelity audit that proves nothing was lost.
+- Reconstructing intent for an existing product with no reliable package:
+  [references/reconstructing.md](references/reconstructing.md).
 - Auditing code against records, or writing tickets that link them:
   [references/auditing.md](references/auditing.md).
 - Before finishing any change, scan [references/mistakes.md](references/mistakes.md).

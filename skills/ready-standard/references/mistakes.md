@@ -57,9 +57,16 @@
 - **Copy invented in `copy`.** `copy` quotes only real user-visible words;
   descriptions go in `sees` and `does`.
 - **Layout in records.** Placement, colors, pills, and columns belong to the
-  mockup the surface links, unless the design drives behavior.
+  mockup the surface links, unless the design drives behavior. Restate a visual
+  cue as the state it signals: "marked unread", not "a purple dot".
 - **A DCL on every sequence.** The product default applies; a sequence sets
   `dcl` only for a real override with its own `basis`.
+- **A catch-all module** (`shared`, `common`, `core`, `utils`) or a module per
+  table instead of modules named for one responsibility.
+- **An invented branch outcome** for a case the owner never decided, or an
+  invented runtime check to make a declarative constraint look connected.
+- **A control panel for a manual fallback** when the requirement is that the
+  responsible operator notices, or a log no one reads standing in for that.
 
 ## Intent
 
@@ -70,6 +77,9 @@
   ticket.
 - **Editing records to match the code** during an audit or implementation. Code
   is evidence; report the difference and let the owner decide.
+- **Widening a rule silently:** turning "safe to expose" into "eligible to
+  retrieve", adding a stored classification, or encoding policy in an index
+  `where` without asking the owner.
 - **Changing an `id`** because a title changed. Change `title` or `display_id`
   and keep the old display id in `aliases`.
 - **Unproportional packages:** a record per table column, an acceptance record
@@ -83,4 +93,5 @@
 - **Fixing `ref.missing` first** while a record with `field.invalid` is the real
   cause (it was never loaded).
 - **Putting audits, conversion notes, or scripts in `product/`.** Only records and
-  the supplementary files they reference live there.
+  the supplementary files they reference live there. Research journeys, design
+  boards, and reconstruction notes stay outside too.

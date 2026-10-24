@@ -16,7 +16,10 @@ An audit compares code with a Ready Intent Package (RIP).
    journeys and steps, sequences, rules, constants, entities, and operations.
    Follow direct links (`invokes`, `rules`, `relationships`) into other modules
    only where an exported operation, shared entity, or cross-module invariant is
-   involved.
+   involved. A change to what a module promises (result meaning, refusals,
+   atomicity, idempotency, privacy, retention) widens the scope to its
+   consumers even when signatures are unchanged; missing links do not prove
+   there are none.
 3. **Map records to code.** Start from the records' own anchors: `operation.http`
    and `owner`, message `call`, `http`, and `owner`, `system.code`,
    `surface.route` and `code`, `entity.table`, index `name`, constant `source`.
@@ -51,14 +54,30 @@ An audit compares code with a Ready Intent Package (RIP).
 Optionally compare the product's target DCL with the implementation's apparent
 level, in the audit notes only.
 
+When the product has several clients (web, mobile, a CLI), audit them against
+each other from time to time: every difference is either a `platforms` entry
+the records state on purpose or a finding. Resolve each with the owner, one at
+a time, with a recommended option.
+
 ## Implementing from records
 
 - Read the owning records first; name the record ids in the plan.
 - Reuse the code owners the records name (`owner`, `code`) instead of adding
   parallel implementations.
+- An exact `mockup` target binds the implementation: do not silently add,
+  remove, merge, split, or redesign surfaces. Generated or exported design code
+  is a reference, not an override. Raise a conflict with the product or design
+  owner.
 - Change declared state first (schema files, infrastructure config) and generate
   migrations from the diff; the records hold the product-significant subset of
-  that declared state.
+  that declared state. If the repository has only migrations, stop and propose
+  a declared schema (generated from the current database) before adding one.
+  Review generated migrations for destructive drops, and hand-edit one only for
+  what a diff cannot express.
+- Pause and ask before a mechanism the records do not state would add a
+  classification, split a population, move a rule between stages, add derived
+  state or a backfill, or put policy in an index predicate
+  (see [principles.md](principles.md#the-owner-directs-intent)).
 - Cite records in code comments by display id (`// SEQ-NOTES-SAVE`) or id.
 - When the records do not resolve a case you hit, ask the owner and record the
   answer in the owning record before building it.
@@ -72,6 +91,8 @@ A ticket links records; it does not restate them.
   records to satisfy; then only execution context: what to touch and not touch,
   verified code anchors, order, hazards, blockers, and the proportional
   verification (core path, required failure and recovery, dangerous edges).
+- Split tickets by outcome (a journey, sequence, or operation), not by file or
+  layer.
 - **Never** copy copy, conditions, acceptance, or data rules into the ticket.
   Completion means alignment with the linked records plus the ticket's own
   evidence.

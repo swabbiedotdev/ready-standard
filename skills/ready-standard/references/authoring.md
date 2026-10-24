@@ -18,11 +18,15 @@ Changes to a Ready Intent Package (RIP) follow one workflow.
    starter; a new step must be listed in its journey; a new entity column used
    by a sequence must exist on the entity. Remove a record only after removing
    or redirecting every reference to it.
-5. **Rewrite rationale.** Update `rationale` on the owning record (or its module)
+5. **Check what consumers rely on.** If the change alters a module's public
+   promise (result meaning, refusals, atomicity, idempotency, privacy,
+   retention), find and review every consumer, linked or not, even when names
+   and signatures stay the same.
+6. **Rewrite rationale.** Update `rationale` on the owning record (or its module)
    so it explains the current design, and delete reasons that no longer apply.
-6. **Validate** (see [validation.md](validation.md)) until there are 0 errors,
+7. **Validate** (see [validation.md](validation.md)) until there are 0 errors,
    and check every new warning.
-7. **Release.** If the repository versions its RIP, set `product.release` to the
+8. **Release.** If the repository versions its RIP, set `product.release` to the
    version the RIP now describes, as its `AGENTS.md` directs.
 
 Start a new record by copying the kind's template from
@@ -91,6 +95,8 @@ no empty strings, present tense, no history or task words.
 - [ ] `sequence` names the sequence that carries it out, and that sequence's
       `operation` points back.
 - [ ] Payload types in a contract file under `files`, not in fields.
+- [ ] Guarantees callers rely on (idempotency, atomicity, retention,
+      precision) are stated, at the strength the DCL and the owner call for.
 
 **sequence**
 - [ ] `trigger` with the right `trigger_kind`: `user` or `call` must be started
@@ -106,6 +112,9 @@ no empty strings, present tense, no history or task words.
 - [ ] Calls into another module use `invokes` on that module's operation or
       sequence; its internals are not repeated.
 - [ ] `owner` names the intended code owner where it prevents duplication.
+- [ ] A manual path notifies the responsible operator through a watched
+      channel with enough context, and keeps the automatic protection that
+      stops harm before review.
 - [ ] 16 messages or fewer, otherwise lettered parts joined by `continue`.
 - [ ] `dcl` only as a narrow override with its own `basis`.
 - [ ] A flowchart part (`diagram` with `items: []`) names records in node
@@ -152,6 +161,8 @@ no empty strings, present tense, no history or task words.
 - [ ] Only when sequences do not already show the lifecycle clearly.
 - [ ] One `initial` state; `terminal` where it ends; transitions name existing
       states (or `[*]`) and `via` the sequences or rules that cause them.
+- [ ] No self-loops for polling, heartbeats, lease renewal, or retries that
+      change no state; combinable roles and flags are rules, not states.
 
 **quality**
 - [ ] `applies_to` names the sequences or records it constrains; `measure`,
