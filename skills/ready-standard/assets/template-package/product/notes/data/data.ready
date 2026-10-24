@@ -1,0 +1,14 @@
+# Template: entity_group. One DATA id over several tables, or a module's data
+# diagram; lettered data diagrams use parts / part_of.
+# Required: ready, kind, id, module, title, entities.
+# Optional: summary, diagram {nodes, edges}, parts / part_of.
+ready: 1
+kind: entity_group
+id: notes.data
+module: notes
+title: Notes data
+entities:
+  - notes.data.note
+rationale: >-
+  One table holds every note because notes have no structure beyond their
+  text; owner_id on each row keeps every query scoped to one person.

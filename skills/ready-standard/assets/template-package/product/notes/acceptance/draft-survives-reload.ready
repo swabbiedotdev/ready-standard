@@ -1,0 +1,17 @@
+# Template: acceptance. Exceptions only: a case no journey, sequence, or rule
+# can show. why_not_diagram says why.
+# Required: ready, kind, id, module, title, why_not_diagram,
+#   verifies (at least one record), given, when, then.
+ready: 1
+kind: acceptance
+id: notes.acceptance.draft-survives-reload
+module: notes
+title: An unsaved draft survives a reload
+why_not_diagram: >-
+  It holds in every editor state rather than at one step, so no single step
+  or message can carry it.
+verifies:
+  - notes.surface.editor
+given: A person has typed text in the editor and not saved it
+when: The page reloads
+then: The editor shows the same text

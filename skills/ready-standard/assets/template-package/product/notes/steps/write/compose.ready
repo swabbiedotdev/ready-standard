@@ -1,0 +1,35 @@
+# Template: step. The step's journey must list it in steps.
+# Required: ready, kind, id, journey, title,
+#   step_kind (screen | action | system | decision | outcome | error).
+# Optional: surface, presentation (screen | inline | sheet | dialog | toast |
+#   email | notification | external), platforms (ios | android | web | mobile |
+#   desktop), roles, copy {title, body, actions, hints}, sees, does,
+#   next [{to (step, journey, or $return), label, when, next_kind (action |
+#   result | auto), channel (email | push | async | link), both_ways,
+#   platforms, roles, target_label}], sequences, rules,
+#   data [{entity, access (read | write | read-write)}].
+# copy quotes user-visible words verbatim; sees and does describe.
+ready: 1
+kind: step
+id: notes.write.compose
+journey: notes.write
+title: Write and save a note
+step_kind: screen
+surface: notes.surface.editor
+copy:
+  title: New note
+  actions:
+    - Save
+  hints:
+    - Up to {max_length} characters
+sequences:
+  - notes.seq.save
+rules:
+  - notes.rule.length
+data:
+  - entity: notes.data.note
+    access: write
+next:
+  - to: $return
+    label: Save
+    next_kind: action

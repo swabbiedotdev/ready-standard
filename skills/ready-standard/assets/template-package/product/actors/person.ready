@@ -1,0 +1,11 @@
+# Template: actor.
+# Required: ready, kind, id, name.
+# Optional: description, goal, side (user | product | operator | third_party),
+#   connections [{to (system or actor), label, direction (to | both)}],
+#   plus the common fields (display_id, aliases, rationale, notes, files, tags).
+ready: 1
+kind: actor
+id: actor.person
+name: Signed-in person
+side: user
+goal: Keep their own notes and find them again.

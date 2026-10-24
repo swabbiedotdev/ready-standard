@@ -1,0 +1,33 @@
+# Template: operation (a public operation, RPC, or endpoint).
+# Required: ready, kind, id, module, name, summary.
+# Optional: params [{name, source, source_kind, type}], returns,
+#   errors [{code, status, when, copy, maps_to}], http {method, path}, auth,
+#   sequence (the sequence that carries it out), owner (code path::symbol).
+# Payload types go in a supplementary file listed in files (role: contract).
+ready: 1
+kind: operation
+id: notes.op.save
+display_id: notes.save
+module: notes
+name: POST /api/notes
+summary: Saves a new note for the signed-in person.
+http:
+  method: POST
+  path: /api/notes
+auth: Session cookie
+params:
+  - name: text
+    type: string
+    source: The editor's text field
+    source_kind: surface
+returns: The saved note
+errors:
+  - code: too_long
+    status: 422
+    when: text is longer than NOTE_MAX_LENGTH
+    copy: That note is too long.
+sequence: notes.seq.save
+files:
+  - path: product/notes/files/save-contract.ts
+    title: Save payload types
+    role: contract

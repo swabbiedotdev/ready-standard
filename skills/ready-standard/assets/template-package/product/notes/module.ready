@@ -1,0 +1,18 @@
+# Template: module. One per module folder, at product/<module>/module.ready.
+# The module id is the folder name and the prefix of its records' ids.
+# Required: ready, kind, id, name, summary.
+# Optional: owns, invariants, runs_in (systems).
+ready: 1
+kind: module
+id: notes
+name: Notes
+summary: Writes, lists, and deletes a person's own notes.
+runs_in:
+  - sys.app
+owns:
+  - note (DATA-NOTE)
+invariants:
+  - A person reads and changes only their own notes.
+rationale: >-
+  Notes stay private to their owner because the product has no sharing; every
+  read and write is scoped by the session's account.

@@ -1,0 +1,13 @@
+# Template: constant.
+# Required: ready, kind, id, module, name.
+# Optional: value (text; omit when the RIP only names it), unit,
+#   source (config path#key when code owns the value), description,
+#   table {columns, rows} for value tables such as tiers.
+ready: 1
+kind: constant
+id: notes.const.max-length
+module: notes
+name: NOTE_MAX_LENGTH
+value: "2000"
+unit: characters
+description: The longest note a person can save.

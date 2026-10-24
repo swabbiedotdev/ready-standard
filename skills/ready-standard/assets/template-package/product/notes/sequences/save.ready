@@ -1,0 +1,81 @@
+# Template: sequence.
+# Required: ready, kind, id, module, title, participants, items.
+# Optional: summary, trigger {trigger_kind (user | event | schedule | call |
+#   operator), text}, operation, dcl (override only), diagram (a flowchart
+#   part, with items: []), parts / part_of.
+# Participants: an actor or system id, or {id (key), is, label, component,
+#   owner}. Messages and notes use participant keys.
+# Items: msg, note, alt, opt, loop, par, break, transaction, continue.
+# Split a sequence over 16 messages into lettered parts.
+ready: 1
+kind: sequence
+id: notes.seq.save
+display_id: SEQ-NOTES-SAVE
+module: notes
+title: Save a note
+trigger:
+  trigger_kind: user
+  text: The person chooses Save in the editor
+operation: notes.op.save
+participants:
+  - actor.person
+  - sys.app
+  - id: DB
+    is:
+      - sys.app
+    label: App database
+items:
+  - msg:
+      from: actor.person
+      to: sys.app
+      text: Save the note
+      http:
+        method: POST
+        path: /api/notes
+        body: "{text}"
+      inputs:
+        - name: text
+          source: The editor's text field
+          source_kind: surface
+        - name: account_id
+          source: The verified session
+          source_kind: session
+      rules:
+        - notes.rule.length
+      constants:
+        - notes.const.max-length
+  - alt:
+      branches:
+        - when: text is within NOTE_MAX_LENGTH
+          items:
+            - msg:
+                from: sys.app
+                to: DB
+                text: Insert the note
+                owner: apps/web/app/api/notes/route.ts::POST
+                ops:
+                  - op: insert
+                    entity: notes.data.note
+                    set:
+                      - note_id new
+                      - owner_id = account_id
+                      - text
+                      - created_at now
+            - msg:
+                from: sys.app
+                to: actor.person
+                text: Saved
+                reply: true
+                results:
+                  - status: 201
+        - when: text is longer than NOTE_MAX_LENGTH
+          items:
+            - msg:
+                from: sys.app
+                to: actor.person
+                text: Refuse the note
+                reply: true
+                results:
+                  - status: 422
+                    code: too_long
+                    copy: That note is too long.

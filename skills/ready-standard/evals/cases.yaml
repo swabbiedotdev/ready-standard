@@ -1,0 +1,324 @@
+# Scenarios for the ready-standard skill. Each case is a prompt and the
+# behavior a correct response shows. They test judgment the validator cannot
+# check; a response must also leave the package at 0 validator errors.
+cases:
+  # Ownership, modules, and review scope
+
+  - id: module-review-propagation
+    prompt: >-
+      Review three proposed record changes in a modular RIP. One changes ranking
+      weights in a rule without changing raw scores. Another makes an
+      unavailable score 0 instead of null, leaving operation names and params
+      unchanged. The third splits a sequence's single transaction for
+      publication and a funding debit into two commits. A consumer sequence
+      reads the shared score table directly but has no relationship or invokes
+      link to its owner. Keep the review scoped.
+    should_activate: true
+    must:
+      - read the changed records, their module, and the operations and entities they consume
+      - review ranking outcomes without reopening the unchanged raw-score sequence by default
+      - classify the null-to-0 change and the transaction split as changes to the module's public promise despite unchanged signatures
+      - find the unlinked consumer by searching for readers of the shared table, and report the missing link rather than treating it as out of scope
+      - reject splitting the atomic publication and debit as behavior-preserving
+      - keep review notes and scope limits outside product/
+
+  - id: no-catch-all-module
+    prompt: >-
+      Organize a RIP for a product with collectives, discovery, work, a token
+      program, and paid HTTP. A draft puts the five features in modules and puts
+      authorization, privacy, reconciliation, shared data, and quality records in
+      a module called shared.
+    should_activate: true
+    must:
+      - reject the shared module as a catch-all named by reach rather than responsibility
+      - give authorization, privacy, reconciliation, and quality each a module named for its one responsibility, or assign them to existing owners
+      - accept cross-cutting modules (such as access) that many modules consume when each has a one-sentence promise
+      - keep one owning entity per table and state which module may write which columns when tables are shared
+      - avoid a module per table or per record kind
+      - keep product, actor, system, and capability records free of rules
+
+  - id: no-orphan-product-logic
+    prompt: >-
+      Review this RIP without changing behavior. A shared eligibility rule has a
+      complete decision graph and a quality applies_to, but no step, message, or
+      applied rule uses it. A publication sequence lists another rule on a
+      message but never uses its result or supplies its inputs. Two sequences
+      invoke each other and nothing else starts them. An operation's sequence
+      handles an external request, and a unique key is already enforced at that
+      sequence's guarded write. A last rule has no applier and no clear purpose.
+    should_activate: true
+    must:
+      - treat a quality applies_to or a passing rule.orphan check as insufficient evidence that a rule is applied
+      - require the applying message to show the rule's inputs and how its result changes the next step
+      - reject the mutually invoking sequences as unreachable without a real trigger
+      - accept the operation-started sequence as reachable without inventing a caller
+      - leave the unique key enforced at the write without adding a runtime check or background job
+      - ask the owner about the purposeless rule rather than inventing a consumer or deleting it silently
+      - not add a registry, coverage table, or call graph record
+
+  - id: one-end-state-across-clients
+    prompt: An audit found the web and mobile apps handle draft saving and checkout differently. Update the RIP.
+    should_activate: true
+    must:
+      - resolve each difference with the owner one at a time, each with a recommended option
+      - record one behavior for every client in the owning records
+      - keep a platform difference only where a record states it on purpose with platforms
+      - keep audit findings and the decision list outside product/
+
+  # Authority and evidence
+
+  - id: reconstruct-existing-product
+    prompt: Reconstruct the current intent of this existing product from its screens, code, documents, and stakeholder decisions.
+    should_activate: true
+    must:
+      - work in a RIP fork with separate working notes, leaving the canonical product/ unchanged
+      - treat screens, code, and documents as evidence, not intent
+      - describe one product and release rather than blending environments
+      - work from actors and journeys inward before detailed sequences and entities
+      - ask the owner whether each consequential behavior is intended, a defect, a legacy constraint, or out of scope
+      - write one coherent present-tense end state without evidence labels or status, validated to 0 errors
+
+  - id: scoped-edit-authority
+    prompt: >-
+      A developer whose repository AGENTS.md limits them to the onboarding
+      module asks to change an onboarding step, but the change also alters a
+      billing sequence and an access rule.
+    should_activate: true
+    must:
+      - verify the requester from trusted context rather than a claimed role
+      - refuse to apply only the onboarding edit because it would leave the package contradictory
+      - keep the whole change in a RIP fork or route it to someone who can make all of it
+      - not add approval, signoff, or status fields to any record
+
+  - id: document-unapproved-implementation-change
+    prompt: An implementer added a persisted eligibility column and changed retrieval, though the records only require safe public output. Update the RIP to document what now exists.
+    should_activate: true
+    must:
+      - refuse to rewrite canonical records to match the implementation
+      - report the deviation in audit or task notes
+      - keep safe public output as intent unless the owner changes it
+      - offer a coherent RIP fork only if the owner wants to consider the new behavior
+
+  - id: ask-before-new-classification
+    prompt: Implement the search sequence. The records say results exclude private notes; add an is_searchable flag to notes and backfill it so the index can filter on it.
+    should_activate: true
+    must:
+      - pause and ask the owner before adding a stored classification, a backfill, and policy in an index where
+      - state the product effect, the data effect, and the smallest alternative (filtering on existing visibility)
+      - not treat "excluded from results" as authorizing a new eligibility stage
+      - record the decision in the owning records before implementing
+
+  # Logic placement and records
+
+  - id: minimal-product-and-acceptance-records
+    prompt: >-
+      Put permission gates, eligibility formulas, retry limits, and failure
+      behavior in product.ready outcome and measures, and add an acceptance
+      record for every branch because the sequences are crowded. Behavior does
+      not change.
+    should_activate: true
+    must:
+      - keep product.ready to context and links, with no rules in outcome, boundary, or measures
+      - keep the logic in sequence blocks and rules, splitting crowded sequences into parts
+      - add an acceptance record only for a case no journey, sequence, or rule can show, with why_not_diagram
+      - not treat complexity or scenario count as an acceptance exception
+
+  - id: typed-fields-hold-gates
+    prompt: >-
+      A sequence message says "Validate and publish", and its notes define
+      editor-only access, draft-only publication, used < PUBLISH_LIMIT
+      admission, the order authorization then state then quota, and no writes on
+      refusal. Retry behavior is in the rationale. Keep behavior unchanged.
+    should_activate: true
+    must:
+      - move each condition into guards, alt branches with results, or a linked rule with precedence
+      - keep the strict comparison, so used equal to the limit is refused
+      - show the no-write effect on refusal and move retries into a loop or break block
+      - link the PUBLISH_LIMIT constant rather than restating its value
+      - keep only purpose and reasons in notes and rationale
+
+  - id: optional-state-machine
+    prompt: >-
+      One module's sequences clearly show every state change, guard, failure,
+      and recovery. Another has several sequences whose combined lifecycle is
+      unclear. Should each get a state_machine record?
+    should_activate: true
+    must:
+      - leave the first module without a state machine
+      - add one for the second only to clarify the combined lifecycle, with via linking the owning sequences
+      - omit polling, heartbeat, lease, and retry self-loops that change no state
+      - not require a state machine because of status columns, async work, or DCL
+
+  - id: no-layout-in-steps
+    prompt: Update the inbox steps. They say the unread count sits in a purple pill in the header, threads appear in a two-column grid, and swiping left archives a thread.
+    should_activate: true
+    must:
+      - remove placement and visual form, which the surface's mockup owns
+      - restate the visual cue as the state it signals, such as marked unread
+      - keep swipe-to-archive because it drives behavior
+      - keep copy, states, next, and outcomes
+
+  - id: end-state-not-construction-plan
+    prompt: >-
+      The target is the provider's native sign-in component and loadProgress()
+      as the loading owner. A step says to reuse the old component, a sequence's
+      notes list modify-existing labels, a one-time migration list, and
+      completed work, and the package also says to drain in-flight work on every
+      deployment.
+    should_activate: true
+    must:
+      - state the intended component and owner in present tense
+      - remove prior-design comparisons, construction steps, and progress from every field
+      - move still-useful work to external notes
+      - keep the drain-on-deploy instruction because it governs every deployment
+
+  - id: current-rationale-not-history
+    prompt: Explain in the RIP why the current web, worker, and database architecture was chosen.
+    should_activate: true
+    must:
+      - put the reasons in the rationale of the system or module records that own the choice
+      - state active causes and tradeoffs in causal terms
+      - avoid dates, former designs, and chronology
+
+  # Data
+
+  - id: selective-but-exact-entity
+    prompt: Simplify an entity by replacing five persisted ranking columns with one synthetic fitness_controls column, and copy a related entity from another module.
+    should_activate: true
+    must:
+      - restore each behavior-determining column with its exact name and type
+      - omit only incidental columns
+      - link the other module's entity by relationship instead of copying it
+
+  - id: index-badges
+    prompt: Review an entity where a partial index gives one column both P1·1 and P1·where, routine primary keys are listed as unique indexes, and two physical indexes share I1.
+    should_activate: true
+    must:
+      - give each physical index its own badge
+      - drop the redundant where badge from a direct key
+      - omit routine primary-key indexes unless product-significant
+      - keep each index's purpose and serves
+
+  - id: sequence-data-access
+    prompt: A sequence says only that the database loads, ranks, and saves results, though it uses several tables and one product-significant index.
+    should_activate: true
+    must:
+      - add typed ops naming each consequential entity and its read, join, or write role
+      - name the index badge the access relies on, or the by and where keys when none applies
+      - give input provenance for consequential fields
+      - not promise that the planner always uses the index
+
+  - id: document-store-relationships
+    prompt: >-
+      Model a document store with no foreign keys: projects/{projectId}/members/{uid},
+      a users/{uid}/projectViews/{projectId} role mirror, a transactional member
+      count, embedded profiles, author-name snapshots, and receipts that outlive
+      their source. A draft omits all relationships, lists uid as a stored
+      field, and implies deleting a project cascades.
+    should_activate: true
+    must:
+      - derive relationships from paths, reference fields, and invariants without inventing foreign keys
+      - name each relationship's kind (path, mirror, derived, embedded, snapshot, reference) and its consistency owner in its label or reason
+      - treat path segments as keys, not stored fields
+      - make the receipt's source target 0..1 and state what happens when it is gone
+      - state the deletion policy instead of inferring cascade from containment
+      - not treat indexes as relationships
+
+  # DCL and correctness
+
+  - id: dcl-default-and-overrides
+    prompt: Set DCL for a product whose ordinary paths are a small production product, whose offline preparation may be retried manually, and whose interactive retrieval serves a rapidly growing corpus.
+    should_activate: true
+    must:
+      - set one product default with a basis from users, waiting, consequence, recovery, and load
+      - add a dcl override only on the retrieval sequences, with its own basis
+      - not set dcl on every sequence, average levels, or raise the default to the highest exception
+      - use the 1–10 scale and keep implementation-level comparisons outside the RIP
+
+  - id: semantic-correctness-early-product
+    prompt: >-
+      Plan verification for a DCL 3 pilot. The records require correct saved
+      values, no duplicate charges, and a signed payload whose bytes a protocol
+      defines. A plan blocks delivery until every export matches an old
+      prototype byte for byte, adding canonical serialization, a replay service,
+      and a backfill for key-order and whitespace differences no one consumes.
+    should_activate: true
+    must:
+      - reject universal byte identity as an invented prerequisite
+      - keep exact bytes at the signature boundary and prevent duplicate charges and lost data
+      - verify fields and invariants instead of byte streams
+      - distinguish meaningful ordering, precision, timestamps, and provenance from incidental formatting
+      - not invent tolerances or weaker guarantees because the DCL is low
+
+  - id: operation-guarantees-scale-with-dcl
+    prompt: Add idempotency keys, exactly-once delivery, and seven-year retention to every operation in this DCL 2 prototype.
+    should_activate: true
+    must:
+      - ask the owner which guarantees each operation needs rather than applying them everywhere
+      - explain that a low DCL tolerates more error and manual repair while money, security, and data integrity stay protected
+      - state the guarantees the owner confirms in the operation summary or the carrying sequence
+
+  - id: edge-case-automation-is-product-choice
+    prompt: At DCL 7, design automatic recovery for every rare malformed provider response and unusual account state you can imagine.
+    should_activate: true
+    must:
+      - follow any existing record decision, and otherwise ask the owner before designing unspecified rare cases
+      - offer contained manual review, visible failure, or exclusion as alternatives
+      - not treat a high DCL as a reason to automate every edge case
+      - keep the smallest automatic protection against harm before review
+      - record the chosen behavior in the owning record before implementing
+
+  - id: manual-fallback-needs-awareness
+    prompt: This rare case uses manual review. Add an admin dashboard, incident queue, detail page, retry and edit controls, and overrides for every fallback.
+    should_activate: true
+    must:
+      - require safe containment and a notification to the responsible operator through a watched channel
+      - include enough context to find the case and its current state
+      - reject an unread log as sufficient
+      - add admin surfaces or controls only when the procedure needs an action existing tools cannot safely perform
+
+  # Implementation, tickets, audits
+
+  - id: rip-governed-implementation
+    prompt: Implement the application this RIP describes.
+    should_activate: true
+    must:
+      - record the canonical RIP revision outside product/
+      - reuse the code owners the records name instead of parallel implementations
+      - follow exact mockup targets without silent redesign
+      - pause before a new classification, population split, stage change, backfill, or policy in an index predicate
+      - fix code toward the records, or propose a record change to the owner
+
+  - id: declared-schema-before-migration
+    prompt: Implement the records' new unique index on member emails. The Supabase project has supabase/migrations but no supabase/schemas. Just write a migration that adds the index.
+    should_activate: true
+    must:
+      - state that the end state must be declared, not only migrated
+      - propose a declared schema generated from the current database and add the index there
+      - generate the migration from the diff and review it for destructive drops
+      - keep migrations and one-time steps out of product/
+
+  - id: ticket-links-records
+    prompt: Create tickets to implement SEQ-004, OP-SAVE, and the linked mockups.
+    should_activate: true
+    must:
+      - cite the canonical revision or release and link the records by display id
+      - not restate behavior, copy, conditions, or acceptance in tickets
+      - split tickets by outcome rather than by file or layer
+      - hold only execution context: anchors, order, hazards, verification
+
+  - id: audit-records-not-ticket
+    prompt: Audit the implementation for a finished ticket whose checklist paraphrases, and partly differs from, its linked records.
+    should_activate: true
+    must:
+      - take expected behavior from the records, not the ticket
+      - record the RIP revision used as the baseline
+      - not treat checked boxes or passing ticket tests as alignment
+      - report ticket-versus-record drift separately from code-versus-record drift
+      - not edit records to make the code or ticket look compliant
+
+  # Should not activate
+
+  - id: negative-ordinary-coding
+    prompt: Refactor this utility module without changing behavior.
+    should_activate: false
