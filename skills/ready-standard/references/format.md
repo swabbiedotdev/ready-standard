@@ -211,7 +211,8 @@ to, label?, undirected?}]`. `node_kind` is input, decision, calc, judge, action,
 outcome, data, or note. Node ids are free text local to the graph; `refs` names
 any records the node stands for or uses. A node's `text` names those records in
 words; repeating an id, display id, or alias that is also in its `refs` is the
-`text.ref-id` warning.
+`text.ref-id` warning, naming any other record by id is `text.id`, and code
+vocabulary in it is `text.code`.
 
 ### Data
 
@@ -309,6 +310,10 @@ the output is in [validation.md](validation.md).
 | `entity.index` | W | A column badge names no index on the entity. |
 | `table.shape` | W | A rule table row has the wrong number of cells. |
 | `text.ref-id` | W | A graph node's text repeats an id, display id, or alias that is also in its `refs`. |
+| `text.id` | W | A prose field (title, summary, step text, copy, guard, label, message, note, or node text) names another record by id, display id, or alias; link it from the typed field named. |
+| `text.code` | W | A prose field reads as code: `path::symbol`, a file path, `call(args)`, a `WRITE ·` verb, a `dotted.reference`, a `snake_case` or `camelCase` identifier, or a `CONSTANT_NAME`. Product words and domain names are not code. |
+| `text.call` | W | A message's `text` repeats its `call`. |
+| `summary.missing` | W | A rule or sequence that is not a part has no `summary`. |
 | `sequence.unreachable` | W | Nothing starts the sequence (see below). |
 | `size.journey` | W | A journey has more than 12 steps. |
 | `size.sequence` | W | A sequence has more than 16 messages, counted through nested blocks. |

@@ -54,6 +54,16 @@ references it then reports `ref.missing`. Work from the top:
    `I1.1` written with a period instead of `·`), `text.ref-id` (an id in a
    graph node's text that its `refs` already carry), `table.shape`,
    `sequence.unreachable`, and the `size.*` budgets.
+8. **Plain-words warnings:** `text.code` (a prose field reads as code; the
+   message names the match and where it belongs), `text.id` (a prose field
+   names a record by id; link it from the typed field named), `text.call` (a
+   message's text repeats its `call`), `summary.missing` (a rule or sequence
+   has no summary). Fix these by moving the identifier into its typed field
+   and writing the sentence in words; see
+   [authoring.md](authoring.md#write-for-the-returning-reader). A package
+   converted before these checks existed can carry thousands; work module by
+   module, worst records first, and never satisfy a warning by deleting the
+   detail the owner cares about.
 
 Fix the cause, not the symptom: do not satisfy `rule.orphan` by listing the rule
 on an unrelated record, or `sequence.unreachable` by giving a called sequence

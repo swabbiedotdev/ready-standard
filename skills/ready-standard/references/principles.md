@@ -81,9 +81,34 @@ Ready Intent Package (RIP) at all and who decides it. They apply to every record
   or chronology. Remove a reason when it no longer explains the design.
 - Diagram text names things in words. In a `decision` or `diagram` graph, a
   node says "Check the member's role", not "Apply RULE-ACCESS"; the node's
-  `refs` carry the link, and the viewer shows it as a footnote. In prose fields
-  (`rationale`, `notes`, a rule's text, an index's `purpose`), an id or display
-  id is fine and links automatically.
+  `refs` carry the link, and the viewer shows it as a footnote. In `rationale`,
+  `notes`, and an index's `purpose`, an id or display id is fine and links
+  automatically. In a title, summary, or message, note, or node text it is the
+  `text.id` warning: the link belongs in the typed field.
+
+## Plain words first
+
+The fields a person reads are written for someone coming back after a month,
+not for the agent that wrote them. That is `title`, `summary`, a step's `does`,
+`sees`, and `copy`, a rule's `when`, `then`, and `otherwise`, guards and
+labels, and every message, note, and node text.
+
+- They carry no identifiers and no code vocabulary: no column or enum value
+  (`store_required`, `last_active_at`), no `schema.function(args)`, no file
+  path or `path::symbol`, no `WRITE ·` verb token, no `CONSTANT_NAME`. The
+  identifier lives in its typed field (`call`, `owner`, `code`, `ops`, `refs`,
+  `inputs[].source`, `constants`, `files`) or in `notes`, and the viewer shows
+  it beneath the words. The loader reports prose that reads as code
+  (`text.code`) and a message whose text repeats its `call` (`text.call`).
+- A rule or sequence opens with a one-sentence `summary` saying what it decides
+  or does, in the words the owner would use (`summary.missing` when absent).
+- Where an identifier must be visible to a person, such as an error code they
+  see, a `term` record gives it a `copy_word`, and the prose uses the word.
+- **The owner-cares test.** Keep a detail only when the owner would care if it
+  changed. "The write is refused when the membership is gone" is intent. A lock
+  mode, a migration file name, a `search_path` note, or a `SECURITY DEFINER`
+  remark is intent only when the product promises it; otherwise leave it out
+  rather than keep it until it is stale. Detail scales with the DCL.
 - `notes` holds other context: scope, terminology, pointers. It never holds a
   requirement that a typed field could hold.
 - Acceptance records are exceptions: only a case no journey, sequence, or rule

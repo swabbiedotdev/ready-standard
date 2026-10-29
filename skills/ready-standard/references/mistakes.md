@@ -18,6 +18,19 @@
 - **Ids in diagram text.** A decision or diagram node whose `text` says
   "Apply RULE-ACCESS" or "notes.rule.length" while its `refs` already holds
   that record (`text.ref-id`). Name it in words; `refs` carries the link.
+- **Ids in titles, summaries, and messages.** "After RULE-001, …" in a summary
+  or "(SEQ-011)" in a description (`text.id`). Say it in words; the link goes
+  in `rules`, `refs`, `invokes`, or `sequences`.
+- **Code in prose.** A message whose `text` is `app.claim_code_send(email)`,
+  a node that says `CALL · app._act_as_shop(viewer), 60_app_core.sql; LOCK ·
+  shop_member`, a summary that says "refuses with store_required", a title
+  that is a symbol (`access.authorize`), a constant description that repeats
+  `INVITATION_TTL = 7 days` (`text.code`, `text.call`). Put the call in
+  `call`, the lock in `ops`, the file in `owner` or `files`, the code in a
+  `term`, the value in the constant's own fields; write the sentence a person
+  would say.
+- **A rule or sequence with no summary** (`summary.missing`), so the first
+  thing a reader meets is the gate or the graph.
 
 ## References
 
