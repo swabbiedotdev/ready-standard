@@ -13,6 +13,7 @@ id: notes.seq.save
 display_id: SEQ-NOTES-SAVE
 module: notes
 title: Save a note
+summary: Saves a note that fits the length limit, or refuses it and keeps the text.
 trigger:
   trigger_kind: user
   text: The person chooses Save in the editor
@@ -46,7 +47,7 @@ items:
         - notes.const.max-length
   - alt:
       branches:
-        - when: text is within NOTE_MAX_LENGTH
+        - when: the text fits the length limit
           items:
             - msg:
                 from: sys.app
@@ -68,7 +69,7 @@ items:
                 reply: true
                 results:
                   - status: 201
-        - when: text is longer than NOTE_MAX_LENGTH
+        - when: the text is longer than the length limit
           items:
             - msg:
                 from: sys.app

@@ -29,6 +29,87 @@ Changes to a Ready Intent Package (RIP) follow one workflow.
 8. **Release.** If the repository versions its RIP, set `product.release` to the
    version the RIP now describes, as its `AGENTS.md` directs.
 
+## Write for the returning reader
+
+The fields a person reads (`title`, `summary`, `does`, `sees`, `copy`, `when`,
+`then`, `otherwise`, guards, labels, and message, note, and node text) are
+written in plain words for someone coming back after a month. The identifier
+goes in its typed field; the viewer shows it beneath the words. The loader
+warns where prose reads as code (`text.code`), names a record by id
+(`text.id`), repeats a message's `call` (`text.call`), or lacks a summary
+(`summary.missing`). Four pairs from real packages:
+
+**A rule's summary.** Before:
+
+```yaml
+summary: >-
+  After RULE-001, a shop write locks the writer's membership row, writes the row as the shop
+  with the person as attribution, and refuses with store_required when the membership is gone.
+```
+
+After, with the link and the code in their fields:
+
+```yaml
+summary: A member's write counts as their shop's; it is refused when their membership is gone.
+rules: [access.rule.viewer-permission]
+```
+
+and a `term` with `name: store_required`, `copy_word: needs a store`.
+
+**A node's text.** Before:
+
+```yaml
+- id: lock
+  node_kind: action
+  text: CALL · app._act_as_shop(viewer), 60_app_core.sql; LOCK · shop_member PK (shop_id, account_id) FOR KEY SHARE through commit
+```
+
+After:
+
+```yaml
+- id: lock
+  node_kind: action
+  text: Hold the writer's membership for the rest of the write
+  ops: [{ op: lock, entity: access.data.shop-member, by: shop and person, mode: FOR KEY SHARE }]
+  refs: [access.data.shop-member]
+```
+
+The function and file belong on the sequence message that calls it (`call`,
+`owner`); the lock mode stays only if the owner cares about it.
+
+**A message.** Before:
+
+```yaml
+- msg: { from: web, to: api, text: "access.authorize(member session, selected project, manage_own_connection)" }
+```
+
+After:
+
+```yaml
+- msg:
+    from: web
+    to: api
+    text: Check that the member may manage their own connection
+    call: access.authorize(session, project, manage_own_connection)
+    invokes: [access.op.authorize]
+```
+
+**A constant's description.** Before:
+
+```yaml
+description: Lifetime of an invitation link. The link is single-use, expires after INVITATION_TTL = 7 days, and is stored only as a hash.
+```
+
+After (the constant's own `name` and `value` already say `INVITATION_TTL = 7 days`):
+
+```yaml
+description: How long an invitation link stays valid. The link is single-use and stored only as a hash.
+```
+
+A title is the one field always read by a person: `access.authorize` is a
+symbol, "Who may do what" is a title. Apply the owner-cares test to every
+detail you move: if the owner would not care that it changed, leave it out.
+
 Start a new record by copying the kind's template from
 [`assets/template-package/product/`](../assets/template-package/product/) and
 replacing every value. The comments in each template list the kind's required

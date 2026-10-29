@@ -32,6 +32,12 @@ These carry over from the older Markdown PIP format, restated for records. Read
 - **Typed fields hold logic; prose holds purpose.** Conditions, outcomes, data
   access, and copy go in typed fields. `rationale` explains why; `notes` holds
   other context. Neither hides a requirement.
+- **Plain words first.** Titles, summaries, step text, copy, guards, and
+  message and node text are written for someone returning after a month: no
+  identifiers, no ids, no code vocabulary. The identifier goes in its typed
+  field (`call`, `owner`, `ops`, `refs`, `constants`) or in `notes`; a rule or
+  sequence opens with a one-sentence `summary`. See
+  [references/authoring.md](references/authoring.md#write-for-the-returning-reader).
 - **Present-tense end state.** No history, status, task, or migration language.
 - **The owner directs intent.** Code, tickets, tests, and agent suggestions are
   evidence, not authority. Tickets link records; they do not restate them.

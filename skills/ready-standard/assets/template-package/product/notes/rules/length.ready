@@ -10,9 +10,10 @@ ready: 1
 kind: rule
 id: notes.rule.length
 module: notes
-title: A note fits NOTE_MAX_LENGTH
-when: The note's text is longer than NOTE_MAX_LENGTH characters
-then: The save is refused with too_long and the editor keeps the text
+title: A note fits the length limit
+summary: A note longer than the limit is refused and the person keeps their text.
+when: The note's text is longer than the length limit
+then: The save is refused as too long and the editor keeps the text
 otherwise: The note is saved
 constants:
   - notes.const.max-length

@@ -24,7 +24,7 @@ returns: The saved note
 errors:
   - code: too_long
     status: 422
-    when: text is longer than NOTE_MAX_LENGTH
+    when: the text is longer than the length limit
     copy: That note is too long.
 sequence: notes.seq.save
 files:
