@@ -79,7 +79,7 @@ from its `kind` field.
 | `display_id` | Optional stable human id, e.g. `FLOW-012`, `SEQ-014a`, `DATA-ACCOUNT`, `RULE-ACCESS`. Unique in the package. |
 | `aliases`    | Retired ids and old heading anchors that still resolve here (`flow-012-claim-a-shop`).                       |
 | `rationale`  | Current rationale: why the design is shaped this way (Markdown).                                             |
-| `notes`      | Other prose that belongs with the record (Markdown).                                                         |
+| `notes`      | Context for a reader: scope, terminology, references, reasons (Markdown). Never behavior or columns a typed field could hold. |
 | `files`      | Supplementary files: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. |
 | `tags`       | `{tag, text}` annotations with no dedicated field.                                                           |
 
