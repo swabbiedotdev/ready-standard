@@ -31,11 +31,13 @@ These carry over from the older Markdown PIP format, restated for records. Read
   operator trigger.
 - **Typed fields hold logic; prose holds purpose.** Conditions, outcomes, data
   access, and copy go in typed fields. `rationale` explains why; `notes` holds
-  other context. Neither hides a requirement.
+  context: scope, terminology, references, the reasons behind a choice. Neither
+  hides a requirement, a column, or a result shape a typed field could hold.
 - **Plain words first.** Titles, summaries, step text, copy, guards, and
   message and node text are written for someone returning after a month: no
   identifiers, no ids, no code vocabulary. The identifier goes in its typed
-  field (`call`, `owner`, `ops`, `refs`, `constants`) or in `notes`; a rule or
+  field (`call`, `owner`, `ops[].by`/`set`, `returns`, `sets`, `refs`,
+  `constants`); `notes` takes it only when no field exists. A rule or
   sequence opens with a one-sentence `summary`. See
   [references/authoring.md](references/authoring.md#write-for-the-returning-reader).
 - **Present-tense end state.** No history, status, task, or migration language.

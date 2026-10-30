@@ -61,6 +61,10 @@
 - **Logic in prose.** A requirement in `notes`, `rationale`, `summary`, or a
   `tags` entry when a typed field (`alt`, `guards`, `results`, `when`/`then`,
   `next.when`, `copy`) can hold it.
+- **Identifiers parked in `notes`.** Moving a column, call, error code, or
+  result key out of prose and into `notes` when `ops[].by`/`set`, `call`,
+  `errors`, `returns`, or `sets` can hold it. The typed field is the home;
+  `notes` is for what has none.
 - **Rule records for one-off gates.** A guard used by one message belongs on
   that message; a rule record needs an owner reason (it is shared or large).
 - **Satisfying the validator instead of the principle.** Listing a rule on an

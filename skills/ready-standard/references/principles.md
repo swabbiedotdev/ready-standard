@@ -96,9 +96,14 @@ labels, and every message, note, and node text.
 - They carry no identifiers and no code vocabulary: no column or enum value
   (`store_required`, `last_active_at`), no `schema.function(args)`, no file
   path or `path::symbol`, no `WRITE ·` verb token, no `CONSTANT_NAME`. The
-  identifier lives in its typed field (`call`, `owner`, `code`, `ops`, `refs`,
-  `inputs[].source`, `constants`, `files`) or in `notes`, and the viewer shows
-  it beneath the words. The loader reports prose that reads as code
+  identifier lives in its typed field, and the viewer shows it beneath the
+  words: a call in `call`, code in `owner` or `code`, the columns a write
+  touches in `ops[].by` and `ops[].set` on the sequence that performs it, an
+  operation's result in `returns`, a rule's operation lists in `sets`, a
+  value's origin in `inputs[].source`, a constant in `constants`, a record in
+  `refs`. `notes` takes an identifier only when the format has no field for it
+  (an operation pointing at the rule that decides it, a rule pointing at the
+  sequence that applies it). The loader reports prose that reads as code
   (`text.code`) and a message whose text repeats its `call` (`text.call`).
 - A rule or sequence opens with a one-sentence `summary` saying what it decides
   or does, in the words the owner would use (`summary.missing` when absent).
@@ -109,8 +114,10 @@ labels, and every message, note, and node text.
   mode, a migration file name, a `search_path` note, or a `SECURITY DEFINER`
   remark is intent only when the product promises it; otherwise leave it out
   rather than keep it until it is stale. Detail scales with the DCL.
-- `notes` holds other context: scope, terminology, pointers. It never holds a
-  requirement that a typed field could hold.
+- `notes` holds context: scope, terminology, references, and the reasons behind
+  a choice. It never holds behavior, columns, or a requirement that a typed
+  field could hold; a `notes` line that lists columns or states a write is a
+  sign the fact belongs in `ops`, `returns`, or `sets`.
 - Acceptance records are exceptions: only a case no journey, sequence, or rule
   can show, with `why_not_diagram` saying why.
 - Name input provenance (`inputs[].source_kind`) for every input that changes a
