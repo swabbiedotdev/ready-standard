@@ -32,6 +32,27 @@
 - **A rule or sequence with no summary** (`summary.missing`), so the first
   thing a reader meets is the gate or the graph.
 
+## One home per fact
+
+- **Overloaded `sees`.** A step is one moment; a `sees` line stays only when
+  it says what the person sees then and no other field holds it. Words on
+  screen go in `copy` (the step's, or the surface element's when the screen
+  always shows them); actions in `does`; a condition on a `next` edge with
+  `when` or a decision step (`sees.branch`); a client difference in
+  `platforms` (`sees.platform`); a screen's standing structure in the
+  surface's `elements` and its empty, single-item, or width states in
+  `states`; placement and color in the linked design; another journey's
+  content in that journey, linked.
+- **History in a record** (`text.history`). "Production QA 2026-11-03 round 17
+  found…", "Owner decision of 2026-11-03", or "until BY-2212" in `rationale`
+  or `notes`. Keep the current reason without its date, round, or ticket; git
+  and the tracker hold the rest.
+- **`target_label` that repeats the title** (`next.target-label`). Set it only
+  when the link names its target differently.
+- **A term for a word nobody reads** (`term.unused`). An internal error code
+  with no copy that shows it needs no term; a term earns its place when its
+  `copy_word` appears in copy.
+
 ## References
 
 - **Referencing by display id or alias.** References take the `id`
