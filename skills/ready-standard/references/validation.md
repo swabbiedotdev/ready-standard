@@ -64,6 +64,11 @@ references it then reports `ref.missing`. Work from the top:
    converted before these checks existed can carry thousands; work module by
    module, worst records first, and never satisfy a warning by deleting the
    detail the owner cares about.
+9. **One-home warnings:** `text.history`, `sees.branch`, `sees.platform`,
+   `next.target-label`, `term.unused`. Move each fact to its home (see
+   [mistakes.md](mistakes.md#one-home-per-fact)): the reason to `rationale`
+   without its date, the condition to a `next` edge with `when`, the client to
+   `platforms`, the word to `copy`.
 
 Fix the cause, not the symptom: do not satisfy `rule.orphan` by listing the rule
 on an unrelated record, or `sequence.unreachable` by giving a called sequence

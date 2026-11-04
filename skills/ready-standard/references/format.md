@@ -314,6 +314,11 @@ the output is in [validation.md](validation.md).
 | `text.code` | W | A prose field reads as code: `path::symbol`, a file path, `call(args)`, a `WRITE ·` verb, a `dotted.reference`, a `snake_case` or `camelCase` identifier, or a `CONSTANT_NAME`. Product words and domain names are not code. |
 | `text.call` | W | A message's `text` repeats its `call`. |
 | `summary.missing` | W | A rule or sequence that is not a part has no `summary`. |
+| `text.history` | W | `rationale`, `notes`, a `summary`, or a step's `sees` or `does` carries a date, a QA round, a dated decision, or a ticket id. Display-id prefixes the package uses, standards such as ISO-8601, and quoted text are not tickets. |
+| `sees.branch` | W | A step's `sees` line describes a condition ("Signed in, …", "If …", ", otherwise …") and the step has no `next` with `when` and no edge to a decision step. |
+| `sees.platform` | W | A step's `sees` line describes one client ("In the app …", "On the web …") and the step sets no `platforms`. |
+| `next.target-label` | W | A `next` edge's `target_label` repeats its target's title. |
+| `term.unused` | W | A term's `copy_word` appears in no `copy` in the package. |
 | `sequence.unreachable` | W | Nothing starts the sequence (see below). |
 | `size.journey` | W | A journey has more than 12 steps. |
 | `size.sequence` | W | A sequence has more than 16 messages, counted through nested blocks. |
