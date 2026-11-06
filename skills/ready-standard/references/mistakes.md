@@ -31,6 +31,12 @@
   would say.
 - **A rule or sequence with no summary** (`summary.missing`), so the first
   thing a reader meets is the gate or the graph.
+- **A sequence linked only where the system is busy.** The step that starts
+  it (the person's action) and the steps that end it (the decision, result,
+  error, or refusal the person sees) leave `sequences` empty, so the viewer
+  says the system does nothing there and the flow seems to begin and end
+  nowhere. Link the sequence on every step whose action or outcome is one of
+  its messages.
 - **A summary that is a paragraph** (`summary.long`): topology, caller lists,
   restated conditions, or a whole specification. Keep one sentence of at most
   160 characters saying what the record is or does; move topology to

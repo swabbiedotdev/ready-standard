@@ -160,6 +160,13 @@ no empty strings, present tense, no history or task words.
       conditions; failures and recovery have their own `error` steps.
 - [ ] `sequences`, `rules`, and `data` link the logic behind the step; the step
       does not explain that logic itself.
+- [ ] `sequences` lists every sequence the step starts, shows progress or an
+      outcome of, or decides in: the action whose message starts it, each
+      screen, error, refusal, or outcome step that shows what it produced, and
+      a decision step whose choice is a message in it. A sequence therefore
+      shows at its first and last steps, not only the busy step between them.
+      Only a step with no system work (pure navigation, a choice no sequence
+      carries) lists none.
 - [ ] Platform or role differences use `platforms` / `roles` on purpose only.
 
 **surface**
