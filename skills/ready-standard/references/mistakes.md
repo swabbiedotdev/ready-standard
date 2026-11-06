@@ -31,6 +31,11 @@
   would say.
 - **A rule or sequence with no summary** (`summary.missing`), so the first
   thing a reader meets is the gate or the graph.
+- **A summary that is a paragraph** (`summary.long`): topology, caller lists,
+  restated conditions, or a whole specification. Keep one sentence of at most
+  160 characters saying what the record is or does; move topology to
+  `runs_in` and `owns`, results to `returns`, conditions to the rule's logic,
+  content lists to `elements`, and only what has no typed home to `notes`.
 
 ## One home per fact
 
