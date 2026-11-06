@@ -313,7 +313,10 @@ the output is in [validation.md](validation.md).
 | `text.id` | W | A prose field (title, summary, step text, copy, guard, label, message, note, or node text) names another record by id, display id, or alias; link it from the typed field named. |
 | `text.code` | W | A prose field reads as code: `path::symbol`, a file path, `call(args)`, a `WRITE ·` verb, a `dotted.reference`, a `snake_case` or `camelCase` identifier, or a `CONSTANT_NAME`. Product words and domain names are not code. |
 | `text.call` | W | A message's `text` repeats its `call`. |
-| `summary.missing` | W | A rule or sequence that is not a part has no `summary`. |
+| `summary.missing` | W | A rule or sequence that is not a part, or the product, has no `summary`. |
+| `summary.long` | W | A `summary` is longer than 160 characters or more than one sentence. Keep the sentence that says what the record is or does; move the rest to the typed fields or `notes`. |
+| `name.long` | W | The product `name` is longer than 40 characters; it is the product page title. |
+| `outcome.long` | W | The product `outcome` is longer than 300 characters; move detail to `measures`, `boundary`, or `notes`. |
 | `text.history` | W | `rationale`, `notes`, a `summary`, or a step's `sees` or `does` carries a date, a QA round, a dated decision, or a ticket id. Display-id prefixes the package uses, standards such as ISO-8601, and quoted text are not tickets. |
 | `sees.branch` | W | A step's `sees` line describes a condition ("Signed in, …", "If …", ", otherwise …") and the step has no `next` with `when` and no edge to a decision step. |
 | `sees.platform` | W | A step's `sees` line describes one client ("In the app …", "On the web …") and the step sets no `platforms`. |

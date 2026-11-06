@@ -57,8 +57,10 @@ references it then reports `ref.missing`. Work from the top:
 8. **Plain-words warnings:** `text.code` (a prose field reads as code; the
    message names the match and where it belongs), `text.id` (a prose field
    names a record by id; link it from the typed field named), `text.call` (a
-   message's text repeats its `call`), `summary.missing` (a rule or sequence
-   has no summary). Fix these by moving the identifier into its typed field
+   message's text repeats its `call`), `summary.missing` (a rule, sequence,
+   or the product has no summary), `summary.long` (a summary over 160
+   characters or more than one sentence), `name.long` and `outcome.long` (the
+   product's name over 40 or outcome over 300 characters). Fix these by moving the identifier into its typed field
    and writing the sentence in words; see
    [authoring.md](authoring.md#write-for-the-returning-reader). A package
    converted before these checks existed can carry thousands; work module by

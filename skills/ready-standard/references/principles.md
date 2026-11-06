@@ -105,8 +105,10 @@ labels, and every message, note, and node text.
   (an operation pointing at the rule that decides it, a rule pointing at the
   sequence that applies it). The loader reports prose that reads as code
   (`text.code`) and a message whose text repeats its `call` (`text.call`).
-- A rule or sequence opens with a one-sentence `summary` saying what it decides
-  or does, in the words the owner would use (`summary.missing` when absent).
+- Every `summary` is one sentence of at most 160 characters saying what the
+  record is or does, in the words the owner would use (`summary.long` when
+  longer). A rule, a sequence, and the product each open with one
+  (`summary.missing` when absent). Detail belongs in typed fields or `notes`.
 - Where an identifier must be visible to a person, such as an error code they
   see, a `term` record gives it a `copy_word`, and the prose uses the word.
 - **The owner-cares test.** Keep a detail only when the owner would care if it
