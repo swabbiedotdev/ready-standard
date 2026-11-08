@@ -1,7 +1,9 @@
 # Template: capability. An outcome some actor gets; it owns the flows,
 # sequences, and single-use rules and triggers that name it.
 # Required: ready, kind, id, name, summary, outcome, actors (who gets the outcome).
-# Optional: order (position on the product page).
+# Optional: order (position on the product page), dcl {level 1-10, basis}.
+# Omit dcl to use the product default; if neither is set, there is none.
+# An own basis explains why the level differs; equal levels warn as dcl.same.
 ready: 2
 kind: capability
 id: notes
@@ -12,3 +14,8 @@ outcome: A person writes a note and finds it again later.
 actors:
   - actor.person
 order: 1
+dcl:
+  level: 4
+  basis: >-
+    People rely on saved notes between visits, so saving and reopening them
+    need core-path reliability and common-failure recovery beyond the pilot default.

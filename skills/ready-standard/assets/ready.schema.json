@@ -273,6 +273,25 @@
         },
         "order": {
           "type": "number"
+        },
+        "dcl": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "level",
+            "basis"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -424,35 +443,6 @@
             "required": [
               "label",
               "to"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "related": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "to": {
-                "type": "string",
-                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
-              },
-              "label": {
-                "type": "string",
-                "minLength": 1
-              },
-              "relation": {
-                "type": "string",
-                "enum": [
-                  "leads_to",
-                  "moves_lifecycle"
-                ]
-              }
-            },
-            "required": [
-              "to",
-              "label",
-              "relation"
             ],
             "additionalProperties": false
           }

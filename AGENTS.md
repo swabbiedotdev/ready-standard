@@ -35,9 +35,9 @@ does not change them.
 
 ## Current sync
 
-Matches Ready standard 8 as clarified in Ready Room `b76fbd8` (release
+Matches Ready standard 8 as clarified in Ready Room `9be454d` (release
 v00.05.00, schema 2); the template package and JSON Schema were checked
-against the standard 8 loader at Ready Room `077b5e8` (branch
+against the standard 8 loader at Ready Room `8b2f860` (branch
 `sean-cc/ready-8`).
 
 ## Keeping in sync with Ready Room

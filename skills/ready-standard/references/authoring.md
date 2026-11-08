@@ -146,7 +146,7 @@ of at most 160 characters where the kind has one.
 - [ ] `boundary` (what this release includes and excludes), `exclusions`,
       `measures`.
 - [ ] `release` matches the version the RIP describes, if the repository uses one.
-- [ ] `dcl` holds the product default with a `basis`.
+- [ ] Optional `dcl` holds the product default with a `basis`.
 - [ ] No rules, gates, algorithms, queues, or database mechanics; product-wide
       rationale and topology notes only.
 
@@ -157,6 +157,9 @@ of at most 160 characters where the kind has one.
       outcomes are two capabilities.
 - [ ] It lists none of its records; they name it.
 - [ ] `order` places it on the product page when the order matters.
+- [ ] Optional `dcl` sets its own level and explains why in `basis`; omit it
+      when the product default fits. Equal levels get `dcl.same`. With neither
+      a capability level nor a product default, it has no effective DCL.
 
 **flow**
 - [ ] `capability`, `title`, `summary`, and a `subject`: an actor for a
@@ -165,8 +168,9 @@ of at most 160 characters where the kind has one.
 - [ ] `entries` say where the subject comes in from, with `to` a step of this
       flow and `from` a step in another flow when there is one, so the first
       step is reachable.
-- [ ] A journey's `related` links the lifecycles it moves and the flows it
-      leads to, instead of repeating them.
+- [ ] Flow links are derived: entries from another flow's steps establish
+      which flow leads to this one; shared edge sequences and a journey's
+      `data[].state` references establish which lifecycles it moves.
 - [ ] 12 steps or fewer, otherwise lettered parts.
 
 **step (journey)**

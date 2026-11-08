@@ -4,6 +4,7 @@
 # Optional: release, boundary {text, includes, excludes}, exclusions,
 #   measures, dcl {level 1-10, basis}, plus the common fields
 #   (display_id, rationale, notes, files, tags).
+# dcl is the optional default; a capability can set its own.
 # Keep it outward-facing: no rules, gates, or algorithms here.
 ready: 2
 kind: product

@@ -149,7 +149,7 @@ cases:
       - leave the first entity without a lifecycle flow unless the owner wants one
       - add a flow with the second entity as subject and state steps, each transition an edge with a trigger, and the sequence and outcome that carry it out
       - name the entity field and value that hold each state
-      - link the lifecycle from the journeys that move it with related
+      - derive links from journeys to the lifecycles they move through shared edge sequences or data state references
       - omit polling, heartbeat, lease, and retry edges that change no state
       - not require a lifecycle because of status columns, async work, or DCL
 
@@ -235,7 +235,11 @@ cases:
     should_activate: true
     must:
       - set one product default with a basis from users, waiting, consequence, recovery, and load
-      - state the retrieval area's stronger needs as quality rules that apply to its flows, sequences, or interfaces, confirmed with the owner
+      - set a different capability DCL where the owner confirms a different operating stage, with a basis explaining why
+      - inherit the product default when no capability DCL is set, and use no effective level when neither is set
+      - derive shared records' DCL from the highest effective level among the capabilities that use them
+      - omit a capability DCL that repeats the product level, avoiding dcl.same
+      - state concrete retrieval targets as quality rules that apply to its flows, sequences, or interfaces, confirmed with the owner
       - not average levels or raise the default to the highest exception
       - use the 1–10 scale and keep implementation-level comparisons outside the RIP
 

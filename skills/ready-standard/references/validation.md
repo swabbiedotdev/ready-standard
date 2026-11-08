@@ -86,7 +86,10 @@ references it then reports `ref.missing`. Work from the top:
     [mistakes.md](mistakes.md#one-home-per-fact)): the reason to `rationale`
     without its date, the condition to an edge's `guard`, the client to
     `platforms`, the word to `copy`.
-14. **Size warnings:** `size.flow` and `size.sequence`. Split into lettered
+14. **DCL warnings:** `dcl.same` means a capability repeats the product
+    default's level. Remove the capability's duplicate `dcl` so it uses the
+    default; a separate basis alone does not justify repeating the level.
+15. **Size warnings:** `size.flow` and `size.sequence`. Split into lettered
     parts at a phase boundary (see [ids-and-parts.md](ids-and-parts.md#lettered-parts)).
 
 Fix the cause, not the symptom: do not satisfy `rule.orphan` by listing the

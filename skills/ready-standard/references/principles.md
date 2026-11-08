@@ -71,8 +71,10 @@ record kind.
 
 - A flow has one subject. An actor subject makes it a journey: the places a
   person (or agent) can be. An entity subject makes it a lifecycle: the states
-  a record can be in, as `state` steps. A journey links the lifecycles it moves
-  (`related`).
+  a record can be in, as `state` steps. Links between flows are derived: a flow
+  leads to every flow whose entries come from one of its steps; a journey moves
+  a lifecycle when an edge of each runs the same sequence or one of its steps
+  names a lifecycle state in `data[].state`.
 - A step is a place the subject can be. Its `edges` are every way out, and each
   edge names the trigger record that takes it: what the person does, the event,
   the schedule, or the call.
@@ -212,10 +214,15 @@ relationships from paths, reference fields, and invariants, not from indexes.
 DCL is optional shorthand for the engineering and operating stage the current
 intent requires. It describes target intent only.
 
-- One product default: `product.dcl {level, basis}`. Other records carry no
-  DCL. Where one area needs more than the default (tighter latency, stronger
-  recovery), say what it needs in quality rules that apply to it, or in its
-  sequences; do not raise the default to fit the exception.
+- The product may set a default in `product.dcl {level, basis}`. A capability
+  may set its own `dcl`, with a `basis` explaining why it differs. Its effective
+  DCL is its own when set, else the product default, else none. A capability
+  repeating the product level gets the `dcl.same` warning; omit the duplicate.
+- Shared records carry no DCL field. Their effective DCL is the highest
+  effective level among the capabilities in their "used in" lists. A shared
+  record with no effective level among its users has none.
+- Concrete targets, such as tighter latency or a loss limit, belong in quality
+  rules. Do not raise the product default to fit one capability.
 - Levels run 1–10. Choose the lowest level that safely fits who waits on the
   work, the failure consequence and its reversibility, acceptable interruption
   and recovery, credible near-term load, data sensitivity, and operating cost.

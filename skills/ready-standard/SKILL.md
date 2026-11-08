@@ -32,7 +32,11 @@ intent.
   several capabilities are shared, and consumers link to them by id. A
   channel (a plugin, a CLI, a second app) is never a capability.
 - **Flows have a subject.** An actor subject makes a journey; an entity
-  subject makes a lifecycle with `state` steps.
+  subject makes a lifecycle with `state` steps. Links between flows are
+  derived from entries, shared edge sequences, and lifecycle state references.
+- **DCL follows use.** A capability uses its own DCL, else the product default,
+  else none. A shared record uses the highest effective DCL of the capabilities
+  that use it. See [references/principles.md](references/principles.md#development-complexity-level-dcl).
 - **Every edge names a trigger record.** An edge that runs system work
   carries `sequence` and `outcome`, one edge per outcome, all leaving the same
   step with the same trigger. Steps list no sequences; that is derived.

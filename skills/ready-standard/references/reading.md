@@ -7,7 +7,8 @@ A Ready Intent Package (RIP) lives at `<repo>/product/`.
 1. `product/product.ready`: the outcome, boundary, exclusions, measures,
    default DCL, and product-wide rationale.
 2. The capabilities: `product/capabilities/*/capability.ready`, each an outcome
-   some actor gets, in their `order`.
+   some actor gets, in their `order`, with their own DCL or the product default.
+   If neither sets a DCL, the capability has none.
 3. The relevant capability's flows. A flow whose `subject` is an actor is a
    journey; one whose `subject` is an entity is that entity's lifecycle. Read
    the steps in the flow's `steps` order, and follow each step's `edges`: the
@@ -34,6 +35,12 @@ from references:
 - where an interface is shown or called (from `step.interface` and
   `msg.interface`);
 - an entity's lifecycle (the flow whose `subject` it is);
+- which flows lead to or come from others (from `entries[].from`);
+- which journeys move lifecycles, and which journeys a lifecycle is moved by
+  (from shared edge sequences or journey steps' `data[].state` references);
+- effective DCL: the capability's own level, else the product default, else
+  none; shared records take the highest effective level among the capabilities
+  that use them;
 - the overview diagram of a record split into parts, and "used in" lists.
 
 ## Export a readable view
@@ -50,7 +57,9 @@ npx @readyroom/ready export <repo> <out>.json --format json  # one JSON bundle
 
 - Markdown writes a readable book under `<out>/product/` with derived diagrams
   (flow, sequence, and entity diagrams) and links between records, plus the
-  supplementary files they link.
+  supplementary files they link. The README shows the product DCL default;
+  each capability chapter shows its effective level, its basis, and whether it
+  uses the product default.
 - JSON writes every loaded record and the supplementary files to one file, for
   scripts.
 - Records that fail validation are left out of the export, and the command says

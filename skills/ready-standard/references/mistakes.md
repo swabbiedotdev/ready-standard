@@ -11,7 +11,7 @@
 - **`ready: 1`.** Standard 8 records are `ready: 2`; anything else is
   `record.version`.
 - **Invented fields.** `description` on a flow, `status` on anything,
-  `sequences` on a step, `steps` on a sequence: all
+  `related` on a flow, `sequences` on a step, `steps` on a sequence: all
   `field.unknown`. Check [format.md](format.md).
 - **Surface fields on an operation, or the reverse** (`interface.fields`): a
   `route` on an endpoint, `params` on a page.
@@ -52,6 +52,9 @@
 
 ## Capabilities and shared records
 
+- **Repeating the product DCL on a capability** (`dcl.same`). Omit the
+  capability's level when the default fits. A shared record has no `dcl` field;
+  its effective level follows the highest effective DCL among its users.
 - **A channel as a capability.** "Plugin", "CLI", "Mobile app", or "Admin API"
   is not an outcome; its interfaces belong to the capabilities they serve.
 - **A capability per team, layer, or table,** or one capability holding several

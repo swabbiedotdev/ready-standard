@@ -58,8 +58,9 @@ An audit compares code with a Ready Intent Package (RIP).
    owner decides; propose it as a record change for review, never as a silent
    edit.
 
-Optionally compare the product's target DCL with the implementation's apparent
-level, in the audit notes only.
+Optionally compare each capability's effective target DCL with the
+implementation's apparent level, in the audit notes only. For shared records,
+use the highest effective level among their consuming capabilities.
 
 When the product has several clients (web, mobile, a CLI, a plugin), audit them
 against each other from time to time: every difference is either a

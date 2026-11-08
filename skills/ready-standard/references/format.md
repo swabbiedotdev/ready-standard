@@ -60,7 +60,8 @@ subject ends up.
    or searches is a typed field. Explanations stay in `rationale` and `notes`.
 3. **Derived, never stored.** Layout, overview diagrams of parts, "used in"
    lists, a step's sequences, a capability's records, where an interface is
-   used, and an entity's lifecycle are derived from references.
+   used, an entity's lifecycle, links between flows, and effective DCL are
+   derived from references and capability ownership.
 4. **Plain words first.** Titles, summaries, step text, copy, guards, labels,
    trigger names, and message text are written for someone returning after a
    month, with no identifiers or code vocabulary. Identifiers live in typed
@@ -169,13 +170,13 @@ may point at are checked (`ref.kind`).
 Exactly one, at `product/product.ready`: `name` (at most 40 characters),
 `summary`, `outcome` (at most 300 characters), `release?`,
 `format_version: "8.0.0"`, `boundary? {text?, includes?, excludes?}`,
-`exclusions?`, `measures?`, `dcl? {level (integer 1–10), basis}`. The DCL is
-product-wide only; an area with stronger needs states them as quality rules.
+`exclusions?`, `measures?`, `dcl? {level (integer 1–10), basis}`. This optional
+Development Complexity Level is the product default.
 
 ### capability
 
 `name, summary, outcome, actors` (who gets the outcome), `order?` (position on
-the product page).
+the product page), `dcl? {level (integer 1–10), basis}`.
 
 A capability is any outcome some actor gets: owners, visitors, or operators. An
 area with several distinct outcomes is several capabilities. A channel is never
@@ -183,18 +184,30 @@ a capability: a plugin, a CLI, or a second app contributes interfaces to
 existing capabilities. A capability owns the records that name it; it lists
 none of them.
 
+A capability's effective DCL is its own when set, else the product default,
+else none. Its own `basis` explains why it differs. The validator warns with
+`dcl.same` when its level equals the product's. Owned records use their
+capability's effective DCL. Shared records have no DCL field: theirs is the
+highest effective DCL of the capabilities that use them, derived through the
+"used in" lookups, or none when no user has one. Concrete targets, such as a
+response time or loss limit, are quality rules, not DCL.
+
 ### flow
 
-`capability, title, summary, subject, steps` (ordered), `entries?`, `related?`,
-`parts?`, `part_of?`.
+`capability, title, summary, subject, steps` (ordered), `entries?`, `parts?`,
+`part_of?`.
 
 - **`subject`** is an actor id or an entity id. An actor makes the flow a
   **journey**; an entity makes it a **lifecycle**. Journey and lifecycle are
   display names, not separate kinds.
 - **`entries`** are `[{label, from? (a step in another flow), to (a step in this
   flow), trigger?}]`: where the subject comes in from.
-- **`related`** are `[{to (a flow), label, relation (leads_to,
-  moves_lifecycle)}]`. A journey links the lifecycles it moves.
+- **Links between flows are derived, never declared.** A flow *leads to* every
+  flow whose `entries` have a `from` step in it; those flows *come from* it. A
+  journey *moves* a lifecycle when an edge of each runs the same sequence, or
+  when one of its steps names a state of that lifecycle in `data[].state`; the
+  lifecycle is *moved by* that journey. An edge to another flow's step alone
+  does not establish a *leads to* link.
 
 ### step
 
@@ -460,6 +473,7 @@ non-zero when there is any error. How to work through the output is in
 | `interface.fields` | E | Surface fields on an operation, or the reverse. |
 | `interface.unused` | W | Nothing shows or calls an interface. |
 | `trigger.unused` | W | A trigger record no edge or sequence uses. |
+| `dcl.same` | W | A capability's DCL level equals the product default. |
 | `text.code` | W | A prose field reads as code: `path::symbol`, a file path, `call(args)`, a `WRITE ·` verb, a `dotted.reference`, a `snake_case` or `camelCase` identifier, or a `CONSTANT_NAME`. Product words and domain names are not code. |
 | `text.id` | W | A prose field (title, summary, step text, copy, guard, label, trigger name, message, note, or node text) names another record by id or display id; link it from the typed field. |
 | `text.call` | W | A message's `text` repeats its `call`. |

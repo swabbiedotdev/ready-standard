@@ -72,7 +72,7 @@ The overview record:
 - keeps the original `id` and `display_id`, so citations still land on it;
 - lists `parts: [<id>.a, <id>.b, …]` in reading order;
 - holds what applies to the whole: `summary`, `rationale`, `subject`,
-  `entries`, `related`;
+  `entries`;
 - carries no content of its own: a flow overview has `steps: []`, a sequence
   overview has `items: []` (its `participants` are still required; list the
   lanes the parts share).
