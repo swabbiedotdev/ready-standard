@@ -1,0 +1,26 @@
+# Template: flow with an actor subject, shown as a journey.
+# Required: ready, kind, id, capability, title, summary,
+#   subject (an actor id here; an entity id makes a lifecycle),
+#   steps (ordered; empty only on an overview with parts).
+# Optional: entries [{label, from (a step in another flow), to (a step in this
+#   flow), trigger}], related [{to (a flow), label, relation}], parts / part_of.
+# Split a flow over 12 steps into lettered parts.
+ready: 2
+kind: flow
+id: notes.write
+display_id: FLOW-WRITE
+capability: notes
+title: Write a note
+summary: The person writes a note and saves it, or shortens it when it is too long.
+subject: actor.person
+steps:
+  - notes.write.compose
+  - notes.write.saved
+  - notes.write.too-long
+entries:
+  - label: Opens a new note
+    to: notes.write.compose
+related:
+  - to: notes.note
+    label: Saves the note
+    relation: moves_lifecycle

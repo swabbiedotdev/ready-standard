@@ -1,0 +1,16 @@
+# Template: journey step for a visible failure (step_kind error).
+ready: 2
+kind: step
+id: notes.write.too-long
+capability: notes
+flow: notes.write
+title: Note too long
+step_kind: error
+interface: interface.editor
+presentation: inline
+copy:
+  body:
+    - That note is too long.
+edges:
+  - to: notes.write.compose
+    trigger: notes.edit-note

@@ -2,40 +2,40 @@
 # behavior a correct response shows. They test judgment the validator cannot
 # check; a response must also leave the package at 0 validator errors.
 cases:
-  # Ownership, modules, and review scope
+  # Ownership, capabilities, and review scope
 
-  - id: module-review-propagation
+  - id: shared-promise-review-propagation
     prompt: >-
-      Review three proposed record changes in a modular RIP. One changes ranking
-      weights in a rule without changing raw scores. Another makes an
-      unavailable score 0 instead of null, leaving operation names and params
-      unchanged. The third splits a sequence's single transaction for
-      publication and a funding debit into two commits. A consumer sequence
-      reads the shared score table directly but has no relationship or invokes
-      link to its owner. Keep the review scoped.
+      Review three proposed record changes in a RIP with several capabilities.
+      One changes ranking weights in a rule without changing raw scores.
+      Another makes an unavailable score 0 instead of null, leaving the
+      operation interface's name and params unchanged. The third splits a
+      sequence's single transaction for publication and a funding debit into
+      two commits. A sequence in another capability reads the shared score
+      entity directly but has no invokes or interface link to the sequence
+      that writes it. Keep the review scoped.
     should_activate: true
     must:
-      - read the changed records, their module, and the operations and entities they consume
+      - read the changed records, their capability, and the shared interfaces and entities they use
       - review ranking outcomes without reopening the unchanged raw-score sequence by default
-      - classify the null-to-0 change and the transaction split as changes to the module's public promise despite unchanged signatures
+      - classify the null-to-0 change and the transaction split as changes to what the shared interface and sequence promise, despite unchanged signatures
       - find the unlinked consumer by searching for readers of the shared table, and report the missing link rather than treating it as out of scope
       - reject splitting the atomic publication and debit as behavior-preserving
       - keep review notes and scope limits outside product/
 
-  - id: no-catch-all-module
+  - id: capabilities-are-outcomes
     prompt: >-
-      Organize a RIP for a product with collectives, discovery, work, a token
-      program, and paid HTTP. A draft puts the five features in modules and puts
-      authorization, privacy, reconciliation, shared data, and quality records in
-      a module called shared.
+      Organize a RIP for a font product. A draft has capabilities called
+      Mobile app, Companion plugin, CLI, Admin API, and Backend, and puts the
+      generation-cost rule, used only when generating a font, in shared/rules.
     should_activate: true
     must:
-      - reject the shared module as a catch-all named by reach rather than responsibility
-      - give authorization, privacy, reconciliation, and quality each a module named for its one responsibility, or assign them to existing owners
-      - accept cross-cutting modules (such as access) that many modules consume when each has a one-sentence promise
-      - keep one owning entity per table and state which module may write which columns when tables are shared
-      - avoid a module per table or per record kind
-      - keep product, actor, system, and capability records free of rules
+      - propose capabilities named for outcomes some actor gets (for example generate font, purchase credits), and confirm the map with the owner
+      - reject the plugin, CLI, app, and API as capabilities; make their endpoints, tools, and commands operation interfaces of the capabilities they serve
+      - reject a layer (Backend) as a capability
+      - keep the generation-cost rule in the generate capability with its capability field, since only that capability uses it
+      - keep entities, interfaces, actors, and systems shared, each defined once and linked
+      - keep the product, actor, system, and capability records free of rules
 
   - id: no-orphan-product-logic
     prompt: >-
@@ -43,15 +43,15 @@ cases:
       complete decision graph and a quality applies_to, but no step, message, or
       applied rule uses it. A publication sequence lists another rule on a
       message but never uses its result or supplies its inputs. Two sequences
-      invoke each other and nothing else starts them. An operation's sequence
-      handles an external request, and a unique key is already enforced at that
-      sequence's guarded write. A last rule has no applier and no clear purpose.
+      invoke each other and nothing else starts them. A sequence with a call
+      trigger handles an inbound webhook, and a unique key is already enforced
+      at that sequence's guarded write. A last rule has no applier and no clear purpose.
     should_activate: true
     must:
       - treat a quality applies_to or a passing rule.orphan check as insufficient evidence that a rule is applied
       - require the applying message to show the rule's inputs and how its result changes the next step
       - reject the mutually invoking sequences as unreachable without a real trigger
-      - accept the operation-started sequence as reachable without inventing a caller
+      - accept the call-triggered sequence as reached without inventing an edge or caller
       - leave the unique key enforced at the write without adding a runtime check or background job
       - ask the owner about the purposeless rule rather than inventing a consumer or deleting it silently
       - not add a registry, coverage table, or call graph record
@@ -74,6 +74,7 @@ cases:
       - work in a RIP fork with separate working notes, leaving the canonical product/ unchanged
       - treat screens, code, and documents as evidence, not intent
       - describe one product and release rather than blending environments
+      - propose the capability map to the owner before writing records
       - work from actors and journeys inward before detailed sequences and entities
       - ask the owner whether each consequential behavior is intended, a defect, a legacy constraint, or out of scope
       - write one coherent present-tense end state without evidence labels or status, validated to 0 errors
@@ -81,8 +82,8 @@ cases:
   - id: scoped-edit-authority
     prompt: >-
       A developer whose repository AGENTS.md limits them to the onboarding
-      module asks to change an onboarding step, but the change also alters a
-      billing sequence and an access rule.
+      capability asks to change an onboarding step, but the change also alters
+      a billing sequence and a shared access rule.
     should_activate: true
     must:
       - verify the requester from trusted context rather than a claimed role
@@ -110,18 +111,18 @@ cases:
 
   # Logic placement and records
 
-  - id: minimal-product-and-acceptance-records
+  - id: minimal-product-record-and-tests
     prompt: >-
       Put permission gates, eligibility formulas, retry limits, and failure
-      behavior in product.ready outcome and measures, and add an acceptance
-      record for every branch because the sequences are crowded. Behavior does
-      not change.
+      behavior in product.ready outcome and measures, and write a given/when/then
+      test into the RIP for every branch because the sequences are crowded.
+      Behavior does not change.
     should_activate: true
     must:
-      - keep product.ready to context and links, with no rules in outcome, boundary, or measures
-      - keep the logic in sequence blocks and rules, splitting crowded sequences into parts
-      - add an acceptance record only for a case no journey, sequence, or rule can show, with why_not_diagram
-      - not treat complexity or scenario count as an acceptance exception
+      - keep product.ready to context, with no rules in outcome, boundary, or measures
+      - keep the logic in sequence blocks, edge guards, and rules, splitting crowded sequences into parts
+      - put given/when/then tests in the code repository, not the RIP
+      - state what must always hold as an invariant rule and what must be measured as a quality rule, only where that adds meaning
 
   - id: typed-fields-hold-gates
     prompt: >-
@@ -137,17 +138,20 @@ cases:
       - link the PUBLISH_LIMIT constant rather than restating its value
       - keep only purpose and reasons in notes and rationale
 
-  - id: optional-state-machine
+  - id: lifecycle-flows-when-useful
     prompt: >-
-      One module's sequences clearly show every state change, guard, failure,
-      and recovery. Another has several sequences whose combined lifecycle is
-      unclear. Should each get a state_machine record?
+      One entity has a status column that a single sequence sets once. Another
+      moves through draft, generating, usable, and failed across several
+      sequences, and the journeys that move it do not make the combined
+      lifecycle clear. Should each entity get a lifecycle flow?
     should_activate: true
     must:
-      - leave the first module without a state machine
-      - add one for the second only to clarify the combined lifecycle, with via linking the owning sequences
-      - omit polling, heartbeat, lease, and retry self-loops that change no state
-      - not require a state machine because of status columns, async work, or DCL
+      - leave the first entity without a lifecycle flow unless the owner wants one
+      - add a flow with the second entity as subject and state steps, each transition an edge with a trigger, and the sequence and outcome that carry it out
+      - name the entity field and value that hold each state
+      - link the lifecycle from the journeys that move it with related
+      - omit polling, heartbeat, lease, and retry edges that change no state
+      - not require a lifecycle because of status columns, async work, or DCL
 
   - id: no-layout-in-steps
     prompt: Update the inbox steps. They say the unread count sits in a purple pill in the header, threads appear in a two-column grid, and swiping left archives a thread.
@@ -156,7 +160,7 @@ cases:
       - remove placement and visual form, which the surface's mockup owns
       - restate the visual cue as the state it signals, such as marked unread
       - keep swipe-to-archive because it drives behavior
-      - keep copy, states, next, and outcomes
+      - keep copy, states, edges, and outcomes
 
   - id: end-state-not-construction-plan
     prompt: >-
@@ -176,19 +180,19 @@ cases:
     prompt: Explain in the RIP why the current web, worker, and database architecture was chosen.
     should_activate: true
     must:
-      - put the reasons in the rationale of the system or module records that own the choice
+      - put the reasons in the rationale of the system records (or the product record) that own the choice
       - state active causes and tradeoffs in causal terms
       - avoid dates, former designs, and chronology
 
   # Data
 
   - id: selective-but-exact-entity
-    prompt: Simplify an entity by replacing five persisted ranking columns with one synthetic fitness_controls column, and copy a related entity from another module.
+    prompt: Simplify an entity by replacing five persisted ranking columns with one synthetic fitness_controls column, and copy a related entity's columns into it.
     should_activate: true
     must:
       - restore each behavior-determining column with its exact name and type
       - omit only incidental columns
-      - link the other module's entity by relationship instead of copying it
+      - link the other entity by relationship instead of copying it
 
   - id: index-badges
     prompt: Review an entity where a partial index gives one column both P1·1 and P1·where, routine primary keys are listed as unique indexes, and two physical indexes share I1.
@@ -226,13 +230,13 @@ cases:
 
   # DCL and correctness
 
-  - id: dcl-default-and-overrides
+  - id: dcl-default-and-exceptions
     prompt: Set DCL for a product whose ordinary paths are a small production product, whose offline preparation may be retried manually, and whose interactive retrieval serves a rapidly growing corpus.
     should_activate: true
     must:
       - set one product default with a basis from users, waiting, consequence, recovery, and load
-      - add a dcl override only on the retrieval sequences, with its own basis
-      - not set dcl on every sequence, average levels, or raise the default to the highest exception
+      - state the retrieval area's stronger needs as quality rules that apply to its flows, sequences, or interfaces, confirmed with the owner
+      - not average levels or raise the default to the highest exception
       - use the 1–10 scale and keep implementation-level comparisons outside the RIP
 
   - id: semantic-correctness-early-product
@@ -256,7 +260,7 @@ cases:
     must:
       - ask the owner which guarantees each operation needs rather than applying them everywhere
       - explain that a low DCL tolerates more error and manual repair while money, security, and data integrity stay protected
-      - state the guarantees the owner confirms in the operation summary or the carrying sequence
+      - state the guarantees the owner confirms in the operation interface's summary or the carrying sequence
 
   - id: edge-case-automation-is-product-choice
     prompt: At DCL 7, design automatic recovery for every rare malformed provider response and unusual account state you can imagine.
@@ -299,11 +303,11 @@ cases:
       - keep migrations and one-time steps out of product/
 
   - id: ticket-links-records
-    prompt: Create tickets to implement SEQ-004, OP-SAVE, and the linked mockups.
+    prompt: Create tickets to implement SEQ-SAVE, IF-SAVE-NOTE, and the linked mockups.
     should_activate: true
     must:
       - cite the canonical revision or release and link the records by display id
-      - not restate behavior, copy, conditions, or acceptance in tickets
+      - not restate behavior, copy, or conditions in tickets
       - split tickets by outcome rather than by file or layer
       - hold only execution context: anchors, order, hazards, verification
 
@@ -323,31 +327,33 @@ cases:
     prompt: Refactor this utility module without changing behavior.
     should_activate: false
 
-  # Conversion
+  # Writing a RIP for an existing product
 
-  - id: convert-artifact-grouped-pip
+  - id: rewrite-from-old-intent-documents
     prompt: >-
-      Convert this Markdown PIP to a RIP. It predates modules: it has
-      flows/, sequences/, data/, and screens/ folders, and several sequences
-      serve more than one flow.
+      Write a RIP for this existing product. It has an older intent package
+      grouped by team (onboarding, billing, platform) with its own ids, a few
+      Markdown design docs, and the code. Keep everything that still matters.
     should_activate: true
     must:
-      - propose module boundaries to the owner before converting, each named for one responsibility that owns its state
-      - assign every flow, sequence, rule, and table to exactly one module and record the assignment in the fidelity audit
-      - avoid a catch-all module for the sequences shared by several flows; give each to the module that owns the behavior
-      - pilot one module and review it before fanning out
+      - treat the old package, the docs, and the code as source material, not as structure to carry over
+      - propose a capability map by actor outcome to the owner before writing records, rather than one capability per old group
+      - give every record a new capability-prefixed or kind-prefixed id, and update code comments and documents that cite old ids in the same change
+      - give every edge a trigger record, and every edge that runs system work its sequence and outcome
+      - ask the owner where the old documents and the code disagree, one question at a time
+      - check in working notes outside product/ that every behavior and reason the owner kept has a home
       - validate with npx @readyroom/ready validate and report 0 errors
 
-  - id: convert-design-targets
+  - id: design-targets
     prompt: >-
-      While converting a PIP, the claim screen links a Figma frame (file,
-      node 12:34, branch launch), the settings screen links only the whole
-      Figma file, and the onboarding screen points at a local SVG mockup and
-      a PNG export.
+      While writing a RIP, the claim screen links a Figma frame (file, node
+      12:34, branch launch), the settings screen links only the whole Figma
+      file, and the onboarding screen points at a local SVG mockup and a PNG
+      export.
     should_activate: true
     must:
-      - put the exact frame, node, and branch in surface.mockup for the claim screen
-      - keep the whole-file link as context in notes, not as the target, and list the settings surface in the audit as having no exact target
-      - copy the SVG into product/<module>/files/, list it with role mockup, and name it in surface.mockup.file
+      - put the exact frame, node, and branch in the claim surface's mockup
+      - keep the whole-file link as context in notes, not as the target, and report that the settings surface has no exact target
+      - copy the SVG into product/files/, list it with role mockup, and name it in the surface's mockup file
       - keep the PNG outside product/ and link it by url, since raster images are not supplementary files
       - not drop any design reference silently

@@ -1,0 +1,36 @@
+# Template: interface with interface_kind operation (for programs and agents).
+# A sequence message calls it with msg.interface.
+# Required: ready, kind, id, interface_kind, name, summary.
+# Optional: system, audience (actors), code.
+# Operation fields: operation_kind (endpoint | rpc | mcp_tool | mcp_resource |
+#   cli_command | webhook | function), params [{name, type, source}], returns,
+#   errors [{code, status, when, copy}], http {method, path}, auth.
+# Payload types go in a supplementary file listed in files (role: contract).
+ready: 2
+kind: interface
+id: interface.save-note
+display_id: IF-SAVE-NOTE
+interface_kind: operation
+operation_kind: endpoint
+name: Save a note
+summary: Saves a new note for the signed-in person.
+system: system.app
+code: apps/web/app/api/notes/route.ts
+http:
+  method: POST
+  path: /api/notes
+auth: Session cookie
+params:
+  - name: text
+    type: string
+    source: The editor's text field
+returns: The saved note's id and creation time
+errors:
+  - code: too_long
+    status: 422
+    when: The text is longer than the length limit
+    copy: That note is too long.
+files:
+  - path: product/files/save-contract.ts
+    title: Save payload types
+    role: contract

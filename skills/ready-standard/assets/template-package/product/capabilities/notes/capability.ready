@@ -1,0 +1,14 @@
+# Template: capability. An outcome some actor gets; it owns the flows,
+# sequences, and single-use rules and triggers that name it.
+# Required: ready, kind, id, name, summary, outcome, actors (who gets the outcome).
+# Optional: order (position on the product page).
+ready: 2
+kind: capability
+id: notes
+display_id: CAP-NOTES
+name: Notes
+summary: A person writes notes, keeps them, and deletes the ones they no longer want.
+outcome: A person writes a note and finds it again later.
+actors:
+  - actor.person
+order: 1

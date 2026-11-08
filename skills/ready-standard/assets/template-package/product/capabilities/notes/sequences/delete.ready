@@ -1,0 +1,48 @@
+# Template: sequence with one outcome, run by a lifecycle edge.
+ready: 2
+kind: sequence
+id: notes.delete
+display_id: SEQ-DELETE
+capability: notes
+title: Delete a note
+summary: Marks the person's note deleted so it is never listed again.
+participants:
+  - actor.person
+  - system.app
+  - id: db
+    is:
+      - system.app
+    label: App database
+outcomes:
+  - id: deleted
+    label: Deleted
+items:
+  - msg:
+      from: actor.person
+      to: system.app
+      text: Delete the note
+      inputs:
+        - name: note_id
+          source: The note open in the editor
+          source_kind: surface
+      guards:
+        - The note belongs to the signed-in person
+  - msg:
+      from: system.app
+      to: db
+      text: Mark the note deleted
+      ops:
+        - op: update
+          entity: data.notes
+          by:
+            - note_id
+            - owner_id
+          set:
+            - status = deleted
+  - msg:
+      from: system.app
+      to: actor.person
+      text: Deleted
+      reply: true
+      results:
+        - status: 204

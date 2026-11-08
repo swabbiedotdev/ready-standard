@@ -1,0 +1,57 @@
+# Template: entity. Always shared; its lifecycle is the flow whose subject it is.
+# Required: ready, kind, id, table, name, summary, columns.
+# Optional: entity_kind (table | view | object | projection | external),
+#   schema, column_groups, derivations, primary_key, indexes, checks,
+#   coordination, triggers, access {rls, grants, readers, writers},
+#   view {source, security_invoker}, projection_of,
+#   relationships [{to, on, from_card, to_card, link (fk | logical),
+#   on_delete, label, reason}].
+# Column fields: name, type, keys (PK | FK | UK), fk {entity, column,
+#   on_delete, on_update}, nullable, default, check, values, generated,
+#   visibility, rule, indexes (badges such as I1·1, P1·where), constants.
+# Quote cardinalities: to_card: "1".
+ready: 2
+kind: entity
+id: data.notes
+display_id: DATA-NOTES
+entity_kind: table
+table: notes
+name: Note
+summary: One saved note, owned by one person.
+columns:
+  - name: note_id
+    type: TEXT
+    keys:
+      - PK
+  - name: owner_id
+    type: TEXT
+    nullable: false
+    rule: The account that wrote the note; every read and write filters on it
+    indexes:
+      - I1·1
+  - name: text
+    type: TEXT
+    nullable: false
+    rule: At most the length limit
+    constants:
+      - constant.max-length
+  - name: status
+    type: TEXT
+    nullable: false
+    values:
+      - saved
+      - deleted
+    rule: Holds the note's lifecycle state; deleted notes are never listed
+  - name: created_at
+    type: TEXT
+    nullable: false
+    indexes:
+      - I1·2
+indexes:
+  - id: I1
+    name: notes_owner_created_idx
+    method: BTREE
+    columns:
+      - owner_id ASC
+      - created_at DESC
+    purpose: Lists a person's notes newest first

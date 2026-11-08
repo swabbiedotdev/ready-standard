@@ -1,0 +1,11 @@
+# Template: actor.
+# Required: ready, kind, id, name, side (person | operator | agent |
+#   third_party | product).
+# Optional: description, goal, connections [{to, label, direction (to | both)}].
+ready: 2
+kind: actor
+id: actor.person
+display_id: ACTOR-PERSON
+name: Signed-in person
+side: person
+goal: Keep their own notes and find them again.

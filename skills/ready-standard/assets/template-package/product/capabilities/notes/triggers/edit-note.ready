@@ -1,0 +1,10 @@
+# Template: trigger for a move with no system work.
+ready: 2
+kind: trigger
+id: notes.edit-note
+display_id: TRIG-EDIT-NOTE
+capability: notes
+trigger_kind: action
+name: Edit the note
+actor: actor.person
+interface: interface.editor

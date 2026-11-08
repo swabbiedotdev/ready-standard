@@ -1,0 +1,10 @@
+# Template: trigger for a lifecycle transition.
+ready: 2
+kind: trigger
+id: notes.delete-note
+display_id: TRIG-DELETE-NOTE
+capability: notes
+trigger_kind: action
+name: Delete
+actor: actor.person
+interface: interface.editor

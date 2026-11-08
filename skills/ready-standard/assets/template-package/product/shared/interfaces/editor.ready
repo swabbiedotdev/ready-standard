@@ -1,0 +1,25 @@
+# Template: interface with interface_kind surface (for people). A step shows on
+# it with step.interface.
+# Required: ready, kind, id, interface_kind, name, summary.
+# Optional: system, audience (actors), code.
+# Surface fields: surface_kind (app | page | screen | section | dialog | sheet |
+#   email | notification | provider), parent, route, platforms,
+#   elements [{name, description, states, copy}], states,
+#   mockup {url | file, frame, version} (the binding design target).
+ready: 2
+kind: interface
+id: interface.editor
+display_id: IF-EDITOR
+interface_kind: surface
+surface_kind: page
+name: Note editor
+summary: Where a person writes a note and saves or deletes it.
+system: system.app
+audience:
+  - actor.person
+route: /notes/new
+elements:
+  - name: Text field
+    description: Holds the note being written
+  - name: Save and Delete buttons
+    description: Save stores the note; Delete removes a saved one
