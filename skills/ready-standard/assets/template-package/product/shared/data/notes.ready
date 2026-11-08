@@ -3,12 +3,15 @@
 # Optional: entity_kind (table | view | object | projection | external),
 #   schema, column_groups, derivations, primary_key, indexes, checks,
 #   coordination, triggers, access {rls, grants, readers, writers},
-#   view {source, security_invoker}, projection_of,
+#   view {source, security_invoker}, projection_of, volume,
 #   relationships [{to, on, from_card, to_card, link (fk | logical),
 #   on_delete, label, reason}].
 # Column fields: name, type, keys (PK | FK | UK), fk {entity, column,
 #   on_delete, on_update}, nullable, default, check, values, generated,
 #   visibility, rule, indexes (badges such as I1·1, P1·where), constants.
+# Index fields: id (badge), name, purpose, plus display_id, requested_by (the
+#   capability that needs a shared index), unique, method, columns, include,
+#   where, params, definition, serves (sequences).
 # Quote cardinalities: to_card: "1".
 ready: 2
 kind: entity

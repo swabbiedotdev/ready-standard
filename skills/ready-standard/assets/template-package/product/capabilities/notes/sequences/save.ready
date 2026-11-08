@@ -8,8 +8,10 @@
 # Items: msg, note, alt, opt, loop, par, break, transaction, continue. An alt
 #   branch that ends the sequence names its outcome.
 # msg: from, to, text, plus reply, interface (the operation it calls), call,
-#   invokes (sequences it runs), inputs [{name, source, source_kind}], guards,
-#   ops, rules, constants, results [{status, code, copy, when}].
+#   http {method, path, body}, auth, owner (path::symbol), invokes (sequences
+#   it runs), inputs [{name, source, source_kind}], guards (plain words), ops,
+#   rules, constants, results [{status, code, copy, when}], timeout, retry,
+#   idempotency, note, tags.
 # Split a sequence over 16 messages into lettered parts.
 ready: 2
 kind: sequence

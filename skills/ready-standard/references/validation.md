@@ -42,15 +42,16 @@ references it then reports `ref.missing`. Work from the top:
    misspelled or invented field, a value outside an enum, a display id where
    an id is required, a surface field on an operation, or a file path not
    under `product/`.
-3. **Identity problems:** `record.duplicate`, `display.duplicate`.
+3. **Identity problems:** `record.duplicate`, `display.duplicate`,
+   `product.count`, then `part.mismatch`.
 4. **Re-run.** Many `ref.missing` errors disappear once the records above load.
 5. **Graph problems:** `ref.missing` (a typo, a display id used where an id is
    required, a renamed id still cited, or a record that was removed),
    `ref.kind` (an edge's `to` pointing at a flow, a message's `interface` at a
    surface), `ref.file` (the file must exist in the package with an allowed
    extension).
-6. **Homes:** `home.capability` (a flow, step, or sequence with no
-   `capability`, or one that does not exist), then `home.shared` (a
+6. **Homes:** `home.capability` (a flow or sequence with no `capability`, or
+   one that does not exist), then `home.shared` (a
    capability-local rule used elsewhere: move it to shared).
 7. **Flows:** `flow.subject`, `flow.empty`, `step.flow`, `step.kind`. Fix the
    flow's subject first, since it decides whether its steps are journey steps
@@ -59,16 +60,17 @@ references it then reports `ref.missing`. Work from the top:
    `edge.sequence` (the edge's `outcome` must be one of its sequence's
    `outcomes`), then `edge.start` (all edges that run one sequence leave one
    step with one trigger).
-9. **Sequences and rules:** `sequence.participant`, `rule.empty`, `rule.orphan`,
-   `rule.decision`, `entity.column`.
+9. **Sequences and rules:** `sequence.participant`, `ops.target`,
+   `rule.empty`, `rule.orphan`, `rule.decision`, `entity.column`.
 10. **Reachability warnings:** `step.unreachable`, `sequence.outcome`,
     `sequence.unreached`, `interface.unused`, `trigger.unused`. Each means a
     part of the graph leads nowhere or nothing leads to it. Find the real
     entry, edge, or trigger; if there is none, ask the owner whether the
     record is still intended.
 11. **Data warnings:** `ops.index` and `entity.index` (a badge with no index,
-    or `I1.1` written with a period instead of `·`), `data.state` (a step's
-    data `state` that is not a lifecycle step of that entity).
+    or `I1.1` written with a period instead of `·`), `table.shape` (a rule
+    table row with the wrong number of cells), `data.state` (a step's data
+    `state` that is not the id of a `state` step in that entity's lifecycle).
 12. **Plain-words warnings:** `text.code` (a prose field reads as code; the
     message names the match and where it belongs), `text.id` (a prose field
     names a record by id; link it from the typed field), `text.call` (a

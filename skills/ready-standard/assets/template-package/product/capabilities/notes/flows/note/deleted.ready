@@ -2,7 +2,6 @@
 ready: 2
 kind: step
 id: notes.note.deleted
-capability: notes
 flow: notes.note
 title: Deleted
 step_kind: state
@@ -10,4 +9,3 @@ final: true
 description: The note is never listed again.
 field: status
 value: deleted
-edges: []

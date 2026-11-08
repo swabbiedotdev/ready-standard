@@ -2,7 +2,6 @@
 ready: 2
 kind: step
 id: notes.write.too-long
-capability: notes
 flow: notes.write
 title: Note too long
 step_kind: error

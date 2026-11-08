@@ -30,8 +30,8 @@ record kind.
   capabilities.
 - A channel is never a capability. A plugin, a CLI, an MCP server, or a second
   app contributes interfaces to the capabilities whose outcomes it delivers.
-- Behavior has one home. A flow, its steps, and its sequences name the
-  capability that owns them. A rule or trigger names a capability only when it
+- Behavior has one home. A flow and its sequences name the capability that
+  owns them, and a step takes its capability from its flow. A rule or trigger names a capability only when it
   is used in that one capability; otherwise it is shared.
 - A behavior that serves several capabilities still has one owner: usually the
   capability whose outcome it delivers. Another capability reaches it through
@@ -56,7 +56,7 @@ record kind.
   into a consumer.
 - When several capabilities write one physical table, its one entity says who
   may change which columns (`access.writers`, or a column's `rule`); an index
-  one capability needs names it in `requested_by`.
+  a capability needs names that capability in `requested_by`.
 - What an interface or shared sequence promises is what consumers rely on: the
   meaning of inputs and results, effects, refusals, idempotency, atomicity,
   privacy, and retention. Changing any of these (an unavailable score becoming
@@ -91,10 +91,11 @@ record kind.
 
 ## No orphan logic
 
-- Every decision or policy rule is applied by a process: a step's `rules`, an
-  edge's `guard`, a sequence message's or note's `rules`, or another rule that
-  is itself applied. Trace the chain to a concrete trigger. Rules that only
-  reference each other do not count.
+- Every decision or policy rule is applied by a process, through a `rules`
+  field: a step's, an edge's, a sequence message's or note's, or another rule's
+  that is itself applied. A policy is also applied by its own `sequence`.
+  Trace the chain to a concrete trigger. Rules that only reference each other
+  do not count.
 - The validator's `rule.orphan` check accepts any reference. The principle is
   stricter: the application point, the inputs, and how the result changes the
   next step, state, or outcome must be visible in the applying record.
@@ -103,7 +104,8 @@ record kind.
   a policy states what follows whenever an event or state occurs, and names
   the sequence that carries it out when there is one.
 - Put a process-local gate directly in the sequence (`guards`, an `alt` branch,
-  `results`) or on the edge (`guard`). Create a rule record only for logic that
+  `results`) or on the edge (`guard`), in plain words. When the gate is a rule
+  record, list it in that edge's or message's `rules`. Create a rule record only for logic that
   needs its own home: it is reused, or too large for one message.
 - Every trigger record is used by an edge or a sequence; every interface is
   shown by a step or called by a message.

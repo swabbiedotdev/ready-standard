@@ -6,9 +6,11 @@
 #     default, precedence, inputs, params, calculations, sets.
 #   invariant: holds, scope.   policy: whenever, then, sequence.
 #   quality: applies_to, measure, target, scope.
-# Optional: capability.
-# A decision or policy rule must be applied: by a step, an edge guard, a
-# sequence message, or another rule.
+# Optional: capability, rules (rules this rule applies), constants,
+#   constraints [{text, hard}].
+# A decision or policy rule must be applied through the rules field of a
+# step, an edge, a sequence message, or another rule; a policy also by its
+# own sequence.
 ready: 2
 kind: rule
 id: notes.note-length
@@ -20,3 +22,5 @@ summary: A note longer than the limit is refused and the person keeps their text
 when: The note's text is longer than the length limit
 then: The save is refused as too long and the editor keeps the text
 otherwise: The note is saved
+constants:
+  - constant.max-length

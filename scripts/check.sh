@@ -1,7 +1,7 @@
 #!/bin/sh
 # Checks this repository against a Ready Room checkout:
 #   1. the template package validates with 0 errors and 0 warnings;
-#   2. the committed JSON Schema, when present, matches the one Ready Room generates.
+#   2. the committed JSON Schema matches the one Ready Room generates.
 # Usage: scripts/check.sh <ready-room-checkout>   (or set READY_ROOM)
 set -eu
 
@@ -28,11 +28,6 @@ echo "$out" | tail -1 | grep -qx '0 errors, 0 warnings' || {
 }
 
 schema="$skill/assets/ready.schema.json"
-if [ ! -f "$schema" ]; then
-  echo "== No assets/ready.schema.json; generate it once Ready Room ships the standard 8 schema:"
-  echo "   node $cli schema $schema"
-  exit 0
-fi
 
 echo "== Comparing the JSON Schema"
 tmp=$(mktemp -d)

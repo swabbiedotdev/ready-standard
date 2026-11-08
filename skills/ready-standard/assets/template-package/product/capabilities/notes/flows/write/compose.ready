@@ -1,20 +1,20 @@
-# Template: journey step. Its flow must list it in steps.
-# Required: ready, kind, id, capability, flow, title,
-#   step_kind (screen | action | decision | system | outcome | error), edges.
-# Optional: interface (the surface it shows on), presentation (screen | inline |
+# Template: journey step. Its flow must list it in steps; it takes its
+# capability from the flow.
+# Required: ready, kind, id, flow, title,
+#   step_kind (screen | action | decision | system | outcome | error).
+# Optional: edges (a final step has none), interface (the surface it shows on), presentation (screen | inline |
 #   sheet | dialog | toast | email | notification | external), platforms
 #   (ios | android | web | mobile | desktop), roles, copy {title, body,
-#   actions, hints}, sees, does, data [{entity, access (read | write), state}],
-#   rules.
-# Edges: [{to (a step, or $return), trigger (a trigger id, always), guard,
-#   label, sequence, outcome, channel (email | push | async | link), platforms,
-#   roles}]. The edges that run one sequence leave this step with one trigger,
+#   actions, hints}, sees, does, data [{entity, access (read | write), state
+#   (the id of a state step in that entity's lifecycle)}], rules.
+# Edges: [{to (a step, or $return), trigger (a trigger id, always), guard
+#   (plain words), rules, label, sequence, outcome, channel (email | push |
+#   async | link), platforms, roles}]. The edges that run one sequence leave this step with one trigger,
 #   one edge per outcome.
 # copy quotes user-visible words verbatim; sees and does describe.
 ready: 2
 kind: step
 id: notes.write.compose
-capability: notes
 flow: notes.write
 title: Write and save a note
 step_kind: screen
@@ -30,6 +30,7 @@ rules:
 data:
   - entity: data.notes
     access: write
+    state: notes.note.saved
 edges:
   - to: notes.write.saved
     trigger: notes.save-note

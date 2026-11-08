@@ -3,7 +3,8 @@
 #   subject (an actor id here; an entity id makes a lifecycle),
 #   steps (ordered; empty only on an overview with parts).
 # Optional: entries [{label, from (a step in another flow), to (a step in this
-#   flow), trigger}], related [{to (a flow), label, relation}], parts / part_of.
+#   flow), trigger}], related [{to (a flow), label, relation (leads_to |
+#   moves_lifecycle)}], parts / part_of.
 # Split a flow over 12 steps into lettered parts.
 ready: 2
 kind: flow

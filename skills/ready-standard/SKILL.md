@@ -27,8 +27,8 @@ Read [references/principles.md](references/principles.md) before changing
 intent.
 
 - **Capabilities own behavior; shared records are defined once.** Flows,
-  steps, sequences, and single-use rules and triggers name the capability
-  that owns them. Data, interfaces, actors, systems, and anything used by
+  sequences, and single-use rules and triggers name the capability that owns
+  them; a step takes its flow's. Data, interfaces, actors, systems, and anything used by
   several capabilities are shared, and consumers link to them by id. A
   channel (a plugin, a CLI, a second app) is never a capability.
 - **Flows have a subject.** An actor subject makes a journey; an entity
@@ -37,8 +37,9 @@ intent.
   carries `sequence` and `outcome`, one edge per outcome, all leaving the same
   step with the same trigger. Steps list no sequences; that is derived.
 - **Rule kinds.** A rule is a `decision`, `invariant`, `policy`, or `quality`,
-  and it is applied somewhere: by a step, an edge guard, a sequence message,
-  or another rule, or through its `applies_to` or `scope`.
+  and it is applied somewhere: through the `rules` field of a step, an edge,
+  a sequence message, or another rule; a policy also by its own `sequence`;
+  quality and invariant rules through `applies_to` or `scope`.
 - **Interfaces.** Surfaces are for people and operations for programs and
   agents. A step shows on a surface; a message calls an operation.
 - **Plain words first.** Titles, summaries, step text, copy, guards, labels,

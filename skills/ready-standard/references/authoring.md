@@ -170,7 +170,8 @@ of at most 160 characters where the kind has one.
 - [ ] 12 steps or fewer, otherwise lettered parts.
 
 **step (journey)**
-- [ ] `capability`, `flow`, `title`, and a `step_kind` that fits: `screen`
+- [ ] `flow`, `title`, and a `step_kind` that fits (no `capability`; a step
+      takes its flow's): `screen`
       shows something, `action` is what the person does, `system` is what the
       product does, `decision` branches, `outcome` ends, `error` is a visible
       failure.
@@ -178,18 +179,21 @@ of at most 160 characters where the kind has one.
       a full screen.
 - [ ] `copy` quotes exact user-visible words with `{slot}` placeholders;
       `sees`/`does` describe and never invent copy.
-- [ ] `edges` cover every way out, and each names a trigger record. A decision
-      branch has a `label`; a condition is a `guard` in plain words.
+- [ ] `edges` cover every way out, and each names a trigger record; an
+      outcome step with no way out has no `edges`. A decision branch has a
+      `label`; a condition is a `guard` in plain words, and the rules the move
+      applies are in the edge's `rules`.
 - [ ] An edge that runs system work names its `sequence` and `outcome`, and
       there is one edge per outcome of that sequence, all from this step with
       the same trigger. Failures reach their own `error` steps that way.
-- [ ] `rules` and `data` link the logic and data behind the step; the step does
-      not explain that logic itself, and lists no sequences.
+- [ ] `rules` and `data` link the logic and data behind the step; a `data`
+      entry's `state` is the id of a `state` step in that entity's lifecycle.
+      The step does not explain that logic itself, and lists no sequences.
 - [ ] Platform or role differences use `platforms` / `roles` on purpose only.
 
 **step (lifecycle)**
 - [ ] `step_kind: state`; one state is `initial`, and the states it ends in are
-      `final`.
+      `final`, with no `edges`.
 - [ ] `field` and `value` name the entity column and value that hold the state,
       when one does.
 - [ ] Each transition is an edge with a trigger, and with the `sequence` and
@@ -235,8 +239,11 @@ of at most 160 characters where the kind has one.
       `decision` graph, a `table`, or a `judge`; an `invariant` has `holds` and
       `scope`; a `policy` has `whenever` and `then`, and `sequence` when one
       carries it out; a `quality` has `applies_to`, `measure`, and `target`.
-- [ ] A decision or policy rule is applied by a step, an edge guard, a
-      message, or an applied rule (no orphans).
+- [ ] A decision or policy rule is listed in the `rules` of a step, an edge,
+      a message, or an applied rule; a policy may instead be applied by its own
+      `sequence` (no orphans).
+- [ ] `constants` links the constants it uses; `constraints` hold hard or soft
+      limits as `{text, hard}`.
 - [ ] `inputs` with sources; `default` for the no-match outcome; `precedence`
       when order matters.
 - [ ] `decision` edges name existing node ids; `table` rows match the columns.

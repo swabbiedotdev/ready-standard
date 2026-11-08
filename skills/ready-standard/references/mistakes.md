@@ -61,7 +61,8 @@
 - **A shared record copied into a capability:** an entity's columns restated in
   a step's `does`, an interface's copy repeated on a step, a rule's condition
   copied into a guard. Link instead: `data`, `interface`, `rules`.
-- **A flow, step, or sequence with no `capability`** (`home.capability`).
+- **A flow or sequence with no `capability`** (`home.capability`), or a step
+  that sets one: a step takes its flow's.
 - **An interface no step or message uses** (`interface.unused`), or a trigger
   no edge or sequence uses (`trigger.unused`).
 
@@ -125,7 +126,8 @@
   `system.worker`; a lane listed twice.
 - **Index badges with a period.** `I1.1` instead of `I1·1` (middle dot), or a
   badge on a column for an index the entity does not define.
-- **A data `state` that is not a lifecycle step** of that entity (`data.state`).
+- **A data `state` that is not a lifecycle step id** (`data.state`):
+  `state: saved` instead of `state: notes.note.saved`.
 - **Unquoted cardinality or inverted sides.** `from_card` is the side of the
   entity that holds the relationship.
 - **Supplementary paths.** `files: [{path: files/x.ts}]` must be

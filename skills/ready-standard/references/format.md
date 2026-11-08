@@ -4,8 +4,9 @@ This is the canonical specification of the `.ready` standard in this
 repository. It follows Ready Room's schema, `app/src/shared/intent/types.ts`
 (zod), which defines every field and is authoritative where the two disagree;
 the loader and its checks are `app/src/shared/intent/model.ts`.
-`npx @readyroom/ready schema` prints the JSON Schema for one record, for editor
-completion.
+The generated JSON Schema ships with this skill at
+[`assets/ready.schema.json`](../assets/ready.schema.json) for editor
+completion; `npx @readyroom/ready schema` prints the current one.
 
 A Ready Intent Package (RIP) describes a product as it is meant to be, as a
 graph of typed records. Each record is one YAML file ending in `.ready` under
@@ -96,9 +97,10 @@ product/
 
 Folders are a convention for people. The loader reads every `.ready` file under
 `product/` (any depth) and ignores folder names. A record's kind comes from its
-`kind` field, and its home from its fields: flows, steps, and sequences name
-their `capability`; a rule or trigger names one only when it is used in one
-capability; every other kind is always shared.
+`kind` field, and its home from its fields: flows and sequences name their
+`capability`, and a step takes its capability from its flow; a rule or
+trigger names one only when it is used in one capability; every other kind is
+always shared.
 
 ## YAML rules
 
@@ -167,7 +169,8 @@ may point at are checked (`ref.kind`).
 Exactly one, at `product/product.ready`: `name` (at most 40 characters),
 `summary`, `outcome` (at most 300 characters), `release?`,
 `format_version: "8.0.0"`, `boundary? {text?, includes?, excludes?}`,
-`exclusions?`, `measures?`, `dcl? {level (integer 1–10), basis}`.
+`exclusions?`, `measures?`, `dcl? {level (integer 1–10), basis}`. The DCL is
+product-wide only; an area with stronger needs states them as quality rules.
 
 ### capability
 
@@ -190,13 +193,13 @@ none of them.
   display names, not separate kinds.
 - **`entries`** are `[{label, from? (a step in another flow), to (a step in this
   flow), trigger?}]`: where the subject comes in from.
-- **`related`** are `[{to (a flow), label, relation}]`, with `relation` such as
-  `leads_to`, `part_of_lifecycle`, or `moves_lifecycle`. A journey links the
-  lifecycles it moves.
+- **`related`** are `[{to (a flow), label, relation (leads_to,
+  moves_lifecycle)}]`. A journey links the lifecycles it moves.
 
 ### step
 
-`capability, flow, title, step_kind, edges`, plus fields by subject.
+`flow, title, step_kind, edges?`, plus fields by subject. A step takes its
+capability from its flow.
 
 - **`step_kind`:**
   - for a journey: `screen`, `action`, `decision`, `system`, `outcome`,
@@ -211,9 +214,11 @@ none of them.
   - `sees?` and `does?` (lists), which describe and never quote.
 - **For a lifecycle step:** `description?`, and the entity field and value that
   hold the state (`field?`, `value?`).
-- **For both:** `data? [{entity, access (read, write), state?}]`, `rules?`.
-- **`edges`** are `[{to | $return, trigger, guard?, label?, sequence?,
-  outcome?, channel? (email, push, async, link), platforms?, roles?}]`:
+- **For both:** `data? [{entity, access (read, write), state?}]`, where
+  `state` is the id of a `state` step in that entity's lifecycle; `rules?`.
+- **`edges`** (optional; a final step has none) are `[{to | $return, trigger,
+  guard?, rules?, label?, sequence?, outcome?, channel? (email, push, async,
+  link), platforms?, roles?}]`:
   - `to` is a step, or `$return` to send the subject back where the flow
     began.
   - `trigger` is a trigger id. Every edge names a trigger record.
@@ -222,7 +227,8 @@ none of them.
     same step with the same trigger, one per outcome.
   - A move with no system work has no `sequence`.
   - `label` marks a decision branch ("Yes", "No"); `guard` states, in plain
-    words, the condition under which the edge is taken.
+    words, the condition under which the edge is taken; `rules` lists the
+    rules the move applies.
 
 The steps a sequence starts, ends at, or decides in are derived from these
 edges, so a step lists no sequences.
@@ -236,7 +242,8 @@ edges, so a step lists no sequences.
   or `{id (key), is?, label?}` lanes such as "Mobile app or web page". Messages
   and notes use participant keys.
 - **`outcomes`** are `[{id, label}]`, the ways the sequence can end. An `alt`
-  branch that ends the sequence names its `outcome`. Flow edges map outcomes to
+  branch that ends the sequence names its `outcome`. A sequence with one
+  outcome reaches it at the end of its items. Flow edges map outcomes to
   steps.
 - **`trigger`** is a trigger id, only for a sequence no edge runs: a
   `schedule`, an `event`, or another system's `call`, such as a nightly batch
@@ -244,9 +251,11 @@ edges, so a step lists no sequences.
 - **Items** (each is a one-key mapping):
   - `msg {from, to, text}`, plus optional `reply` (a dashed return),
     `interface` (the operation it calls), `call` (function and arguments),
-    `invokes` (sequences it runs), `inputs [{name, source, source_kind?}]`,
-    `guards`, `ops`, `rules`, `constants`, `results [{status?, code?, copy?,
-    when?}]` (one per outcome).
+    `http {method, path, body?}`, `auth` (the credential or role it runs
+    with), `owner` (owning code, `path::symbol`), `invokes` (sequences it
+    runs), `inputs [{name, source, source_kind?}]`, `guards` (plain words),
+    `ops`, `rules`, `constants`, `results [{status?, code?, copy?, when?}]`
+    (one per outcome), `timeout`, `retry`, `idempotency`, `note`, `tags`.
   - `note {over (participant keys), text, ops?, rules?, tags?}` for annotations
     that belong to no message, including branches that hold only data effects.
   - `alt {branches [{when, outcome?, items}]}`, `opt {when, items}`,
@@ -271,7 +280,7 @@ edges, so a step lists no sequences.
 (physical name or object path template), `name, summary, columns`,
 `column_groups?`, `derivations?`, `primary_key?`, `indexes?`, `checks?`,
 `coordination?`, `triggers?`, `access?`, `view?`, `projection_of?`,
-`relationships?`.
+`relationships?`, `volume?`.
 
 - `columns [{name, type, keys? (PK, FK, UK), fk? {entity, column, on_delete?,
   on_update?}, nullable?, default?, check?, values?, generated?, visibility?,
@@ -340,7 +349,8 @@ the edge.
 ### rule
 
 `rule_kind, title, summary`, `capability?` (only when used in one
-capability), plus the logic for its kind:
+capability), `rules?` (rules this rule applies), `constants?`, `constraints?
+[{text, hard?}]`, plus the logic for its kind:
 
 | `rule_kind` | Logic |
 | --- | --- |
@@ -349,9 +359,10 @@ capability), plus the logic for its kind:
 | `policy` | `whenever` (an event or state), `then` (what follows), `sequence?` (the sequence that carries it out) |
 | `quality` | `applies_to` (flows, sequences, or interfaces), `measure`, `target`, `scope?` |
 
-Every rule is applied somewhere: by a step, an edge guard, a sequence message,
-or another rule. Quality and invariant rules apply through their `applies_to`
-or `scope`.
+Every rule is applied somewhere: through the `rules` field of a step, an
+edge, a sequence message or note, or another rule. A policy is also applied by
+its own `sequence`. Quality and invariant rules apply through their
+`applies_to` or `scope`.
 
 ### actor
 
@@ -419,10 +430,12 @@ non-zero when there is any error. How to work through the output is in
 | `field.unknown` | E | A field is not in the format. |
 | `record.duplicate` | E | Two records share an `id`. |
 | `display.duplicate` | E | A display id names two records (or another record's id). |
+| `product.count` | E | The package does not have exactly one product record. |
+| `part.mismatch` | E | An overview's `parts` and the parts' `part_of` disagree. |
 | `ref.missing` | E | A reference points at no record. |
 | `ref.kind` | E | A reference points at the wrong kind of record. |
 | `ref.file` | E | A referenced supplementary file is not in the package. |
-| `home.capability` | E | A flow, step, or sequence names no capability, or a capability that doesn't exist. |
+| `home.capability` | E | A flow or sequence names no capability, or a capability that doesn't exist. |
 | `home.shared` | W | A rule that names a capability is used outside it. |
 | `flow.subject` | E | A flow's subject is not an actor or an entity. |
 | `flow.empty` | E | A flow has no steps. |
@@ -436,12 +449,14 @@ non-zero when there is any error. How to work through the output is in
 | `sequence.outcome` | W | A sequence outcome that no edge maps to a step. |
 | `sequence.unreached` | W | No edge runs the sequence, no sequence invokes it, and it has no trigger. |
 | `rule.empty` | E | A rule has no logic for its kind. |
-| `rule.orphan` | E | Nothing applies a decision or policy rule. |
+| `rule.orphan` | E | Nothing applies a decision or policy rule through a `rules` field (or, for a policy, its `sequence`). |
 | `rule.decision` | E | A decision graph refers to a node that doesn't exist. |
 | `entity.column` | E | `primary_key` or a column `fk` names an unknown column. |
+| `ops.target` | E | A data operation has neither `entity` nor `path`. |
 | `ops.index` | W | A data operation's `index` is not an index of its entity. |
 | `entity.index` | W | A column badge names no index on the entity. |
-| `data.state` | W | A step's data `state` is not a step of that entity's lifecycle. |
+| `table.shape` | W | A rule table row has the wrong number of cells. |
+| `data.state` | W | A step's data `state` is not a `state` step of that entity's lifecycle. |
 | `interface.fields` | E | Surface fields on an operation, or the reverse. |
 | `interface.unused` | W | Nothing shows or calls an interface. |
 | `trigger.unused` | W | A trigger record no edge or sequence uses. |
