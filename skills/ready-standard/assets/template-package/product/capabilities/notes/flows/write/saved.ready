@@ -1,0 +1,10 @@
+# Template: journey step that ends the flow (step_kind outcome, no edges).
+ready: 2
+kind: step
+id: notes.write.saved
+flow: notes.write
+title: Note saved
+step_kind: outcome
+interface: interface.editor
+sees:
+  - The saved note, ready to open again later

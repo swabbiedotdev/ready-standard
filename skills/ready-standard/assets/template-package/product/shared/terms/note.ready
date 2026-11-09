@@ -1,0 +1,12 @@
+# Template: term.
+# Required: ready, kind, id, name, definition.
+# Optional: synonyms, copy_word (the word user-visible copy uses).
+ready: 2
+kind: term
+id: term.note
+display_id: TERM-NOTE
+name: Note
+definition: A short piece of text a person saves for themselves.
+synonyms:
+  - memo
+copy_word: note

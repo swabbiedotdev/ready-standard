@@ -1,333 +1,494 @@
-# The `.ready` format (schema 1)
+# The `.ready` format (Ready standard 8, schema 2)
 
 This is the canonical specification of the `.ready` standard in this
 repository. It follows Ready Room's schema, `app/src/shared/intent/types.ts`
 (zod), which defines every field and is authoritative where the two disagree;
-the loader and its checks are `app/src/shared/intent/model.ts`. The generated
-JSON Schema ships with this skill at
+the loader and its checks are `app/src/shared/intent/model.ts`.
+The generated JSON Schema ships with this skill at
 [`assets/ready.schema.json`](../assets/ready.schema.json) for editor
 completion; `npx @readyroom/ready schema` prints the current one.
 
-A Ready Intent Package (RIP) is a graph of typed records. Each record is one YAML file ending in
-`.ready` under `product/`. Records refer to each other by `id`. Every diagram,
-outline, export, and diff is derived from the records; nothing visual is
-stored.
+A Ready Intent Package (RIP) describes a product as it is meant to be, as a
+graph of typed records. Each record is one YAML file ending in `.ready` under
+`product/`. Records refer to each other by `id`. Every diagram, outline,
+export, and diff is derived from the records; nothing visual is stored.
 
-**Goal: no loss.** Everything a RIP expresses has a home: a typed field, a prose
-field (`notes`, `rationale`), an open `tags` entry, or a supplementary file the
-record references. If something has no home, the format needs a field, not a
-workaround.
+## The model
+
+The product is organized into **capabilities**: outcomes that some actor gets.
+Inside a capability, behavior is drawn with four forms. Named parts, defined
+once, are referenced from everywhere they apply.
+
+```
+product
+├─ capability                      an outcome some actor gets
+│  ├─ flow                         how one subject moves
+│  │  ├─ subject: a person   → shown as a journey
+│  │  ├─ subject: a record   → shown as a lifecycle
+│  │  └─ step                      a place the subject can be
+│  │     └─ edge                   a way out: trigger, guard, and the sequence it runs
+│  ├─ sequence                     what happens between two steps, across systems
+│  └─ rule                         logic used only in this capability
+└─ shared (used by several capabilities, owned by none)
+   ├─ data           entities and their fields and relationships
+   ├─ interface      surfaces for people; operations for programs and agents
+   ├─ actor, system, trigger, rule, constant, term
+```
+
+| Form | Record kinds | Drawn as |
+| --- | --- | --- |
+| Data schema | `entity`, `data_group` | entity diagram |
+| Flow | `flow`, `step` | flow diagram (journey or lifecycle) |
+| Sequence | `sequence` | sequence diagram |
+| Interface | `interface` | surface or operation card |
+
+**Named parts.** Triggers, rules, actors, systems, constants, and terms already
+sit inside the four forms: a trigger on an edge, a rule in a guard, an actor as
+a subject or participant. A named record exists when the part is reused, or
+when it is important enough to be found on its own.
+
+**Neutral definitions.** The standard does not define interruption, failure,
+compensation, or resting versus transit states. A step is a place the subject
+can be. A sequence is what runs between steps, and its outcomes say where the
+subject ends up.
 
 ## Principles of the format
 
-1. **One record, one file, one fact.** A record owns its fact; others link to it by id.
-2. **Typed where software uses it.** Anything a viewer draws, checks, links, or
-   searches is a typed field: who calls whom, which table and index, which rule
-   applies, the copy shown to users. Explanations stay prose.
-3. **Derived, never stored:** diagram layout, colors, themes, legends,
-   autonumbering, overview diagrams of parts, "used in", "writes", and "reads"
-   lists, reference boxes for another module's entities, Mermaid escapes.
-4. **Clean text.** No Mermaid or HTML escapes (`#59;`, `<br/>`); use lists
-   instead of line breaks. Markdown is allowed only in `rationale` and `notes`.
-   Diagram text names things in words, not ids: a graph node's `refs` carry the
-   links, and the viewer shows them as footnotes. Ids written in prose fields
-   (`rationale`, `notes`, and other descriptive text such as a rule's text or an
-   index's `purpose`) link automatically.
-5. **Readable chunks.** Journeys over 12 steps and sequences over 16 messages
-   are split into lettered parts; the overview is derived.
+1. **One home per fact.** Every record has one home: a capability, or shared.
+   Consumers link to it by id; nothing is restated.
+2. **Typed where software uses it.** Anything Ready Room draws, checks, links,
+   or searches is a typed field. Explanations stay in `rationale` and `notes`.
+3. **Derived, never stored.** Layout, overview diagrams of parts, "used in"
+   lists, a step's sequences, a capability's records, where an interface is
+   used, an entity's lifecycle, links between flows, and effective DCL are
+   derived from references and capability ownership.
+4. **Plain words first.** Titles, summaries, step text, copy, guards, labels,
+   trigger names, and message text are written for someone returning after a
+   month, with no identifiers or code vocabulary. Identifiers live in typed
+   fields (`call`, `code`, `ops`, `returns`, `refs`). Every `summary` is one
+   sentence of at most 160 characters.
+5. **Present tense, current intent.** No history, tasks, or migration language.
+   Git and the tracker hold history.
+6. **Readable chunks.** Flows over 12 steps and sequences over 16 messages are
+   split into lettered parts.
+7. **One way to say each thing.** Where two fields could hold the same fact, the
+   format keeps one, and the other is derived.
 
 ## Package layout
 
 ```
 product/
   product.ready
-  actors/<name>.ready
-  systems/<name>.ready
-  capabilities/<name>.ready
-  <module>/module.ready
-  <module>/journeys/*.ready      <module>/steps/<journey>/*.ready
-  <module>/surfaces/*.ready      <module>/operations/*.ready
-  <module>/sequences/*.ready     <module>/rules/*.ready
-  <module>/constants/*.ready
-  <module>/data/*.ready          entities, entity groups, state machines
-  <module>/quality/*.ready       <module>/terms/*.ready
-  <module>/acceptance/*.ready
-  <module>/files/…               supplementary files
+  capabilities/<capability>/capability.ready
+  capabilities/<capability>/flows/<flow>.ready
+  capabilities/<capability>/flows/<flow>/<step>.ready
+  capabilities/<capability>/sequences/<sequence>.ready
+  capabilities/<capability>/rules/<rule>.ready        rules used only here
+  capabilities/<capability>/triggers/<trigger>.ready  triggers used only here
+  shared/data/<entity>.ready
+  shared/interfaces/<interface>.ready
+  shared/actors/<actor>.ready
+  shared/systems/<system>.ready
+  shared/triggers/<trigger>.ready
+  shared/rules/<rule>.ready
+  shared/constants/<constant>.ready
+  shared/terms/<term>.ready
+  files/…                                              supplementary files
 ```
 
 Folders are a convention for people. The loader reads every `.ready` file under
-`product/` (any depth) and ignores folder names, so a record's kind comes only
-from its `kind` field.
+`product/` (any depth) and ignores folder names. A record's kind comes from its
+`kind` field, and its home from its fields: flows and sequences name their
+`capability`, and a step takes its capability from its flow; a rule or
+trigger names one only when it is used in one capability; every other kind is
+always shared.
 
 ## YAML rules
 
 - One mapping per file. Duplicate keys are a parse error.
 - Every text field is a non-empty string after trimming. Quote values YAML
   would read as numbers or booleans when the field is text: `value: "2000"`,
-  `to_card: "1"`, `from: "[*]"`.
+  `to_card: "1"`, `format_version: "8.0.0"`.
 - Quote any plain scalar that contains `: ` or starts with `{`, `[`, `*`, `&`,
   `!`, `|`, `>`, `'`, `"`, `%`, or `@`.
 - Unknown fields are errors at every level (every object is strict).
 
 ## Fields every record has
 
-| Field        | Meaning                                                                                                      |
-| ------------ | ------------------------------------------------------------------------------------------------------------ |
-| `ready`      | Schema version; always `1`.                                                                                  |
-| `kind`       | Record kind (below).                                                                                         |
-| `id`         | Lowercase dotted machine id, e.g. `shops.claim-shop.enter-email`. Never changes.                             |
-| `display_id` | Optional stable human id, e.g. `FLOW-012`, `SEQ-014a`, `DATA-ACCOUNT`, `RULE-ACCESS`. Unique in the package. |
-| `aliases`    | Retired ids and old heading anchors that still resolve here (`flow-012-claim-a-shop`).                       |
-| `rationale`  | Current rationale: why the design is shaped this way (Markdown).                                             |
-| `notes`      | Context for a reader: scope, terminology, references, reasons (Markdown). Never behavior or columns a typed field could hold. |
-| `files`      | Supplementary files: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. |
-| `tags`       | `{tag, text}` annotations with no dedicated field.                                                           |
+| Field | Meaning |
+| --- | --- |
+| `ready` | Schema version; always `2`. `ready: 1` is a load error. |
+| `kind` | Record kind (below). |
+| `id` | Lowercase dotted machine id. Never changes. |
+| `display_id` | Stable human id cited in code and tickets, e.g. `FLOW-CREATE`, `SEQ-PREVIEW`, `RULE-COST`. Unique in the package. |
+| `title` or `name` | Plain-words name (which one depends on the kind). |
+| `summary` | One sentence, at most 160 characters. |
+| `rationale` | Why it is shaped this way (Markdown). |
+| `notes` | Context: scope, terms, references (Markdown). Never behavior a typed field could hold. |
+| `files` | Supplementary files: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. |
+| `tags` | `{tag, text}` annotations with no dedicated field. |
+
+## Ids and display ids
 
 `id` matches `^[a-z0-9]+([-_][a-z0-9]+)*(\.[a-z0-9]+([-_][a-z0-9]+)*)*$`. It is
 for machines and links between records; `display_id` is for people and code
-citations. Viewers resolve an id, display id, or alias for search and deep
-links, and the loader rejects a display id or alias that names two records. See
-[ids-and-parts.md](ids-and-parts.md) for naming conventions.
+citations. References always use the target's `id`.
+
+- **Behavior ids start with their capability:** `generate.create-font` (a
+  flow), `generate.create-font.use-handwriting` (its step),
+  `generate.source-preview` (a sequence), `generate.confirm-source` (a trigger
+  used only in that capability). A capability's own id is its name:
+  `generate`.
+- **Shared ids start with their kind:** `data.fonts`,
+  `interface.preview-screen`, `rule.generation-cost`, `trigger.confirm-source`,
+  `actor.owner`, `system.mobile`, `constant.<name>`, `term.<name>`.
+- **Display-id prefixes:** `CAP-`, `FLOW-`, `SEQ-`, `DATA-`, `IF-`, `RULE-`,
+  `TRIG-`, `ACTOR-`, `SYS-`, `CONST-`, `TERM-`.
+- **No old names.** An id or display id that changes is changed everywhere it is
+  cited, in the RIP and in code. The format has no field that keeps old names
+  resolving.
+
+The loader rejects an id or display id that names two records. See
+[ids-and-parts.md](ids-and-parts.md) for naming practice.
 
 ## Parts
 
-Journeys, sequences, rules, and entity groups can be split into lettered parts.
-The overview record lists `parts: [ids]` in order; each part has
-`part_of: <overview id>` and its own `display_id` (`SEQ-014a`). The overview
-diagram is derived from the parts. Parts reference each other directly: a
-step's `next`, a sequence's `continue`.
+Flows, sequences, rules, and data groups can be split into lettered parts. The
+overview record lists `parts: [ids]` in order; each part has
+`part_of: <overview id>` and its own `display_id` (`SEQ-PREVIEW-a`). The
+overview diagram is derived from the parts. Parts reference each other
+directly: a step's edge points at a step in the next flow part, and a sequence
+part ends with `continue`.
 
 ## Record kinds
 
-`?` marks an optional field. Lists of ids name other records; the kinds each may
-point at are checked (`ref.kind`).
+`?` marks an optional field. Lists of ids name other records; the kinds each
+may point at are checked (`ref.kind`).
 
-### Context
+### product
 
-- **product** (exactly one): `name, outcome, summary?, release?, format_version?,
-  boundary?` (text, or `{text?, includes?, excludes?}`), `exclusions?, measures?,
-  dcl? {level (integer 1–10), basis}`.
-- **module**: `name, summary, owns?, invariants?, runs_in?` (systems).
-- **actor**: `name, description?, goal?, side?` (user, product, operator,
-  third_party), `connections? [{to (system or actor), label?, direction? (to, both)}]`
-  for an actor's own links on the system map.
-- **capability**: `name, outcome, actors?, owners?` (modules, journeys, or
-  sequences that deliver it).
-- **system**: `name, role, system_kind?` (platform, app, service, worker,
-  database, storage, queue, external), `hosting?, within?` (the hosting system),
-  `code?` (repository path), `responsibilities?, connections? [{to, label?, direction?}],
-  environments? [{name, notes?}], units? [{name, unit_kind? (function, job,
-  schedule, service, queue), schedule?, resources?, notes?}], secrets?` (names
-  only, never values).
+Exactly one, at `product/product.ready`: `name` (at most 40 characters),
+`summary`, `outcome` (at most 300 characters), `release?`,
+`format_version: "8.0.0"`, `boundary? {text?, includes?, excludes?}`,
+`exclusions?`, `measures?`, `dcl? {level (integer 1–10), basis}`. This optional
+Development Complexity Level is the product default.
 
-### Experience
+### capability
 
-- **journey**: `module, actors` (at least one), `title, summary, audience?, trigger?,
-  entries? [{label, from? (step, journey, or surface), to? (the step it opens),
-  edge? (label on the way in)}], steps` (ordered; empty only on an overview with
-  parts), `sequences?, related? [{to (journey), label, relation? (leads_to,
-  shares, alternative)}], parts?, part_of?`.
-- **step**:
-  - Identity: `journey, title, step_kind` (screen, action, system, decision,
-    outcome, error).
-  - Where and how it shows: `surface?, presentation?` (screen, inline, sheet,
-    dialog, toast, email, notification, external), `platforms?` (ios, android,
-    web, mobile, desktop), `roles?`.
-  - Content: `copy? {title?, body?, actions?, hints?}` with `{slot}`
-    placeholders, plus `sees?` and `does?` (lists) for descriptions.
-  - Links: `next? [{to (step, journey, or $return), label?, when?, next_kind?
-    (action, result, auto), channel? (email, push, async, link), both_ways?,
-    platforms?, roles?, target_label?}], sequences?, rules?, data? [{entity,
-    access? (read, write, read-write)}]`.
-  - `$return` sends the person back where the journey started.
-- **surface**:
-  - Identity: `module, name, surface_kind?` (app, page, screen, section, sheet,
-    dialog, email, notification, provider, user_side).
-  - Placement: `parent?` (surface), `system?, route?, audience?, platforms?, code?`.
-  - Content: `summary?, elements? [{name, description?, states?, copy?}], states?,
-    mockup? {url?, file?, frame?, version?}` (the binding design target).
-  - A named screen used in several flows is a surface with a parent.
+`name, summary, outcome, actors` (who gets the outcome), `order?` (position on
+the product page), `dcl? {level (integer 1–10), basis}`.
 
-User-visible copy goes in `copy`, verbatim. `sees` and `does` describe; `copy`
-quotes.
+A capability is any outcome some actor gets: owners, visitors, or operators. An
+area with several distinct outcomes is several capabilities. A channel is never
+a capability: a plugin, a CLI, or a second app contributes interfaces to
+existing capabilities. A capability owns the records that name it; it lists
+none of them.
 
-### Logic
+A capability's effective DCL is its own when set, else the product default,
+else none. Its own `basis` explains why it differs. The validator warns with
+`dcl.same` when its level equals the product's. Owned records use their
+capability's effective DCL. Shared records have no DCL field: theirs is the
+highest effective DCL of the capabilities that use them, derived through the
+"used in" lookups, or none when no user has one. Concrete targets, such as a
+response time or loss limit, are quality rules, not DCL.
 
-- **operation** (a public operation, RPC, or endpoint): `module, name, summary,
-  params? [{name, source, source_kind?, type?}], returns?, errors? [{code,
-  status?, when?, copy?, maps_to?}], http? {method, path}, auth?, sequence?` (the
-  sequence that carries it out), `owner?` (code, `path::symbol`). Payload types go
-  in a contract file listed in `files`.
-- **sequence**: `module, title, summary?, trigger? {trigger_kind (user, event,
-  schedule, call, operator), text}, operation?, participants, dcl?` (override
-  only), `items, diagram?, parts?, part_of?`.
-  - **Participants:** an actor or system id, used as its own key, or
-    `{id (key), is?, label?, component?, owner?}` for a lane such as "Mobile app
-    or web page". `is` may name actors, systems, sequences, or operations; omit
-    it for a component lane. Messages and notes use participant keys.
-  - **Items** (each is a one-key mapping):
-    - `msg {from, to, text}`, plus optional `reply` (a dashed return),
-      `http {method, path, body?}`, `call` (function and arguments), `auth`,
-      `invokes` (sequences or operations it starts), `inputs [{name, source,
-      source_kind?}]`, `guards`, `ops`, `rules`, `constants`, `results [{status?,
-      code?, copy?, when?}]` (one per outcome), `owner`, `timeout`, `retry`,
-      `idempotency`, `note`, `tags`.
-    - `note {over (participant keys), text, ops?, rules?, tags?}` for annotations
-      that belong to no message, including branches that hold only data effects.
-    - `alt {branches [{when, items}]}`, `opt {when, items}`, `loop {while, max?,
-      items}`, `par {branches [{label?, items}]}`, `break {when, items}`,
-      `transaction {label?, items}`.
-    - `continue {to (sequence), text?}` hands off to the next part or sequence.
-  - A part that is a flowchart rather than a message exchange uses `diagram` (the
-    graph shape below) with `items: []`.
-  - **Data operations (`ops`):** `{op, entity?, by?, index?, where?, join?
-    [{entity, on}], set?, conflict?, order?, limit?, mode?, path?, returns?,
-    triggers?, shared_with? (sequences contending for a lock), note?}`. `op` is
-    read, insert, update, upsert, delete, lock, audit, enqueue, write, or append.
-    `entity` is an entity or entity group; an object addressed only by path sets
-    `path` and no entity. `index` names an index badge of the entity (`U1`), or
-    `PK` / `FK`.
-  - **source_kind** (inputs and params): surface, parameter, return, stored,
-    payload, session, constant, config, derived.
-- **rule**: `module, title, summary?, owner?`, then the logic in whichever forms
-  fit (they may combine):
-  - `when`, `then`, `otherwise` for a single gate;
-  - `decision` (a graph) for a decision tree;
-  - `rules` for rules this rule applies;
-  - `table {columns, rows}` for quota or decision tables;
-  - `judge {evidence, output, gate?, prompt? (file path)}` for model-judged decisions;
-  - plus `default` (the outcome when nothing matches), `priority` (number),
-    `precedence`, `constraints [{text, hard?}]`, `inputs`, `params [{name, value,
-    unit?, source?}]`, `constants`, `sets [{name, members}]`, `calculations
-    [{name, expr, notes?}]`, `parts?, part_of?`.
-- **constant**: `module, name, value?` (text; omit when the RIP only names it),
-  `unit?, source?` (config `path#key` when code owns the value), `description?,
-  table? {columns, rows}`. Use it for named values (`INVITATION_TTL = 7 days`)
-  and value tables (tiers).
+### flow
 
-**Graphs** (`rule.decision`, `sequence.diagram`, `entity_group.diagram`):
-`nodes [{id, node_kind, text, ops?, refs?}]` (at least one) and `edges [{from,
-to, label?, undirected?}]`. `node_kind` is input, decision, calc, judge, action,
-outcome, data, or note. Node ids are free text local to the graph; `refs` names
-any records the node stands for or uses. A node's `text` names those records in
-words; repeating an id, display id, or alias that is also in its `refs` is the
-`text.ref-id` warning, naming any other record by id is `text.id`, and code
-vocabulary in it is `text.code`.
+`capability, title, summary, subject, steps` (ordered), `entries?`, `parts?`,
+`part_of?`.
 
-### Data
+- **`subject`** is an actor id or an entity id. An actor makes the flow a
+  **journey**; an entity makes it a **lifecycle**. Journey and lifecycle are
+  display names, not separate kinds.
+- **`entries`** are `[{label, from? (a step in another flow), to (a step in this
+  flow), trigger?}]`: where the subject comes in from.
+- **Links between flows are derived, never declared.** A flow *leads to* every
+  flow whose `entries` have a `from` step in it; those flows *come from* it. A
+  journey *moves* a lifecycle when an edge of each runs the same sequence, or
+  when one of its steps names a state of that lifecycle in `data[].state`; the
+  lifecycle is *moved by* that journey. An edge to another flow's step alone
+  does not establish a *leads to* link.
 
-- **entity**:
-  - `module, entity_kind?` (table, view, object, projection, external), `schema?,
-    table` (physical name or object path template), `name, summary`.
-  - `columns [{name, type, keys? (PK, FK, UK), fk? {entity, column, on_delete?,
-    on_update?}, nullable?, default?, check?, values?, generated?, visibility?,
-    rule?, indexes? (badges), constants?}]`.
-  - `column_groups? [{name, display_id?, columns, summary?}]` and
-    `derivations? [{by, columns, text}]` (columns a function computes).
-  - `primary_key?` (an ordered composite key).
-  - `indexes? [{id (badge), display_id?, name, requested_by? (the module that needs
-    it), unique?, method?, columns?, include?, where?, params?, definition?,
-    purpose, serves? (sequences)}]`.
-  - `checks? [{name?, expr, purpose?}]`.
-  - `coordination? [{id, coordination_kind? (lease, lock, admit, fence, other),
-    scope?, owner?, fence?, expires?, limit?, protects?, text}]`.
-  - `triggers? [{name, timing?, event?, does}]`.
-  - `access? {rls?, grants?, readers?, writers?}, lifecycle?, invariants?, volume?`.
-  - `view? {source, security_invoker?}, projection_of?` (entity).
-  - `relationships? [{to (entity), on? [{from, to}], from_card?, to_card?, link
-    (fk, logical), on_delete?, label, reason?}]`. Cardinalities are `1`, `0..1`,
-    `0..many`, `1..many`, or bounded like `0..2`, always quoted. `from_card` is
-    this entity's side. Two foreign keys to the same table are two relationships.
-  - Column badges carry suffixes after a middle dot (`·`, U+00B7): `U1·1` (first
-    key), `P1·where`, `P1·expr`, `I2·inc`. The part before `·` must be an index
-    id on the entity, or `PK`.
-  - Another module's entity is never copied: relationships point at its record,
-    and viewers draw it as a reference box.
-- **entity_group**: `module, title, summary?, entities, diagram?, parts?,
-  part_of?`. Use it for one DATA id spanning several tables, for a module's data
-  diagram, and for lettered data diagrams.
-- **state_machine**: `module, title, entity?, field?, states [{name, description?,
-  initial?, terminal?}]` (at least one), `transitions [{from, to, trigger, via?
-  (sequences or rules)}]`. `[*]` is the start or end of a transition.
+### step
 
-### Quality and vocabulary
+`flow, title, step_kind, edges?`, plus fields by subject. A step takes its
+capability from its flow.
 
-- **quality** (QC): `module, title, applies_to` (at least one record of any
-  kind), `measure, scope?, target`.
-- **term**: `module?, name, definition, synonyms?, copy_word?` (the word
-  user-visible copy uses).
-- **acceptance** (exceptions only): `module, title, why_not_diagram, verifies`
-  (at least one record of any kind), `given, when, then`.
+- **`step_kind`:**
+  - for a journey: `screen`, `action`, `decision`, `system`, `outcome`,
+    `error`;
+  - for a lifecycle: `state`, with `initial?` and `final?`.
+- **For a journey step:**
+  - `interface?` (the surface it shows on), `presentation?` (screen, inline,
+    sheet, dialog, toast, email, notification, external), `platforms?` (ios,
+    android, web, mobile, desktop), `roles?`;
+  - `copy? {title?, body?, actions?, hints?}`, quoted verbatim with `{slot}`
+    placeholders;
+  - `sees?` and `does?` (lists), which describe and never quote.
+- **For a lifecycle step:** `description?`, and the entity field and value that
+  hold the state (`field?`, `value?`).
+- **For both:** `data? [{entity, access (read, write), state?}]`, where
+  `state` is the id of a `state` step in that entity's lifecycle; `rules?`.
+- **`edges`** (optional; a final step has none) are `[{to | $return, trigger,
+  guard?, rules?, label?, sequence?, outcome?, channel? (email, push, async,
+  link), platforms?, roles?, secondary?}]`:
+  - `to` is a step, or `$return` to send the subject back where the flow
+    began.
+  - `trigger` is a trigger id. Every edge names a trigger record.
+  - `sequence` names the sequence this move runs, and `outcome` names which of
+    its outcomes leads to `to`. The edges that share a sequence all leave the
+    same step with the same trigger, one per outcome.
+  - A move with no system work has no `sequence`.
+  - `label` marks a decision branch ("Yes", "No"); `guard` states, in plain
+    words, the condition under which the edge is taken; `rules` lists the
+    rules the move applies.
+  - `secondary: true` marks a less common or implied move: a rare branch, a
+    failure, or a return such as Cancel, Close or "Back to …". The move stays
+    part of the intent; diagrams hide it, and the steps only it reaches, until
+    the reader asks for them. Leave the main path unmarked.
+
+The steps a sequence starts, ends at, or decides in are derived from these
+edges, so a step lists no sequences.
+
+### sequence
+
+`capability, title, summary, participants, items, outcomes`, plus `trigger?`,
+`parts?`, `part_of?`.
+
+- **`participants`:** actor, system, or interface ids, used as their own keys,
+  or `{id (key), is?, label?}` lanes such as "Mobile app or web page". Messages
+  and notes use participant keys.
+- **`outcomes`** are `[{id, label}]`, the ways the sequence can end. An `alt`
+  branch that ends the sequence names its `outcome`. A sequence with one
+  outcome reaches it at the end of its items. Flow edges map outcomes to
+  steps.
+- **`trigger`** is a trigger id, only for a sequence no edge runs: a
+  `schedule`, an `event`, or another system's `call`, such as a nightly batch
+  or an inbound webhook.
+- **Items** (each is a one-key mapping):
+  - `msg {from, to, text}`, plus optional `reply` (a dashed return),
+    `interface` (the operation it calls), `call` (function and arguments),
+    `http {method, path, body?}`, `auth` (the credential or role it runs
+    with), `owner` (owning code, `path::symbol`), `invokes` (sequences it
+    runs), `inputs [{name, source, source_kind?}]`, `guards` (plain words),
+    `ops`, `rules`, `constants`, `results [{status?, code?, copy?, when?}]`
+    (one per outcome), `timeout`, `retry`, `idempotency`, `note`, `tags`.
+  - `note {over (participant keys), text, ops?, rules?, tags?}` for annotations
+    that belong to no message, including branches that hold only data effects.
+  - `alt {branches [{when, outcome?, items}]}`, `opt {when, items}`,
+    `loop {while, max?, items}`, `par {branches [{label?, items}]}`,
+    `break {when, items}`, `transaction {label?, items}`.
+  - `continue {to (sequence), text?}` hands off to the next part or sequence.
+- **Data operations (`ops`):** `{op, entity?, by?, index?, where?, join?
+  [{entity, on}], set?, conflict?, order?, limit?, mode?, path?, returns?,
+  triggers?, shared_with? (sequences contending for a lock), note?}`. `op` is
+  read, insert, update, upsert, delete, lock, audit, enqueue, write, or append.
+  `entity` is an entity or data group; an object addressed only by path sets
+  `path` and no entity. `index` names an index badge of the entity (`U1`), or
+  `PK`. `by` and `set` are lists.
+- **`source_kind`** (message inputs and rule inputs): surface, parameter,
+  return, stored, payload, session, constant, config, derived.
+- A sequence is run by an edge, invoked by another sequence, or has its own
+  `trigger`.
+
+### entity
+
+`entity_kind?` (table, view, object, projection, external), `schema?`, `table`
+(physical name or object path template), `name, summary, columns`,
+`column_groups?`, `derivations?`, `primary_key?`, `indexes?`, `checks?`,
+`coordination?`, `triggers?`, `access?`, `view?`, `projection_of?`,
+`relationships?`, `volume?`.
+
+- `columns [{name, type, keys? (PK, FK, UK), fk? {entity, column, on_delete?,
+  on_update?}, nullable?, default?, check?, values?, generated?, visibility?,
+  rule?, indexes? (badges), constants?}]`.
+- `column_groups [{name, display_id?, columns, summary?}]` and
+  `derivations [{by, columns, text}]` (columns a function computes).
+- `primary_key` is an ordered composite key.
+- `indexes [{id (badge), display_id?, name, requested_by? (the capability that
+  needs this shared index), unique?, method?, columns?, include?, where?,
+  params?, definition?, purpose, serves? (sequences)}]`.
+- `checks [{name?, expr, purpose?}]`.
+- `coordination [{id, coordination_kind? (lease, lock, admit, fence, other),
+  scope?, owner?, fence?, expires?, limit?, protects?, text}]`.
+- `triggers [{name, timing?, event?, does}]` (database triggers, not trigger
+  records).
+- `access {rls?, grants?, readers?, writers?}`, `view {source,
+  security_invoker?}`, `projection_of` (entity).
+- `relationships [{to (entity), on? [{from, to}], from_card?, to_card?, link
+  (fk, logical), on_delete?, label, reason?}]`. Cardinalities are `1`, `0..1`,
+  `0..many`, `1..many`, or bounded like `0..2`, always quoted. `from_card` is
+  this entity's side. Two foreign keys to the same table are two
+  relationships.
+- Column badges carry suffixes after a middle dot (`·`, U+00B7): `U1·1` (first
+  key), `P1·where`, `P1·expr`, `I2·inc`. The part before `·` is an index id on
+  the entity, or `PK`.
+
+An entity's lifecycle is the flow whose `subject` is that entity, and what is
+always true of it is an invariant rule; an entity has neither field.
+
+### data_group
+
+`title, summary?, entities, diagram?, parts?, part_of?`. Use it for one data
+diagram spanning several tables, and for lettered data diagrams.
+
+### interface
+
+`interface_kind` (`surface` or `operation`), `name, summary`, `system?`,
+`audience?` (actors), `code?`.
+
+- **A surface** (for people) has `surface_kind` (app, page, screen, section,
+  dialog, sheet, email, notification, provider), `parent?` (a surface),
+  `route?`, `platforms?`, `elements? [{name, description?, states?, copy?}]`,
+  `states?`, `mockup? {url?, file?, frame?, version?}` (the binding design
+  target).
+- **An operation** (for programs and agents) has `operation_kind` (endpoint,
+  rpc, mcp_tool, mcp_resource, cli_command, webhook, function), `params?
+  [{name, type, source}]`, `returns?`, `errors? [{code, status?, when?,
+  copy?}]`, `http? {method, path}`, `auth?`. Payload types go in a contract
+  file listed in `files`.
+
+A step shows on a surface (`step.interface`). A message calls an operation
+(`msg.interface`). The viewer derives where each interface is used.
+
+### trigger
+
+`name, trigger_kind` (action, event, schedule, call), `summary?`,
+`capability?` (only when used in one capability), `actor?` (who acts),
+`interface?` (where it fires: a button's surface, a webhook operation),
+`schedule?` (when).
+
+Every edge names a trigger record, and so does every sequence that runs without
+an edge. One trigger can serve several edges: the outcomes of one action, or
+the same button in two flows. The trigger's `name` is the plain words shown on
+the edge.
+
+### rule
+
+`rule_kind, title, summary`, `capability?` (only when used in one
+capability), `rules?` (rules this rule applies), `constants?`, `constraints?
+[{text, hard?}]`, plus the logic for its kind:
+
+| `rule_kind` | Logic |
+| --- | --- |
+| `decision` | `when` / `then` / `otherwise`, a `decision` graph, a `table {columns, rows}`, or a `judge {evidence, output, gate?, prompt? (file path)}`; with `default?`, `precedence?`, `inputs?`, `params? [{name, value, unit?, source?}]`, `calculations? [{name, expr, notes?}]`, `sets? [{name, members}]` |
+| `invariant` | `holds` (what is always true), `scope` (entities or flows it covers) |
+| `policy` | `whenever` (an event or state), `then` (what follows), `sequence?` (the sequence that carries it out) |
+| `quality` | `applies_to` (flows, sequences, or interfaces), `measure`, `target`, `scope?` |
+
+Every rule is applied somewhere: through the `rules` field of a step, an
+edge, a sequence message or note, or another rule. A policy is also applied by
+its own `sequence`. Quality and invariant rules apply through their
+`applies_to` or `scope`.
+
+### actor
+
+`name, description?, goal?, side` (person, operator, agent, third_party,
+product), `connections? [{to (system or actor), label?, direction? (to,
+both)}]` for an actor's own links on the system map.
+
+### system
+
+`name, role, system_kind?` (platform, app, service, worker, database, storage,
+queue, external), `hosting?`, `within?` (the hosting system), `code?`
+(repository path), `responsibilities?`, `connections? [{to, label?,
+direction?}]`, `environments? [{name, notes?}]`, `units? [{name, unit_kind?
+(function, job, schedule, service, queue), schedule?, resources?, notes?}]`,
+`secrets?` (names only, never values).
+
+### constant
+
+`name, value?` (text; omit when the RIP only names it), `unit?`, `source?`
+(config `path#key` when code owns the value), `description?`, `table?
+{columns, rows}`. Use it for named values (`INVITATION_TTL = 7 days`) and value
+tables (tiers).
+
+### term
+
+`name, definition, synonyms?, copy_word?` (the word user-visible copy uses).
+
+### Graphs
+
+`rule.decision` and `data_group.diagram` share one shape: `nodes [{id,
+node_kind, text, ops?, refs?}]` (at least one) and `edges [{from, to, label?,
+undirected?}]`. `node_kind` is input, decision, calc, judge, action, outcome,
+data, or note. Node ids are local to the graph; `refs` names the records the
+node stands for or uses, and the node's `text` names them in words.
 
 ## Supplementary files
 
 Text files under `product/` with extensions `.md .txt .json .yaml .yml .ts .sql
 .csv .svg` travel with the package and are referenced from records by package
-path (`product/<module>/files/…`) in `files`, `surface.mockup.file`, and
-`rule.judge.prompt`. Use them for payload and contract types, model prompts,
-long reference prose that is not one record's rationale, and SVG mockups. Never
-put logic in them: logic stays in records, where it is typed and checked.
+path (`product/files/…`) in `files`, `mockup.file`, and `judge.prompt`. Use
+them for payload and contract types, model prompts, long reference prose that
+is not one record's rationale, and SVG mockups. Never put logic in them: logic
+stays in records, where it is typed and checked.
 
-Code is never copied into the RIP. Refer to it with `owner` and `code` paths
-(`apps/web/app/api/claim/code/route.ts`, `60_app_core.sql::app.claim_code_send`)
+Code is never copied into the RIP. Refer to it with `code` paths and `call`,
 and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
 
 ## Validation
 
-`npx @readyroom/ready validate <dir>` (where `<dir>` contains `product/`) and Ready
-Room's viewer run the same loader. It never stops at the first problem: valid
-records still load, and each problem is reported as an error (E) or a warning
-(W). The command exits non-zero when there is any error. How to work through
-the output is in [validation.md](validation.md).
+`npx @readyroom/ready validate <dir>` (where `<dir>` contains `product/`;
+`@readyroom/ready` 1.0 reads standard 8) and Ready Room's viewer run the same
+loader. It never stops at the first problem: valid records still load, and each
+problem is reported as an error (E) or a warning (W). The command exits
+non-zero when there is any error. How to work through the output is in
+[validation.md](validation.md).
 
 | Code | Sev. | Meaning |
 | --- | --- | --- |
 | `yaml.parse` | E | Not valid YAML (including duplicate keys). |
 | `record.shape` | E | The file is not one mapping. |
-| `record.version` | E | `ready` is not `1`. |
+| `record.version` | E | `ready` is not `2`. |
 | `record.kind` | E | Unknown `kind`. |
 | `record.id` | E | `id` missing or not a lowercase dotted id. |
 | `field.invalid` | E | A field has the wrong type or value. |
 | `field.unknown` | E | A field is not in the format. |
 | `record.duplicate` | E | Two records share an `id`. |
-| `display.duplicate` | E | A display id or alias names two records (or another record's id). |
+| `display.duplicate` | E | A display id names two records (or another record's id). |
 | `product.count` | E | The package does not have exactly one product record. |
+| `part.mismatch` | E | An overview's `parts` and the parts' `part_of` disagree. |
 | `ref.missing` | E | A reference points at no record. |
 | `ref.kind` | E | A reference points at the wrong kind of record. |
 | `ref.file` | E | A referenced supplementary file is not in the package. |
-| `part.mismatch` | E | An overview's `parts` and the parts' `part_of` disagree. |
-| `journey.step` | E | A journey lists a step that names another journey. |
-| `journey.empty` | E | A journey has neither steps nor parts. |
-| `step.orphan` | E | A step's journey does not list it. |
-| `sequence.participant` | E | A message or note uses an unlisted participant key, or a key is listed twice. |
-| `ops.target` | E | A data operation has neither `entity` nor `path`. |
-| `rule.empty` | E | A rule has no logic: no when/then, decision, table, judge, rules, or parts. |
-| `rule.orphan` | E | Nothing references the rule. |
-| `rule.decision` | E | A decision edge names an unknown node. |
-| `state.unknown` | E | A transition names an unknown state. |
+| `home.capability` | E | A flow or sequence names no capability, or a capability that doesn't exist. |
+| `home.shared` | W | A rule that names a capability is used outside it. |
+| `flow.subject` | E | A flow's subject is not an actor or an entity. |
+| `flow.empty` | E | A flow has no steps. |
+| `step.flow` | E | A step and its flow disagree. |
+| `step.unreachable` | W | No entry or edge reaches a step. |
+| `step.kind` | E | A journey step is a `state`, or a lifecycle step isn't. |
+| `edge.trigger` | E | An edge has no trigger, or names something that isn't a trigger record. |
+| `edge.sequence` | E | An edge's `outcome` is not one of its sequence's outcomes. |
+| `edge.start` | E | The edges that run one sequence leave different steps or use different triggers. |
+| `sequence.participant` | E | A message or note uses a participant that isn't listed. |
+| `sequence.outcome` | W | A sequence outcome that no edge maps to a step. |
+| `sequence.unreached` | W | No edge runs the sequence, no sequence invokes it, and it has no trigger. |
+| `rule.empty` | E | A rule has no logic for its kind. |
+| `rule.orphan` | E | Nothing applies a decision or policy rule through a `rules` field (or, for a policy, its `sequence`). |
+| `rule.decision` | E | A decision graph refers to a node that doesn't exist. |
 | `entity.column` | E | `primary_key` or a column `fk` names an unknown column. |
+| `ops.target` | E | A data operation has neither `entity` nor `path`. |
 | `ops.index` | W | A data operation's `index` is not an index of its entity. |
 | `entity.index` | W | A column badge names no index on the entity. |
 | `table.shape` | W | A rule table row has the wrong number of cells. |
-| `text.ref-id` | W | A graph node's text repeats an id, display id, or alias that is also in its `refs`. |
-| `text.id` | W | A prose field (title, summary, step text, copy, guard, label, message, note, or node text) names another record by id, display id, or alias; link it from the typed field named. |
+| `data.state` | W | A step's data `state` is not a `state` step of that entity's lifecycle. |
+| `interface.fields` | E | Surface fields on an operation, or the reverse. |
+| `interface.unused` | W | Nothing shows or calls an interface. |
+| `trigger.unused` | W | A trigger record no edge or sequence uses. |
+| `dcl.same` | W | A capability's DCL level equals the product default. |
 | `text.code` | W | A prose field reads as code: `path::symbol`, a file path, `call(args)`, a `WRITE ·` verb, a `dotted.reference`, a `snake_case` or `camelCase` identifier, or a `CONSTANT_NAME`. Product words and domain names are not code. |
+| `text.id` | W | A prose field (title, summary, step text, copy, guard, label, trigger name, message, note, or node text) names another record by id or display id; link it from the typed field. |
 | `text.call` | W | A message's `text` repeats its `call`. |
-| `summary.missing` | W | A rule or sequence that is not a part, or the product, has no `summary`. |
-| `summary.long` | W | A `summary` is longer than 160 characters or more than one sentence. Keep the sentence that says what the record is or does; move the rest to the typed fields or `notes`. |
-| `name.long` | W | The product `name` is longer than 40 characters; it is the product page title. |
-| `outcome.long` | W | The product `outcome` is longer than 300 characters; move detail to `measures`, `boundary`, or `notes`. |
-| `text.history` | W | `rationale`, `notes`, a `summary`, or a step's `sees` or `does` carries a date, a QA round, a dated decision, or a ticket id. Display-id prefixes the package uses, standards such as ISO-8601, and quoted text are not tickets. |
-| `sees.branch` | W | A step's `sees` line describes a condition ("Signed in, …", "If …", ", otherwise …") and the step has no `next` with `when` and no edge to a decision step. |
-| `sees.platform` | W | A step's `sees` line describes one client ("In the app …", "On the web …") and the step sets no `platforms`. |
-| `next.target-label` | W | A `next` edge's `target_label` repeats its target's title. |
+| `text.ref-id` | W | A graph node's text repeats an id or display id that is also in its `refs`. |
+| `text.history` | W | `rationale`, `notes`, a `summary`, or a step's `sees` or `does` carries a date, a QA round, a dated decision, or a ticket id. |
+| `summary.missing` | W | A record that needs a summary has none. |
+| `summary.long` | W | A `summary` is longer than 160 characters or more than one sentence. |
+| `name.long` | W | The product `name` is longer than 40 characters. |
+| `outcome.long` | W | The product `outcome` is longer than 300 characters. |
+| `sees.branch` | W | A step's `sees` line describes a condition that belongs on an edge's `guard` or a decision step. |
+| `sees.platform` | W | A step's `sees` line describes one client and the step sets no `platforms`. |
 | `term.unused` | W | A term's `copy_word` appears in no `copy` in the package. |
-| `sequence.unreachable` | W | Nothing starts the sequence (see below). |
-| `size.journey` | W | A journey has more than 12 steps. |
+| `size.flow` | W | A flow has more than 12 steps. |
 | `size.sequence` | W | A sequence has more than 16 messages, counted through nested blocks. |
-| `size.module` | W | A module has more than 14 ungrouped entities and top-level entity groups. |
-
-A sequence is reachable when its trigger is `event`, `schedule`, or `operator`;
-when any record other than its own overview or part references it (a step,
-journey, operation, invoking message, `continue`, and so on); or when it is a
-part or overview of a reachable sequence.

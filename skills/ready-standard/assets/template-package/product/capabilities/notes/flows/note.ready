@@ -1,0 +1,18 @@
+# Template: flow with an entity subject, shown as a lifecycle. Same fields as a
+# journey; its steps are states (step_kind state).
+ready: 2
+kind: flow
+id: notes.note
+display_id: FLOW-NOTE
+capability: notes
+title: Note
+summary: The states a saved note moves through.
+subject: data.notes
+steps:
+  - notes.note.saved
+  - notes.note.deleted
+entries:
+  - label: The person saves a new note
+    from: notes.write.compose
+    to: notes.note.saved
+    trigger: notes.save-note

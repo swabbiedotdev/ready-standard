@@ -1,0 +1,15 @@
+# Template: data_group. One data diagram spanning several tables; lettered
+# data diagrams use parts / part_of.
+# Required: ready, kind, id, title, entities.
+# Optional: summary, diagram {nodes, edges}, parts / part_of.
+ready: 2
+kind: data_group
+id: data.overview
+display_id: DATA-OVERVIEW
+title: Notes data
+summary: The tables that hold people's notes.
+entities:
+  - data.notes
+rationale: >-
+  One table holds every note because notes have no structure beyond their
+  text; the owner on each row keeps every query scoped to one person.

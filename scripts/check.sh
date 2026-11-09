@@ -27,13 +27,15 @@ echo "$out" | tail -1 | grep -qx '0 errors, 0 warnings' || {
   exit 1
 }
 
+schema="$skill/assets/ready.schema.json"
+
 echo "== Comparing the JSON Schema"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 (cd "$tmp" && node "$cli" schema "$tmp/ready.schema.json" >/dev/null)
-if ! cmp -s "$tmp/ready.schema.json" "$skill/assets/ready.schema.json"; then
+if ! cmp -s "$tmp/ready.schema.json" "$schema"; then
   echo "assets/ready.schema.json differs from Ready Room's schema." >&2
-  echo "Regenerate it: node $cli schema $skill/assets/ready.schema.json" >&2
+  echo "Regenerate it: node $cli schema $schema" >&2
   echo "then review references/format.md and the templates for the change." >&2
   exit 1
 fi

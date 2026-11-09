@@ -1,0 +1,87 @@
+# Template: sequence. What runs between two steps, across systems.
+# Required: ready, kind, id, capability, title, summary, participants, items,
+#   outcomes [{id, label}] (the ways it can end; flow edges map each to a step).
+# Optional: trigger (a trigger id, only for a sequence no edge runs: a
+#   schedule, an event, or another system's call), parts / part_of.
+# Participants: an actor, system, or interface id, or {id (key), is, label}.
+#   Messages and notes use participant keys.
+# Items: msg, note, alt, opt, loop, par, break, transaction, continue. An alt
+#   branch that ends the sequence names its outcome.
+# msg: from, to, text, plus reply, interface (the operation it calls), call,
+#   http {method, path, body}, auth, owner (path::symbol), invokes (sequences
+#   it runs), inputs [{name, source, source_kind}], guards (plain words), ops,
+#   rules, constants, results [{status, code, copy, when}], timeout, retry,
+#   idempotency, note, tags.
+# Split a sequence over 16 messages into lettered parts.
+ready: 2
+kind: sequence
+id: notes.save
+display_id: SEQ-SAVE
+capability: notes
+title: Save a note
+summary: Saves a note that fits the length limit, or refuses it and keeps the text.
+participants:
+  - actor.person
+  - system.app
+  - id: db
+    is:
+      - system.app
+    label: App database
+outcomes:
+  - id: saved
+    label: Saved
+  - id: refused
+    label: Refused as too long
+items:
+  - msg:
+      from: actor.person
+      to: system.app
+      text: Save the note
+      interface: interface.save-note
+      inputs:
+        - name: text
+          source: The editor's text field
+          source_kind: surface
+        - name: account_id
+          source: The verified session
+          source_kind: session
+      rules:
+        - notes.note-length
+      constants:
+        - constant.max-length
+  - alt:
+      branches:
+        - when: The text fits the length limit
+          outcome: saved
+          items:
+            - msg:
+                from: system.app
+                to: db
+                text: Store the note
+                ops:
+                  - op: insert
+                    entity: data.notes
+                    set:
+                      - note_id new
+                      - owner_id = account_id
+                      - text
+                      - status = saved
+                      - created_at now
+            - msg:
+                from: system.app
+                to: actor.person
+                text: Saved
+                reply: true
+                results:
+                  - status: 201
+        - when: The text is longer than the length limit
+          outcome: refused
+          items:
+            - msg:
+                from: system.app
+                to: actor.person
+                text: Refuse the note
+                reply: true
+                results:
+                  - status: 422
+                    code: too_long

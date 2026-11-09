@@ -1,0 +1,15 @@
+# Template: trigger. Every edge names one, and so does every sequence that
+# runs without an edge. Its name is the plain words shown on the edge.
+# Required: ready, kind, id, name, trigger_kind (action | event | schedule | call).
+# Optional: summary, capability (only when used in one capability), actor (who
+#   acts), interface (where it fires), schedule (when).
+ready: 2
+kind: trigger
+id: notes.save-note
+display_id: TRIG-SAVE-NOTE
+capability: notes
+trigger_kind: action
+name: Save
+summary: The person chooses Save in the note editor.
+actor: actor.person
+interface: interface.editor
