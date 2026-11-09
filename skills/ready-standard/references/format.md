@@ -231,7 +231,7 @@ capability from its flow.
   `state` is the id of a `state` step in that entity's lifecycle; `rules?`.
 - **`edges`** (optional; a final step has none) are `[{to | $return, trigger,
   guard?, rules?, label?, sequence?, outcome?, channel? (email, push, async,
-  link), platforms?, roles?}]`:
+  link), platforms?, roles?, secondary?}]`:
   - `to` is a step, or `$return` to send the subject back where the flow
     began.
   - `trigger` is a trigger id. Every edge names a trigger record.
@@ -242,6 +242,10 @@ capability from its flow.
   - `label` marks a decision branch ("Yes", "No"); `guard` states, in plain
     words, the condition under which the edge is taken; `rules` lists the
     rules the move applies.
+  - `secondary: true` marks a less common or implied move: a rare branch, a
+    failure, or a return such as Cancel, Close or "Back to …". The move stays
+    part of the intent; diagrams hide it, and the steps only it reaches, until
+    the reader asks for them. Leave the main path unmarked.
 
 The steps a sequence starts, ends at, or decides in are derived from these
 edges, so a step lists no sequences.

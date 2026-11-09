@@ -190,6 +190,9 @@ of at most 160 characters where the kind has one.
 - [ ] An edge that runs system work names its `sequence` and `outcome`, and
       there is one edge per outcome of that sequence, all from this step with
       the same trigger. Failures reach their own `error` steps that way.
+- [ ] Moves that are rare, failures, or returns that change nothing (Cancel,
+      Close, "Back to …") carry `secondary: true`; the main path stays
+      unmarked.
 - [ ] `rules` and `data` link the logic and data behind the step; a `data`
       entry's `state` is the id of a `state` step in that entity's lifecycle.
       The step does not explain that logic itself, and lists no sequences.
