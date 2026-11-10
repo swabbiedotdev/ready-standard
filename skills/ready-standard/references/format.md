@@ -178,10 +178,17 @@ Development Complexity Level is the product default.
 `name, summary, outcome, actors` (who gets the outcome), `order?` (position on
 the product page), `dcl? {level (integer 1–10), basis}`.
 
-A capability is any outcome some actor gets: owners, visitors, or operators. An
-area with several distinct outcomes is several capabilities. A channel is never
-a capability: a plugin, a CLI, or a second app contributes interfaces to
-existing capabilities. A capability owns the records that name it; it lists
+A capability is an outcome the product's users get: owners, visitors, or the
+agents working for them. An area with several distinct outcomes is several
+capabilities. A channel is never a capability: a plugin, a CLI, an admin
+console, or a second app contributes interfaces to existing capabilities.
+
+Admin and operator work belongs to the capability it serves. Monitoring a
+user's condition, handling a data edge case for them, correcting or recovering
+their work, and supporting them all serve a user outcome, so they live in that
+capability, with the operator among its `actors` and the operator's flows,
+sequences, rules, and interfaces owned there. Only work that serves no user
+outcome at all is a capability of its own, and that is rare. A capability owns the records that name it; it lists
 none of them.
 
 A capability's effective DCL is its own when set, else the product default,

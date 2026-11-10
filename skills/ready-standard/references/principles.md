@@ -24,12 +24,21 @@ record kind.
 
 ## Capabilities own behavior
 
-- A capability is an outcome some actor gets: an owner, a visitor, an
-  operator, or an agent. Name it for that outcome ("Generate font",
+- A capability is an outcome the product's users get: an owner, a visitor, or
+  an agent working for them. Name it for that outcome ("Generate font",
   "Purchase credits"). An area with several distinct outcomes is several
   capabilities.
-- A channel is never a capability. A plugin, a CLI, an MCP server, or a second
-  app contributes interfaces to the capabilities whose outcomes it delivers.
+- Admin features exist because the user product does. Monitoring users'
+  condition, handling their data edge cases, correcting or recovering their
+  work, and supporting them each serve a user outcome, so that work lives in
+  the capability it serves: the operator is one of its actors, and the
+  operator's flows, sequences, rules, and interfaces are owned there. Refunding
+  credits belongs to "Purchase credits", not to an "Admin" capability. Only
+  work that serves no user outcome at all is a capability of its own, and that
+  is rare.
+- A channel is never a capability. A plugin, a CLI, an MCP server, an admin
+  console, or a second app contributes interfaces to the capabilities whose
+  outcomes it delivers.
 - Behavior has one home. A flow and its sequences name the capability that
   owns them, and a step takes its capability from its flow. A rule or trigger names a capability only when it
   is used in that one capability; otherwise it is shared.
