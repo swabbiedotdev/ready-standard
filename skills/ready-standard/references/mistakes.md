@@ -57,6 +57,10 @@
   its effective level follows the highest effective DCL among its users.
 - **A channel as a capability.** "Plugin", "CLI", "Mobile app", or "Admin API"
   is not an outcome; its interfaces belong to the capabilities they serve.
+- **An admin capability.** "Admin", "Admin management", or "Operations"
+  holding refunds, monitoring, retries, and data fixes for users. Each of
+  those serves a user outcome; put it in that outcome's capability with the
+  operator among its actors. Only work serving no user outcome stands alone.
 - **A capability per team, layer, or table,** or one capability holding several
   unrelated outcomes.
 - **A capability-local rule used elsewhere** (`home.shared`). Move it to

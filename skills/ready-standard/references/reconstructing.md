@@ -29,8 +29,9 @@ intended end state until the owner chooses it (see
    the code or the running product), stated (in a document or by a person),
    or inferred, and note source limits.
 4. **Propose the capability map to the owner first.** List the outcomes each
-   actor gets (owners, visitors, operators, agents), one capability per
-   outcome, and the channels that contribute interfaces to them. Assign each
+   user gets (owners, visitors, agents), one capability per outcome, with
+   each piece of admin or operator work placed in the capability it serves,
+   and the channels that contribute interfaces to them. Assign each
    behavior to one capability. Old groupings (by module, team, screen, or
    artifact type) are evidence, not the map. Wait for the owner's answer
    before writing records.

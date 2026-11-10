@@ -285,6 +285,15 @@ cases:
       - reject an unread log as sufficient
       - add admin surfaces or controls only when the procedure needs an action existing tools cannot safely perform
 
+  - id: admin-work-in-user-capabilities
+    prompt: Map FontJot's capabilities. Its admin dashboard lists users, refunds credits, reruns failed generations, and fixes broken saved fonts.
+    should_activate: true
+    must:
+      - place each admin action in the user capability it serves, such as refunds in purchasing credits and reruns in generating fonts
+      - add the operator to those capabilities' actors rather than creating an Admin capability
+      - treat the admin dashboard as a channel whose interfaces contribute to those capabilities
+      - keep a separate capability only for work that serves no user outcome
+
   # Implementation, tickets, audits
 
   - id: rip-governed-implementation
